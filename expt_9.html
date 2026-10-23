@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechSavvy - Online Electronics &amp; Gadget Shopping Platform</title>
+  <style>
+    :root { --primary: #1d4ed8; --accent: #ea580c; --bg: #f8fafc; --card: #fff; --text: #0f172a; --muted: #64748b; --border: #cbd5e1; --success: #15803d; --danger: #b91c1c; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #0f172a; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; color: #60a5fa; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #60a5fa; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.1rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .product-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .product-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+    .product-img.phone { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: #dbeafe; }
+    .product-img.laptop { background: linear-gradient(135deg, #374151, #6b7280); color: #e5e7eb; }
+    .product-img.tablet { background: linear-gradient(135deg, #4c1d95, #7c3aed); color: #ede9fe; }
+    .product-img.headphone { background: linear-gradient(135deg, #991b1b, #ef4444); color: #fee2e2; }
+    .product-body { padding: 12px; }
+    .product-body h4 { font-size: 0.95rem; margin-bottom: 2px; }
+    .price { font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+    .old-price { text-decoration: line-through; color: var(--muted); font-size: 12px; margin-left: 4px; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; background: #dbeafe; color: #1d4ed8; }
+    .badge-success { background: #dcfce7; color: var(--success); }
+    .badge-sale { background: #fef3c7; color: #b45309; }
+    .stars { color: #f59e0b; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .admin-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .grid-4 { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#128187; TechSavvy Electronics</h1>
+    <nav>
+      <a href="#catalog">Catalog</a>
+      <a href="#cart-section">Cart</a>
+      <a href="#wishlist">Wishlist</a>
+      <a href="#orders">Order History</a>
+      <a href="#auth-section">Login / Register</a>
+      <a href="#admin-section">Admin Panel</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Category Navigation + Search & Filter -->
+    <div class="panel" id="catalog">
+      <h4 style="margin-bottom: 8px;">Browse Categories &amp; Search Products</h4>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128241; Smartphones</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128187; Laptops</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128195; Tablets</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#127911; Headphones</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#9000; Accessories</span>
+        <span class="badge badge-sale" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128293; Flash Sales</span>
+      </div>
+      <form style="display: grid; grid-template-columns: 2fr 1fr 1fr 120px; gap: 10px; align-items: end;" onsubmit="event.preventDefault(); alert('Filtering product catalog...');">
+        <div><label>Search by Name / Brand</label><input type="text" placeholder="e.g. iPhone 16, Samsung Galaxy, Sony..."></div>
+        <div>
+          <label>Sub Category</label>
+          <select><option>All Sub-Categories</option><option>Flagship Phones</option><option>Budget Phones</option><option>Gaming Laptops</option><option>Ultrabooks</option><option>Wireless Earbuds</option></select>
+        </div>
+        <div>
+          <label>Price Range</label>
+          <select><option>Any Price</option><option>Under $200</option><option>$200 - $500</option><option>$500 - $1000</option><option>$1000+</option></select>
+        </div>
+        <div><button type="submit" class="btn-accent">Filter</button></div>
+      </form>
+    </div>
+
+    <!-- Product Grid -->
+    <h3 class="section-title">
+      <span>Featured Gadgets &amp; Deals</span>
+      <span class="badge badge-sale">Online Exclusive Discounts</span>
+    </h3>
+    <div class="grid-4">
+      <div class="product-card">
+        <div class="product-img phone">&#128241;</div>
+        <div class="product-body">
+          <span class="badge">Smartphone</span>
+          <h4>iPhone 16 Pro Max 256GB</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088;&#11088; (4.8 &bull; 1.2k reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">A18 Pro chip, 48MP camera system, titanium design, ProMotion always-on display.</p>
+          <div><span class="price">$1,199</span><span class="old-price">$1,299</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 8px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('iPhone 16 Pro Max', 1199)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Added to Wishlist!')">&#9829; Wishlist</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img laptop">&#128187;</div>
+        <div class="product-body">
+          <span class="badge">Laptop</span>
+          <h4>MacBook Air M3 15" 512GB</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088;&#11088; (4.9 &bull; 850 reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">Apple M3 chip, 18-hr battery, Liquid Retina display, 8GB unified memory.</p>
+          <div><span class="price">$1,299</span><span class="old-price">$1,499</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 8px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('MacBook Air M3', 1299)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Added to Wishlist!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img tablet">&#128195;</div>
+        <div class="product-body">
+          <span class="badge">Tablet</span>
+          <h4>Samsung Galaxy Tab S10 Ultra</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088; (4.6 &bull; 540 reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">14.6" AMOLED, S Pen included, Snapdragon 8 Gen 3, 256GB storage.</p>
+          <div><span class="price">$899</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 8px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('Galaxy Tab S10 Ultra', 899)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Added to Wishlist!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img headphone">&#127911;</div>
+        <div class="product-body">
+          <span class="badge">Headphones</span>
+          <h4>Sony WH-1000XM6 ANC</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088;&#11088; (4.9 &bull; 2.1k reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">Industry-leading noise cancellation, 40-hr battery, LDAC Hi-Res audio.</p>
+          <div><span class="price">$349</span><span class="old-price">$399</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 8px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('Sony WH-1000XM6', 349)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Added to Wishlist!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shopping Cart -->
+    <h3 class="section-title" id="cart-section">Shopping Cart &amp; Checkout</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Your Cart (2 Items)</h4>
+        <table>
+          <thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Edit / Remove</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>iPhone 16 Pro Max 256GB</strong><div style="font-size: 11px; color: var(--muted);">SKU: APL-IP16PM-256</div></td>
+              <td><input type="number" value="1" min="1" style="width: 50px; padding: 4px;"></td>
+              <td>$1,199.00</td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Quantity updated')">Update</button>
+                <button class="btn-sm btn-danger" onclick="alert('Removed from cart')">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Sony WH-1000XM6 ANC</strong><div style="font-size: 11px; color: var(--muted);">SKU: SNY-WH1K-XM6</div></td>
+              <td><input type="number" value="1" min="1" style="width: 50px; padding: 4px;"></td>
+              <td>$349.00</td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Quantity updated')">Update</button>
+                <button class="btn-sm btn-danger" onclick="alert('Removed from cart')">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot><tr><td colspan="2" style="text-align: right; font-weight: 700;">Subtotal:</td><td colspan="2" style="font-weight: 700; color: var(--accent);">$1,548.00</td></tr></tfoot>
+        </table>
+      </div>
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Secure Checkout</h4>
+        <form onsubmit="event.preventDefault(); alert('Order placed! Order ID: #TS-2026-9041. Confirmation email sent.');">
+          <div style="margin-bottom: 8px;"><label>Shipping Address</label><textarea rows="2" required>42 Tech Avenue, San Jose, CA 95134</textarea></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Payment</label><select><option>Credit/Debit Card</option><option>PayPal</option><option>Apple Pay</option></select></div>
+            <div><label>Promo Code</label><input type="text" placeholder="SAVE10"></div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Place Order ($1,548.00)</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Wishlist -->
+    <div class="panel" id="wishlist">
+      <h4 style="margin-bottom: 8px;">My Wishlist</h4>
+      <table>
+        <thead><tr><th>Product</th><th>Price</th><th>Availability</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>MacBook Air M3 15" 512GB</td>
+            <td>$1,299.00</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td><button class="btn-sm btn-accent" onclick="addToCart('MacBook Air M3', 1299)">Move to Cart</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Order History & Tracking -->
+    <h3 class="section-title" id="orders">Order History &amp; Tracking</h3>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Order ID</th><th>Items</th><th>Date</th><th>Total</th><th>Status</th><th>Track</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>#TS-2026-9041</strong></td>
+            <td>iPhone 16 Pro Max, Sony XM6</td>
+            <td>Oct 14, 2026</td>
+            <td>$1,548.00</td>
+            <td><span class="badge">Processing</span></td>
+            <td><button class="btn-sm btn-secondary" onclick="alert('Shipment tracking: Dispatched from warehouse. Estimated Oct 18.')">Track</button></td>
+          </tr>
+          <tr>
+            <td><strong>#TS-2026-7102</strong></td>
+            <td>Galaxy Tab S10 Ultra</td>
+            <td>Sep 20, 2026</td>
+            <td>$899.00</td>
+            <td><span class="badge badge-success">Delivered</span></td>
+            <td><span style="font-size: 11px; color: var(--success);">Delivered Sep 24</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Auth -->
+    <h3 class="section-title" id="auth-section">Login &amp; Register</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Login</h4>
+        <form onsubmit="event.preventDefault(); alert('Welcome back to TechSavvy!');">
+          <div style="margin-bottom: 8px;"><label>Email</label><input type="email" value="alex@example.com" required></div>
+          <div style="margin-bottom: 8px;"><label>Password</label><input type="password" value="••••••••" required></div>
+          <button type="submit" style="width: 100%;">Sign In</button>
+        </form>
+      </div>
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Register</h4>
+        <form onsubmit="event.preventDefault(); alert('Account created!');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Name</label><input type="text" placeholder="Alex Kim" required></div>
+            <div><label>Phone</label><input type="tel" placeholder="+1 555-000-0000" required></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Email</label><input type="email" placeholder="alex@example.com" required></div>
+            <div><label>Password</label><input type="password" required></div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Create Account</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #1e40af; font-size: 1.1rem; margin-bottom: 4px;">Admin &ndash; Inventory, Pricing &amp; Customer Management</h3>
+      <p style="font-size: 12px; color: #1e40af; margin-bottom: 14px;">Add/remove products, modify prices/descriptions, view customer checkout info, and manage order summaries.</p>
+      <div class="grid-2">
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Add / Modify Product Inventory</h4>
+          <form onsubmit="event.preventDefault(); alert('Product inventory updated!');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div><label>Product Name</label><input type="text" value="iPhone 16 Pro Max 256GB" required></div>
+              <div><label>Category</label><select><option selected>Smartphones</option><option>Laptops</option><option>Tablets</option><option>Headphones</option><option>Accessories</option></select></div>
+            </div>
+            <div style="margin-bottom: 8px;"><label>Description</label><textarea rows="2">A18 Pro chip, 48MP camera system, titanium design, ProMotion always-on display.</textarea></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div><label>Price ($)</label><input type="number" value="1199"></div>
+              <div><label>Stock Qty</label><input type="number" value="120"></div>
+              <div><label>Sub Category</label><input type="text" value="Flagship Phones"></div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="submit" class="btn-sm" style="flex: 1;">Save Product</button>
+              <button type="button" class="btn-sm btn-danger" onclick="alert('Product removed from catalog.')">Remove Item</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Customer Checkout Info &amp; Order Summary</h4>
+          <table style="font-size: 11.5px;">
+            <thead><tr><th>Customer</th><th>Email</th><th>Order</th><th>Total</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Alex Kim</td><td>alex@example.com</td><td>#TS-2026-9041</td><td>$1,548</td><td><span class="badge">Processing</span></td></tr>
+              <tr><td>Sarah Lee</td><td>sarah@example.com</td><td>#TS-2026-7102</td><td>$899</td><td><span class="badge badge-success">Delivered</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>&copy; 2026 TechSavvy Electronics. Online Gadget Shopping &amp; E-Commerce Platform.</footer>
+
+  <script>
+    function addToCart(name, price) {
+      alert(`Added "${name}" ($${price}) to your shopping cart!`);
+      location.href = '#cart-section';
+    }
+  </script>
+</body>
+</html>

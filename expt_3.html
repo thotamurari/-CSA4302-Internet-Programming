@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityExpress - Online Bus Ticket Booking &amp; Fleet Management Portal</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --accent: #f97316;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #0f172a; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; color: #38bdf8; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #38bdf8; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    .hero-search { background: linear-gradient(135deg, #0369a1, #0f172a); color: white; padding: 22px; border-radius: var(--radius); margin-bottom: 20px; }
+    .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) 130px; gap: 10px; align-items: end; margin-top: 12px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: inherit; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { opacity: 0.92; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .bus-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; display: grid; grid-template-columns: 2fr 1fr 1.2fr 130px; gap: 14px; align-items: center; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; background: #e0f2fe; color: #0284c7; }
+    .badge-volvo { background: #fef3c7; color: #b45309; }
+    .badge-sleeper { background: #f3e8ff; color: #7e22ce; }
+    .badge-success { background: #dcfce7; color: var(--success); }
+    .price { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+    .seat-selector { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .seat-pill { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; font-weight: 600; background: #f8fafc; }
+    .seat-pill.selected { background: var(--primary); color: white; border-color: var(--primary-dark); }
+    .seat-pill.booked { background: #cbd5e1; color: #64748b; cursor: not-allowed; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .admin-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .bus-card { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } .search-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Header & Navigation -->
+  <header>
+    <h1>CityExpress Bus Portal</h1>
+    <nav>
+      <a href="#search-buses">Search Routes</a>
+      <a href="#booking-section">Passenger Booking</a>
+      <a href="#user-dashboard">My Dashboard &amp; History</a>
+      <a href="#auth-section">User Auth</a>
+      <a href="#admin-section">Admin Panel</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. Search Buses by Route, Date, Time -->
+    <section class="hero-search" id="search-buses">
+      <h2 style="font-size: 1.25rem;">Search Intercity &amp; Tour Bus Services</h2>
+      <p style="font-size: 12px; opacity: 0.85;">Filter schedules by departure point, destination city, journey date, and preferred bus category.</p>
+      <form class="search-grid" onsubmit="event.preventDefault(); alert('Scanning routes and live seat availability...');">
+        <div>
+          <label>Origin / From</label>
+          <input type="text" value="New York, NY" required>
+        </div>
+        <div>
+          <label>Destination / To</label>
+          <input type="text" value="Boston, MA" required>
+        </div>
+        <div>
+          <label>Departure Date</label>
+          <input type="date" value="2026-10-28" required>
+        </div>
+        <div>
+          <label>Time of Day</label>
+          <select>
+            <option>All Times (Anytime)</option>
+            <option selected>Morning (06:00 - 12:00)</option>
+            <option>Afternoon (12:00 - 18:00)</option>
+            <option>Night / Sleeper (18:00+)</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="btn-accent">Find Buses</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Available Buses & Category Display -->
+    <h3 class="section-title">
+      <span>Available Buses &amp; Seat Availability</span>
+      <span style="font-size: 12px; font-weight: normal; color: var(--muted);">Route: NY &rarr; Boston &bull; Oct 28, 2026</span>
+    </h3>
+
+    <!-- Bus 1: Volvo Multi-Axle AC -->
+    <div class="bus-card">
+      <div>
+        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
+          <h4 style="font-size: 1rem;">Royal Transits - Volvo Multi-Axle AC</h4>
+          <span class="badge badge-volvo">Volvo AC</span>
+        </div>
+        <p style="font-size: 12px; color: var(--muted);">Departure: <strong>07:30 AM</strong> &rarr; Arrival: <strong>11:45 AM</strong> (4h 15m duration)</p>
+        <span style="font-size: 11.5px; color: var(--muted);">Boarding: Port Authority Bus Terminal &bull; WiFi, Reclining Seats, USB Charging</span>
+      </div>
+      <div>
+        <div style="font-size: 12px; color: var(--muted);">Available Seats</div>
+        <div style="font-weight: 700; color: var(--success); font-size: 1rem;">18 / 40 Seats</div>
+        <span class="badge badge-success">Fast Filling</span>
+      </div>
+      <div>
+        <div class="price">$38.50</div>
+        <div style="font-size: 11px; color: var(--muted);">per passenger + taxes</div>
+      </div>
+      <div>
+        <button onclick="document.getElementById('selectedBusDisplay').value='Royal Transits (Volvo AC) - 07:30 AM'; location.href='#booking-section';">Select Seats</button>
+      </div>
+    </div>
+
+    <!-- Bus 2: Sleeper Coach -->
+    <div class="bus-card">
+      <div>
+        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
+          <h4 style="font-size: 1rem;">NightRider Sleeper Coach (2+1 Berth)</h4>
+          <span class="badge badge-sleeper">Sleeper Coach</span>
+        </div>
+        <p style="font-size: 12px; color: var(--muted);">Departure: <strong>10:30 PM</strong> &rarr; Arrival: <strong>04:00 AM</strong> (Overnight)</p>
+        <span style="font-size: 11.5px; color: var(--muted);">Boarding: Penn Station Plaza &bull; AC Individual Sleeper Berths, Blanket, Water Bottle</span>
+      </div>
+      <div>
+        <div style="font-size: 12px; color: var(--muted);">Available Seats</div>
+        <div style="font-weight: 700; color: var(--success); font-size: 1rem;">6 / 30 Berths</div>
+        <span class="badge badge-sleeper">Limited Berths</span>
+      </div>
+      <div>
+        <div class="price">$52.00</div>
+        <div style="font-size: 11px; color: var(--muted);">per berth + taxes</div>
+      </div>
+      <div>
+        <button onclick="document.getElementById('selectedBusDisplay').value='NightRider Sleeper Coach - 10:30 PM'; location.href='#booking-section';">Select Seats</button>
+      </div>
+    </div>
+
+    <!-- 2. Book Ticket & Seat Selection Module -->
+    <h3 class="section-title" id="booking-section">Passenger Details &amp; Seat Booking Desk</h3>
+
+    <div class="grid-2">
+      <!-- Seat Map Selector -->
+      <div class="panel">
+        <h4 style="margin-bottom: 6px;">Select Desired Seat(s)</h4>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">Click open seats to choose. Gray seats are already reserved.</p>
+        <label>Bus Layout (Front &rarr; Driver side left):</label>
+        <div class="seat-selector">
+          <div class="seat-pill selected" onclick="this.classList.toggle('selected')">1A</div>
+          <div class="seat-pill booked">1B</div>
+          <div class="seat-pill booked">2A</div>
+          <div class="seat-pill selected" onclick="this.classList.toggle('selected')">2B</div>
+          <div class="seat-pill" onclick="this.classList.toggle('selected')">3A</div>
+          <div class="seat-pill" onclick="this.classList.toggle('selected')">3B</div>
+          <div class="seat-pill booked">4A</div>
+          <div class="seat-pill" onclick="this.classList.toggle('selected')">4B</div>
+          <div class="seat-pill" onclick="this.classList.toggle('selected')">5A</div>
+          <div class="seat-pill" onclick="this.classList.toggle('selected')">5B</div>
+        </div>
+        <div style="font-size: 11.5px; color: var(--muted); margin-top: 8px; display: flex; gap: 14px;">
+          <span><strong style="color: var(--primary);">&#9632;</strong> Selected (1A, 2B)</span>
+          <span><strong style="color: #cbd5e1;">&#9632;</strong> Booked</span>
+          <span><strong style="color: #f8fafc; border: 1px solid var(--border);">&#9632;</strong> Available</span>
+        </div>
+      </div>
+
+      <!-- Booking Form & Payment Gateway -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Passenger Form &amp; Secure Payment</h4>
+        <form onsubmit="event.preventDefault(); alert('Booking confirmed! E-Ticket sent to your registered email.');">
+          <div style="margin-bottom: 8px;">
+            <label>Selected Bus Schedule</label>
+            <input type="text" id="selectedBusDisplay" value="Royal Transits (Volvo AC) - 07:30 AM" readonly>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Primary Passenger Name</label>
+              <input type="text" value="Daniel Craig" required>
+            </div>
+            <div>
+              <label>Mobile Number</label>
+              <input type="tel" value="+1 (555) 234-5678" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Passenger Email (Confirmation)</label>
+              <input type="email" value="daniel.c@example.com" required>
+            </div>
+            <div>
+              <label>Payment Gateway</label>
+              <select>
+                <option>Credit / Debit Card (Stripe)</option>
+                <option>PayPal One-Click</option>
+                <option>Net Banking / UPI</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Pay $77.00 &amp; Confirm E-Ticket</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 3. User Dashboard: Booking History, Cancellation, & Comments -->
+    <h3 class="section-title" id="user-dashboard">User Dashboard: Booking History &amp; Actions</h3>
+
+    <div class="panel">
+      <h4 style="margin-bottom: 6px;">My Booking History</h4>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 10px;">Review your upcoming itineraries, cancel tickets if required, and post feedback comments.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Ticket PNR</th>
+            <th>Bus Service &amp; Category</th>
+            <th>Journey Route &amp; Date</th>
+            <th>Seat(s)</th>
+            <th>Status</th>
+            <th>Cancel Module</th>
+            <th>Post Comment on Bus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#PNR-88901</strong></td>
+            <td>Royal Transits (Volvo AC)</td>
+            <td>NY &rarr; Boston &bull; Oct 28, 2026</td>
+            <td>1A, 2B</td>
+            <td><span class="badge badge-success">Confirmed</span></td>
+            <td>
+              <button class="btn-sm btn-danger" onclick="if(confirm('Cancel Ticket #PNR-88901? Refund policy will apply.')) alert('Ticket cancelled. Refund initiated.');">Cancel Ticket</button>
+            </td>
+            <td>
+              <button class="btn-sm btn-secondary" onclick="document.getElementById('commentBusName').value='Royal Transits (Volvo AC)'; location.href='#comments-box';">Leave Comment</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>#PNR-62145</strong></td>
+            <td>NightRider Sleeper Coach</td>
+            <td>Boston &rarr; NY &bull; Sep 12, 2026</td>
+            <td>Lower Berth 04</td>
+            <td><span class="badge">Travelled</span></td>
+            <td><span style="font-size: 11px; color: var(--muted);">Journey Completed</span></td>
+            <td>
+              <span style="font-size: 11px; color: var(--success);">&#10003; Comment Submitted</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Comments on Bus Module -->
+    <div class="panel" id="comments-box">
+      <h4 style="margin-bottom: 6px;">Post Comment on a Bus</h4>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">Share your travel feedback, punctuality rating, and onboard amenity experience.</p>
+      <form onsubmit="event.preventDefault(); alert('Comment posted successfully! Thank you for reviewing.'); this.reset();">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div>
+            <label>Bus Service Name</label>
+            <input type="text" id="commentBusName" value="Royal Transits (Volvo AC)" required>
+          </div>
+          <div>
+            <label>Rating</label>
+            <select>
+              <option>5 Stars - Excellent &amp; On-Time</option>
+              <option>4 Stars - Good and Comfortable</option>
+              <option>3 Stars - Average Service</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <label>Comment / Experience Feedback</label>
+          <textarea rows="2" placeholder="The ride was very smooth, comfortable AC temperature and friendly crew..." required></textarea>
+        </div>
+        <button type="submit" class="btn-sm" style="width: auto;">Submit Comment</button>
+      </form>
+    </div>
+
+    <!-- 4. Login & Registration Module with Password Utilities -->
+    <h3 class="section-title" id="auth-section">User Authentication &amp; Account Utilities</h3>
+
+    <div class="grid-2">
+      <!-- Login & Password utilities -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">User Login &amp; Password Management</h4>
+        <form onsubmit="event.preventDefault(); alert('Signed in successfully to CityExpress user account!');">
+          <div style="margin-bottom: 8px;">
+            <label>Registered Email or Username</label>
+            <input type="text" value="daniel.craig@example.com" required>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Password</label>
+            <input type="password" value="••••••••" required>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <button type="submit" style="flex: 1;">Login</button>
+            <button type="button" class="btn-secondary btn-sm" onclick="alert('Password reset link dispatched to your email.');">Forgot Password</button>
+            <button type="button" class="btn-secondary btn-sm" onclick="alert('Enter old password and new password to update.');">Change Password</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Registration Form -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">New User Registration</h4>
+        <form onsubmit="event.preventDefault(); alert('Account registered successfully! You may now search and book buses.');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Full Name</label>
+              <input type="text" placeholder="Johnathan Doe" required>
+            </div>
+            <div>
+              <label>Contact Phone</label>
+              <input type="tel" placeholder="+1 (555) 000-0000" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Email ID</label>
+              <input type="email" placeholder="john@example.com" required>
+            </div>
+            <div>
+              <label>Create Password</label>
+              <input type="password" placeholder="Min 6 characters" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Create Account</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 5. Administrator Control Panel -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.15rem; margin-bottom: 4px;">Administrator Control Panel</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">Maintain bus information, add categories (Volvo, Sleeper, Coach), manage registered users, news, and generate system reports.</p>
+
+      <div class="grid-2">
+        <!-- Add / Update Bus Information -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Add / Update Bus Information &amp; Categories</h4>
+          <form onsubmit="event.preventDefault(); alert('Bus fleet details and seat capacities updated in live system.');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Bus Type / Category</label>
+                <select>
+                  <option>Volvo Multi-Axle AC</option>
+                  <option>Sleeper Coach</option>
+                  <option>Semi-Sleeper AC</option>
+                  <option>Deluxe Highway Coach</option>
+                </select>
+              </div>
+              <div>
+                <label>Tour / Route Location</label>
+                <input type="text" value="New York &harr; Boston Express" required>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Total Seats</label>
+                <input type="number" value="40" required>
+              </div>
+              <div>
+                <label>Available Seats in Bus</label>
+                <input type="number" value="18" required>
+              </div>
+            </div>
+            <div style="margin-bottom: 8px;">
+              <label>Bus Description &amp; Photo Tag</label>
+              <input type="text" value="Scania Metrolink / Volvo B11R 9600 with ergonomic reclining berths">
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="submit" class="btn-sm" style="flex: 1;">Add / Update Bus</button>
+              <button type="button" class="btn-sm btn-secondary" onclick="alert('Category created: New bus class available for assignment.');">+ New Category</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manage Registered Users & News -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Maintain Users &amp; News Announcements</h4>
+          <div style="margin-bottom: 12px;">
+            <label>Registered Users Registry</label>
+            <table style="font-size: 11.5px;">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Daniel Craig</td>
+                  <td>daniel.c@example.com</td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td><button class="btn-sm btn-secondary" onclick="alert('User status toggled');">Manage</button></td>
+                </tr>
+                <tr>
+                  <td>Elena Rostova</td>
+                  <td>elena.r@example.com</td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td><button class="btn-sm btn-secondary" onclick="alert('User status toggled');">Manage</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <form onsubmit="event.preventDefault(); alert('News published to portal bulletin banner.');">
+            <label>Publish Portal News / Notice</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="text" placeholder="e.g. Special Holiday Volvo schedules running on Oct 30..." required>
+              <button type="submit" class="btn-sm" style="width: auto;">Post News</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Report Generation Module -->
+      <div class="panel" style="background: white; margin-top: 14px;">
+        <h4 style="margin-bottom: 8px;">Report Generation Module</h4>
+        <div style="display: flex; gap: 10px; align-items: end; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 180px;">
+            <label>Select Report Scope</label>
+            <select id="reportType">
+              <option>Route Revenue &amp; Ticket Sales Summary</option>
+              <option>Seat Occupancy by Category (Volvo vs Sleeper)</option>
+              <option>Cancellations &amp; Refund Analytics</option>
+              <option>User Comment &amp; Rating Digest</option>
+            </select>
+          </div>
+          <div style="flex: 1; min-width: 140px;">
+            <label>Date Range</label>
+            <select>
+              <option>Current Month (Oct 2026)</option>
+              <option>Last Quarter</option>
+              <option>Annual Fiscal 2026</option>
+            </select>
+          </div>
+          <div>
+            <button class="btn-accent btn-sm" style="height: 36px;" onclick="alert('Generating and downloading ' + document.getElementById('reportType').value + ' [PDF / CSV export]...');">
+              Generate &amp; Export Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 CityExpress Bus Reservation Network. All Rights Reserved. &bull; Intercity Tour Schedules &amp; Fleet Operations</p>
+  </footer>
+
+</body>
+</html>

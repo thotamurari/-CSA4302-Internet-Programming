@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central University Library &amp; Resource Information System</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #2563eb;
+      --primary-subtle: #dbeafe;
+      --accent: #d97706;
+      --accent-soft: #fef3c7;
+      --success: #059669;
+      --success-soft: #d1fae5;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --bg-main: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    /* Top Navigation Bar */
+    .navbar {
+      background: #0f172a;
+      color: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .nav-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: white;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #fff;
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-text span {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-search {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .nav-search input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.5rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #f8fafc;
+      font-size: 0.88rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .nav-search input:focus {
+      background: #0f172a;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .nav-search i {
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .view-mode-toggle {
+      display: flex;
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 3px;
+      border: 1px solid #334155;
+    }
+
+    .view-btn {
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .view-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f59e0b;
+      color: #78350f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .user-info-text {
+      font-size: 0.8rem;
+      line-height: 1.1;
+    }
+
+    .user-info-text .name {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .user-info-text .role {
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+
+    /* Sub-nav Secondary Ribbon */
+    .subnav {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 61px;
+      z-index: 90;
+    }
+
+    .subnav-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .tab-link {
+      padding: 0.85rem 0.2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .tab-link:hover, .tab-link.active {
+      color: var(--primary-light);
+      border-color: var(--primary-light);
+    }
+
+    .badge-counter {
+      background: var(--danger);
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+      color: white;
+      padding: 2.2rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-content {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-title p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      max-width: 620px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .stat-box {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fbbf24;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 1320px;
+      margin: 0 auto 3.5rem;
+      padding: 0 1.5rem;
+    }
+
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Layout Grids */
+    .grid-catalog {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1.75rem;
+    }
+
+    /* Sidebar Filter Panel */
+    .filter-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .filter-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .filter-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-select, .form-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      background: #ffffff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-select:focus, .form-input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary-light);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .btn-accent {
+      background: #d97706;
+      color: white;
+    }
+
+    .btn-accent:hover {
+      background: #b45309;
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.7rem;
+      font-size: 0.78rem;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    /* Section Headers */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-head h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Book Cards Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .book-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .book-cover {
+      height: 180px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .book-cover.accent-blue { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
+    .book-cover.accent-purple { background: linear-gradient(135deg, #4c1d95, #7c3aed); }
+    .book-cover.accent-emerald { background: linear-gradient(135deg, #064e3b, #059669); }
+    .book-cover.accent-amber { background: linear-gradient(135deg, #78350f, #d97706); }
+
+    .book-cover .icon-preview {
+      font-size: 3rem;
+      opacity: 0.4;
+      position: absolute;
+    }
+
+    .book-cover .book-title-overlay {
+      position: relative;
+      z-index: 2;
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.25;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .book-status-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+      z-index: 3;
+      text-transform: uppercase;
+    }
+
+    .tag-available {
+      background: #10b981;
+      color: white;
+    }
+
+    .tag-reserved {
+      background: #ef4444;
+      color: white;
+    }
+
+    .book-body {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-author {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .book-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .book-meta {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .book-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .book-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Tables for History, Fines, Admin */
+    .data-table-wrapper {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .data-table th {
+      background: #f1f5f9;
+      padding: 0.85rem 1rem;
+      font-weight: 700;
+      color: #475569;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .data-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .status-pill.active {
+      background: var(--primary-subtle);
+      color: var(--primary);
+    }
+
+    .status-pill.returned {
+      background: var(--success-soft);
+      color: var(--success);
+    }
+
+    .status-pill.overdue {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .fine-amount {
+      font-weight: 700;
+      color: var(--danger);
+    }
+
+    /* Study Material Year/Semester Grid */
+    .material-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .material-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .material-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+
+    .material-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .material-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .material-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Admin Management Panels */
+    .admin-dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .stat-card.blue .stat-card-icon { background: #dbeafe; color: #1e40af; }
+    .stat-card.amber .stat-card-icon { background: #fef3c7; color: #92400e; }
+    .stat-card.emerald .stat-card-icon { background: #d1fae5; color: #065f46; }
+    .stat-card.rose .stat-card-icon { background: #ffe4e6; color: #9f1239; }
+
+    .stat-card-details h4 {
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .stat-card-details p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .admin-split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .admin-box-header h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .form-group {
+      margin-bottom: 0.85rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Modal / Popups (Book details & Auth) */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: modalSlide 0.25s ease;
+    }
+
+    @keyframes modalSlide {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-head {
+      background: #0f172a;
+      color: #fff;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-head h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    /* Contact Form Layout */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .contact-info-panel {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: white;
+      padding: 1.75rem;
+      border-radius: 10px;
+    }
+
+    .contact-info-panel h4 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-info-panel p {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .info-item i {
+      color: #38bdf8;
+      margin-top: 0.2rem;
+    }
+
+    /* Notification Ribbon */
+    .notice-bar {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #1e40af;
+      font-size: 0.85rem;
+    }
+
+    .notice-bar span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2.5rem 1.5rem 1.5rem;
+      margin-top: 4rem;
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h5 {
+      color: white;
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+      font-weight: 700;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col ul li a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #38bdf8;
+    }
+
+    .footer-bottom {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-catalog { grid-template-columns: 1fr; }
+      .admin-dashboard-cards { grid-template-columns: repeat(2, 1fr); }
+      .admin-split-grid { grid-template-columns: 1fr; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .footer-container { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-content { grid-template-columns: 1fr; }
+      .nav-container { flex-wrap: wrap; }
+      .nav-search { order: 3; max-width: 100%; width: 100%; }
+      .admin-dashboard-cards { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Global Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand" onclick="switchTab('catalog'); return false;">
+        <div class="brand-icon">
+          <i class="fa-solid fa-book-open-reader"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Central Campus Library</h1>
+          <span>Knowledge &amp; Resource Information System</span>
+        </div>
+      </a>
+
+      <!-- Quick Global Search Bar -->
+      <div class="nav-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearchInput" placeholder="Search by book title, author, ISBN, or subject..." onkeyup="filterBooksLive()">
+      </div>
+
+      <!-- Quick Role Toggle & Profile -->
+      <div class="nav-actions">
+        <div class="view-mode-toggle" title="Switch Portal Perspective">
+          <button class="view-btn active" id="btnStudentView" onclick="setPortalMode('student')">
+            <i class="fa-solid fa-user-graduate"></i> Student
+          </button>
+          <button class="view-btn" id="btnAdminView" onclick="setPortalMode('admin')">
+            <i class="fa-solid fa-shield-halved"></i> Librarian Admin
+          </button>
+        </div>
+
+        <div class="user-badge" onclick="openAuthModal()">
+          <div class="user-avatar" id="avatarLetter">A</div>
+          <div class="user-info-text">
+            <div class="name" id="userNameDisplay">Alex Johnson</div>
+            <div class="role" id="userRoleDisplay">Roll No: CS2024-042</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub Navigation Ribbon -->
+  <nav class="subnav">
+    <div class="subnav-container">
+      <a class="tab-link active" onclick="switchTab('catalog')" id="tab-catalog">
+        <i class="fa-solid fa-book"></i> Book Catalog &amp; Search
+      </a>
+      <a class="tab-link" onclick="switchTab('materials')" id="tab-materials">
+        <i class="fa-solid fa-graduation-cap"></i> Semester Study Materials
+      </a>
+      <a class="tab-link" onclick="switchTab('borrow-history')" id="tab-borrow-history">
+        <i class="fa-solid fa-clock-rotate-left"></i> My Borrow History &amp; Fines 
+        <span class="badge-counter" id="fineAlertBadge">₹20 Due</span>
+      </a>
+      <a class="tab-link" onclick="switchTab('admin-panel')" id="tab-admin-panel">
+        <i class="fa-solid fa-sliders"></i> Librarian Inventory &amp; Issue Desk
+      </a>
+      <a class="tab-link" onclick="switchTab('profile')" id="tab-profile">
+        <i class="fa-solid fa-id-card"></i> Student Profile
+      </a>
+      <a class="tab-link" onclick="switchTab('contact')" id="tab-contact">
+        <i class="fa-solid fa-headset"></i> Helpdesk &amp; Inquiries
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Information Bar -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <div class="hero-title">
+        <h2>Smart Campus Library Gateway</h2>
+        <p>Seamlessly discover catalog books, manage your issued volumes, clear overdue fines, and download course-specific lecture materials categorized by academic year and semester.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-number">45,200+</div>
+          <div class="stat-label">Total Books</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">1,480+</div>
+          <div class="stat-label">Course Notes</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Digital Access</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-container">
+
+    <!-- 1. CATALOG & SEARCH SECTION -->
+    <section class="view-section active" id="section-catalog">
+      <div class="notice-bar">
+        <span><i class="fa-solid fa-circle-info"></i> Semester End Return Drive: All issued books from Spring 2026 are due before Oct 25 to avoid late fee accruals.</span>
+        <button class="btn btn-secondary btn-sm" onclick="switchTab('borrow-history')">View Due Dates</button>
+      </div>
+
+      <div class="grid-catalog">
+        <!-- Filter Sidebar -->
+        <aside class="filter-card">
+          <div class="filter-title">
+            <span>Filter Catalog</span>
+            <button class="btn btn-sm btn-secondary" onclick="resetFilters()">Reset</button>
+          </div>
+
+          <div class="filter-group">
+            <label>Department / Stream</label>
+            <select class="form-select" id="deptFilter" onchange="applyFilters()">
+              <option value="all">All Departments</option>
+              <option value="cse">Computer Science &amp; Engg</option>
+              <option value="ece">Electronics &amp; Comm.</option>
+              <option value="mech">Mechanical Engineering</option>
+              <option value="math">Mathematics &amp; Science</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>Availability</label>
+            <select class="form-select" id="availFilter" onchange="applyFilters()">
+              <option value="all">Show All</option>
+              <option value="available">Only Available on Shelf</option>
+              <option value="issued">Currently Issued</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>Target Academic Year</label>
+            <select class="form-select" id="yearFilter">
+              <option value="all">All Academic Years</option>
+              <option value="1">1st Year (Freshman)</option>
+              <option value="2">2nd Year (Sophomore)</option>
+              <option value="3">3rd Year (Junior)</option>
+              <option value="4">4th Year (Senior)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>Category</label>
+            <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem;">
+              <label style="font-weight: 400; text-transform: none;"><input type="checkbox" checked> Core Textbooks</label>
+              <label style="font-weight: 400; text-transform: none;"><input type="checkbox" checked> Reference Manuals</label>
+              <label style="font-weight: 400; text-transform: none;"><input type="checkbox"> Lab Manuals &amp; Codes</label>
+              <label style="font-weight: 400; text-transform: none;"><input type="checkbox"> Research Journals</label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width: 100%;" onclick="applyFilters()">
+            <i class="fa-solid fa-filter"></i> Apply Refinements
+          </button>
+        </aside>
+
+        <!-- Books Grid -->
+        <div>
+          <div class="section-head">
+            <h3><i class="fa-solid fa-layer-group" style="color: var(--primary-light);"></i> Books in Circulation (<span id="bookCount">6</span>)</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-secondary btn-sm" onclick="quickSort('title')">Sort: Title</button>
+              <button class="btn btn-secondary btn-sm" onclick="quickSort('author')">Sort: Author</button>
+            </div>
+          </div>
+
+          <div class="books-grid" id="catalogGrid">
+            <!-- Book 1 -->
+            <div class="book-card" data-title="Database System Concepts" data-dept="cse" data-avail="available">
+              <div class="book-cover accent-blue">
+                <i class="fa-solid fa-database icon-preview"></i>
+                <div class="book-status-tag tag-available">Available</div>
+                <div class="book-title-overlay">Database System Concepts</div>
+              </div>
+              <div class="book-body">
+                <div class="book-author">Silberschatz, Korth &amp; Sudarshan</div>
+                <div class="book-title">Database System Concepts (7th Ed.)</div>
+                <div class="book-meta">
+                  <span><i class="fa-solid fa-barcode"></i> ISBN: 978-0078022159</span>
+                  <span><i class="fa-solid fa-bookmark"></i> Shelf: CS-RACK-04</span>
+                  <span><i class="fa-solid fa-cubes"></i> 4 of 6 copies available</span>
+                </div>
+                <div class="book-actions">
+                  <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openBookModal('Database System Concepts', 'Silberschatz, Korth & Sudarshan', '7th Edition', '978-0078022159', 'CS-RACK-04', 'McGraw-Hill', 'Covers relational algebra, SQL optimization, transactions, concurrency control, and distributed storage engines.')">
+                    <i class="fa-regular fa-eye"></i> Details
+                  </button>
+                  <button class="btn btn-secondary btn-sm" onclick="reserveBook('Database System Concepts')">
+                    Reserve
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card" data-title="Computer Networks: A Systems Approach" data-dept="cse" data-avail="issued">
+              <div class="book-cover accent-purple">
+                <i class="fa-solid fa-network-wired icon-preview"></i>
+                <div class="book-status-tag tag-reserved">Checked Out</div>
+                <div class="book-title-overlay">Computer Networks</div>
+              </div>
+              <div class="book-body">
+                <div class="book-author">Larry L. Peterson, Bruce S. Davie</div>
+                <div class="book-title">Computer Networks (5th Ed.)</div>
+                <div class="book-meta">
+                  <span><i class="fa-solid fa-barcode"></i> ISBN: 978-0123850591</span>
+                  <span><i class="fa-solid fa-bookmark"></i> Shelf: CS-RACK-02</span>
+                  <span><i class="fa-solid fa-cubes"></i> 0 of 4 copies available</span>
+                </div>
+                <div class="book-actions">
+                  <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openBookModal('Computer Networks: A Systems Approach', 'Larry L. Peterson, Bruce S. Davie', '5th Edition', '978-0123850591', 'CS-RACK-02', 'Morgan Kaufmann', 'Explores principles of computer networking, TCP/IP protocol suite, congestion control, wireless routing, and socket architectures.')">
+                    <i class="fa-regular fa-eye"></i> Details
+                  </button>
+                  <button class="btn btn-accent btn-sm" onclick="alert('Added to your waitlist. You will be notified once returned.')">
+                    Waitlist
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book-card" data-title="Introduction to Algorithms" data-dept="cse" data-avail="available">
+              <div class="book-cover accent-emerald">
+                <i class="fa-solid fa-code-fork icon-preview"></i>
+                <div class="book-status-tag tag-available">Available</div>
+                <div class="book-title-overlay">Introduction to Algorithms</div>
+              </div>
+              <div class="book-body">
+                <div class="book-author">Cormen, Leiserson, Rivest &amp; Stein</div>
+                <div class="book-title">CLRS Algorithms (4th Edition)</div>
+                <div class="book-meta">
+                  <span><i class="fa-solid fa-barcode"></i> ISBN: 978-0262046305</span>
+                  <span><i class="fa-solid fa-bookmark"></i> Shelf: CS-RACK-01</span>
+                  <span><i class="fa-solid fa-cubes"></i> 2 of 5 copies available</span>
+                </div>
+                <div class="book-actions">
+                  <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openBookModal('Introduction to Algorithms', 'Cormen, Leiserson, Rivest, Stein', '4th Edition', '978-0262046305', 'CS-RACK-01', 'MIT Press', 'Comprehensive reference textbook on modern algorithms, asymptotic analysis, dynamic programming, graph traversal, and greedy algorithms.')">
+                    <i class="fa-regular fa-eye"></i> Details
+                  </button>
+                  <button class="btn btn-secondary btn-sm" onclick="reserveBook('CLRS Algorithms')">
+                    Reserve
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book-card" data-title="Digital Signal Processing" data-dept="ece" data-avail="available">
+              <div class="book-cover accent-amber">
+                <i class="fa-solid fa-wave-square icon-preview"></i>
+                <div class="book-status-tag tag-available">Available</div>
+                <div class="book-title-overlay">Digital Signal Processing</div>
+              </div>
+              <div class="book-body">
+                <div class="book-author">John G. Proakis, Dimitris G. Manolakis</div>
+                <div class="book-title">Digital Signal Processing (4th Ed.)</div>
+                <div class="book-meta">
+                  <span><i class="fa-solid fa-barcode"></i> ISBN: 978-0131873742</span>
+                  <span><i class="fa-solid fa-bookmark"></i> Shelf: EC-RACK-08</span>
+                  <span><i class="fa-solid fa-cubes"></i> 5 of 5 copies available</span>
+                </div>
+                <div class="book-actions">
+                  <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openBookModal('Digital Signal Processing', 'John G. Proakis, Dimitris G. Manolakis', '4th Edition', '978-0131873742', 'EC-RACK-08', 'Pearson', 'Foundational text covering discrete-time signals, Z-transform, DFT, FFT algorithms, and digital filter design.')">
+                    <i class="fa-regular fa-eye"></i> Details
+                  </button>
+                  <button class="btn btn-secondary btn-sm" onclick="reserveBook('Digital Signal Processing')">
+                    Reserve
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="book-card" data-title="Engineering Thermodynamics" data-dept="mech" data-avail="available">
+              <div class="book-cover accent-blue">
+                <i class="fa-solid fa-fire icon-preview"></i>
+                <div class="book-status-tag tag-available">Available</div>
+                <div class="book-title-overlay">Engineering Thermodynamics</div>
+              </div>
+              <div class="book-body">
+                <div class="book-author">P. K. Nag</div>
+                <div class="book-title">Engineering Thermodynamics (6th Ed.)</div>
+                <div class="book-meta">
+                  <span><i class="fa-solid fa-barcode"></i> ISBN: 978-9352606429</span>
+                  <span><i class="fa-solid fa-bookmark"></i> Shelf: ME-RACK-03</span>
+                  <span><i class="fa-solid fa-cubes"></i> 3 of 4 copies available</span>
+                </div>
+                <div class="book-actions">
+                  <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openBookModal('Engineering Thermodynamics', 'P. K. Nag', '6th Edition', '978-9352606429', 'ME-RACK-03', 'Tata McGraw Hill', 'Fundamentals of zeroth, first, and second laws of thermodynamics, Rankine cycles, and refrigeration systems.')">
+                    <i class="fa-regular fa-eye"></i> Details
+                  </button>
+                  <button class="btn btn-secondary btn-sm" onclick="reserveBook('Engineering Thermodynamics')">
+                    Reserve
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Book 6 -->
+            <div class="book-card" data-title="Advanced Engineering Mathematics" data-dept="math" data-avail="available">
+              <div class="book-cover accent-purple">
+                <i class="fa-solid fa-square-root-variable icon-preview"></i>
+                <div class="book-status-tag tag-available">Available</div>
+                <div class="book-title-overlay">Engineering Mathematics</div>
+              </div>
+              <div class="book-body">
+                <div class="book-author">Erwin Kreyszig</div>
+                <div class="book-title">Advanced Engg. Mathematics (10th Ed.)</div>
+                <div class="book-meta">
+                  <span><i class="fa-solid fa-barcode"></i> ISBN: 978-0470458365</span>
+                  <span><i class="fa-solid fa-bookmark"></i> Shelf: MA-RACK-05</span>
+                  <span><i class="fa-solid fa-cubes"></i> 7 of 8 copies available</span>
+                </div>
+                <div class="book-actions">
+                  <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openBookModal('Advanced Engineering Mathematics', 'Erwin Kreyszig', '10th Edition', '978-0470458365', 'MA-RACK-05', 'Wiley', 'Comprehensive guide to ODEs, linear algebra, vector calculus, Fourier analysis, and complex variables.')">
+                    <i class="fa-regular fa-eye"></i> Details
+                  </button>
+                  <button class="btn btn-secondary btn-sm" onclick="reserveBook('Advanced Engineering Mathematics')">
+                    Reserve
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SEMESTER STUDY MATERIAL REPOSITORY -->
+    <section class="view-section" id="section-materials">
+      <div class="section-head">
+        <div>
+          <h3><i class="fa-solid fa-folder-open" style="color: var(--primary-light);"></i> Curated Study Materials &amp; Lecture Handouts</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Browse lecture presentations, question banks, and syllabus handouts organized by academic year and semester.</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <select class="form-select" id="filterMatYear" style="width: 140px;" onchange="filterMaterials()">
+            <option value="all">All Years</option>
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3" selected>Year 3</option>
+            <option value="4">Year 4</option>
+          </select>
+          <select class="form-select" id="filterMatSem" style="width: 160px;" onchange="filterMaterials()">
+            <option value="all">All Semesters</option>
+            <option value="5" selected>Semester 5</option>
+            <option value="6">Semester 6</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="material-cards-grid" id="materialsGrid">
+        <div class="material-card" data-year="3" data-sem="5">
+          <span class="material-badge">Year 3 &bull; Semester 5 &bull; CSE</span>
+          <div class="material-title">Web Technologies &amp; Full Stack Architecture</div>
+          <div class="material-desc">Complete laboratory guide, HTML5 semantic layout structures, CSS3 responsive grid systems, and JavaScript client-server request notes.</div>
+          <div class="material-footer">
+            <span><i class="fa-regular fa-file-pdf"></i> PDF &bull; 4.8 MB</span>
+            <button class="btn btn-primary btn-sm" onclick="downloadMaterial('Web Technologies Lab Manual')">
+              <i class="fa-solid fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+
+        <div class="material-card" data-year="3" data-sem="5">
+          <span class="material-badge">Year 3 &bull; Semester 5 &bull; CSE</span>
+          <div class="material-title">Operating Systems Kernel &amp; Concurrency Notes</div>
+          <div class="material-desc">Unit 1 to 4 comprehensive notes on CPU scheduling algorithms, mutex synchronization, paging, and deadlock mitigation.</div>
+          <div class="material-footer">
+            <span><i class="fa-regular fa-file-pdf"></i> PDF &bull; 8.2 MB</span>
+            <button class="btn btn-primary btn-sm" onclick="downloadMaterial('Operating Systems Unit Notes')">
+              <i class="fa-solid fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+
+        <div class="material-card" data-year="3" data-sem="5">
+          <span class="material-badge">Year 3 &bull; Semester 5 &bull; ECE</span>
+          <div class="material-title">Microprocessors &amp; Embedded Systems (8086/ARM)</div>
+          <div class="material-desc">Instruction set cheat sheet, memory interfacing timing diagrams, interrupt vector tables, and past 5-year university solutions.</div>
+          <div class="material-footer">
+            <span><i class="fa-regular fa-file-pdf"></i> PDF &bull; 6.1 MB</span>
+            <button class="btn btn-primary btn-sm" onclick="downloadMaterial('Microprocessors Exam Companion')">
+              <i class="fa-solid fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+
+        <div class="material-card" data-year="2" data-sem="3">
+          <span class="material-badge">Year 2 &bull; Semester 3 &bull; CSE</span>
+          <div class="material-title">Data Structures &amp; OOP with C++</div>
+          <div class="material-desc">Binary Search Trees, AVL balance rotations, Graph traversals (BFS/DFS), and standard template library (STL) code blueprints.</div>
+          <div class="material-footer">
+            <span><i class="fa-regular fa-file-pdf"></i> PDF &bull; 3.5 MB</span>
+            <button class="btn btn-primary btn-sm" onclick="downloadMaterial('Data Structures Handouts')">
+              <i class="fa-solid fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. BORROW HISTORY & FINE STATUS (STUDENT VIEW) -->
+    <section class="view-section" id="section-borrow-history">
+      <div class="section-head">
+        <div>
+          <h3><i class="fa-solid fa-receipt" style="color: var(--primary-light);"></i> Issued Books, Return Deadlines &amp; Fine Ledger</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Real-time tracking of borrowed books, renewal deadlines, and overdue charges.</p>
+        </div>
+        <button class="btn btn-accent btn-sm" onclick="payFineModal()">
+          <i class="fa-solid fa-credit-card"></i> Settle Pending Fine (₹20)
+        </button>
+      </div>
+
+      <!-- Fine Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+          <div style="background: #e0e7ff; color: #3730a3; width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <div>
+            <div style="font-size: 1.25rem; font-weight: 800;">3 Books</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Currently in Possession</div>
+          </div>
+        </div>
+
+        <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+          <div style="background: #fee2e2; color: #dc2626; width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--danger);">1 Overdue</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Action Required Immediately</div>
+          </div>
+        </div>
+
+        <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+          <div style="background: #fef3c7; color: #b45309; width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+          </div>
+          <div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #b45309;">₹20.00</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Total Accumulated Fine</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Table -->
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Accession #</th>
+              <th>Book Title &amp; Author</th>
+              <th>Issue Date</th>
+              <th>Expiry / Due Date</th>
+              <th>Return Status</th>
+              <th>Calculated Fine</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>LIB-2026-891</strong></td>
+              <td>
+                <div style="font-weight: 600;">Database System Concepts</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Silberschatz &bull; Copy #3</div>
+              </td>
+              <td>2026-09-15</td>
+              <td><strong>2026-09-30</strong> <span style="font-size: 0.7rem; color: var(--danger);">(4 Days Overdue)</span></td>
+              <td><span class="status-pill overdue"><i class="fa-solid fa-circle-exclamation"></i> Overdue</span></td>
+              <td class="fine-amount">₹20.00 <span style="font-size: 0.7rem; color: #64748b;">(₹5/day)</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="renewBook('LIB-2026-891')">Request Renewal</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>LIB-2026-724</strong></td>
+              <td>
+                <div style="font-weight: 600;">Introduction to Algorithms</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">CLRS &bull; Copy #1</div>
+              </td>
+              <td>2026-10-01</td>
+              <td>2026-10-16 <span style="font-size: 0.7rem; color: #059669;">(4 days remaining)</span></td>
+              <td><span class="status-pill active"><i class="fa-solid fa-clock"></i> Active Loan</span></td>
+              <td>₹0.00</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="renewBook('LIB-2026-724')">Renew</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>LIB-2026-610</strong></td>
+              <td>
+                <div style="font-weight: 600;">Artificial Intelligence: A Modern Approach</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Stuart Russell &bull; Copy #2</div>
+              </td>
+              <td>2026-10-05</td>
+              <td>2026-10-20</td>
+              <td><span class="status-pill active"><i class="fa-solid fa-clock"></i> Active Loan</span></td>
+              <td>₹0.00</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="renewBook('LIB-2026-610')">Renew</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>LIB-2026-442</strong></td>
+              <td>
+                <div style="font-weight: 600;">Compilers: Principles, Techniques &amp; Tools</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Aho, Lam, Sethi, Ullman</div>
+              </td>
+              <td>2026-08-10</td>
+              <td>2026-08-25</td>
+              <td><span class="status-pill returned"><i class="fa-solid fa-check"></i> Returned</span></td>
+              <td>₹0.00 (Cleared)</td>
+              <td>
+                <span style="font-size: 0.78rem; color: var(--text-muted);">Returned 2026-08-24</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. LIBRARIAN ADMIN DESK (ADMIN VIEW) -->
+    <section class="view-section" id="section-admin-panel">
+      <!-- Top Metrics -->
+      <div class="admin-dashboard-cards">
+        <div class="stat-card blue">
+          <div class="stat-card-icon"><i class="fa-solid fa-book"></i></div>
+          <div class="stat-card-details">
+            <h4>4,852</h4>
+            <p>Books Cataloged</p>
+          </div>
+        </div>
+
+        <div class="stat-card emerald">
+          <div class="stat-card-icon"><i class="fa-solid fa-hand-holding-hand"></i></div>
+          <div class="stat-card-details">
+            <h4>324</h4>
+            <p>Currently Issued</p>
+          </div>
+        </div>
+
+        <div class="stat-card amber">
+          <div class="stat-card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="stat-card-details">
+            <h4>18</h4>
+            <p>Overdue Books</p>
+          </div>
+        </div>
+
+        <div class="stat-card rose">
+          <div class="stat-card-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+          <div class="stat-card-details">
+            <h4>₹3,450</h4>
+            <p>Fines Collected (Oct)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-split-grid">
+        <!-- Form 1: Add New Book to Inventory -->
+        <div class="admin-box">
+          <div class="admin-box-header">
+            <h4><i class="fa-solid fa-square-plus" style="color: var(--primary-light);"></i> Add / Update Book in Inventory</h4>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Librarian Access</span>
+          </div>
+
+          <form onsubmit="handleAdminAddBook(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Book Title *</label>
+                <input type="text" class="form-input" id="adminBookTitle" placeholder="e.g. Distributed Operating Systems" required>
+              </div>
+              <div class="form-group">
+                <label>Author(s) *</label>
+                <input type="text" class="form-input" id="adminBookAuthor" placeholder="e.g. Andrew S. Tanenbaum" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>ISBN-13 Code</label>
+                <input type="text" class="form-input" id="adminBookIsbn" placeholder="978-0131485211">
+              </div>
+              <div class="form-group">
+                <label>Department Category</label>
+                <select class="form-select" id="adminBookDept">
+                  <option>Computer Science &amp; Engineering</option>
+                  <option>Electronics &amp; Communication</option>
+                  <option>Mechanical Engineering</option>
+                  <option>Applied Mathematics</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Shelf Location Tag</label>
+                <input type="text" class="form-input" placeholder="e.g. CS-RACK-07">
+              </div>
+              <div class="form-group">
+                <label>Total Copies</label>
+                <input type="number" class="form-input" value="5" min="1">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">
+                <i class="fa-solid fa-plus"></i> Add to Catalog
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="alert('Ready to modify existing records. Search book title below.')">
+                <i class="fa-solid fa-pen-to-square"></i> Update / Delete
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Form 2: Issue Book to Student & Fine Assessment -->
+        <div class="admin-box">
+          <div class="admin-box-header">
+            <h4><i class="fa-solid fa-arrow-right-arrow-left" style="color: var(--primary-light);"></i> Issue &amp; Return Desk</h4>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Circulation Desk</span>
+          </div>
+
+          <form onsubmit="handleAdminIssueBook(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Student Roll Number / Card ID *</label>
+                <input type="text" class="form-input" id="issueStudentId" placeholder="e.g. CS2024-042" required>
+              </div>
+              <div class="form-group">
+                <label>Book Accession / Barcode ID *</label>
+                <input type="text" class="form-input" id="issueBookBarcode" placeholder="e.g. LIB-2026-891" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Issue Date</label>
+                <input type="date" class="form-input" value="2026-10-12">
+              </div>
+              <div class="form-group">
+                <label>Due Date (Standard 15 days)</label>
+                <input type="date" class="form-input" value="2026-10-27">
+              </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px dashed var(--border); padding: 0.75rem; border-radius: 8px; margin-bottom: 0.85rem; font-size: 0.82rem;">
+              <div style="font-weight: 600; margin-bottom: 0.2rem; color: #334155;">Fine Calculation Policy:</div>
+              <span style="color: var(--text-muted);">Standard late penalty is ₹5/day after due date. Grace period: 24 hours.</span>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">
+                <i class="fa-solid fa-hand-holding"></i> Issue Book
+              </button>
+              <button type="button" class="btn btn-accent" onclick="handleReturnAndCalculateFine()">
+                <i class="fa-solid fa-calculator"></i> Return &amp; Make Fine
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Admin Study Material Upload Panel -->
+      <div class="admin-box" style="margin-bottom: 2rem;">
+        <div class="admin-box-header">
+          <h4><i class="fa-solid fa-cloud-arrow-up" style="color: var(--primary-light);"></i> Upload &amp; Update Year/Semester Material</h4>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Curriculum Resource Center</span>
+        </div>
+
+        <form onsubmit="handleUploadMaterial(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Material Subject / Title</label>
+              <input type="text" class="form-input" id="matUploadTitle" placeholder="e.g. Internet Programming - Full Lab Manual" required>
+            </div>
+            <div class="form-group">
+              <label>Target Academic Year</label>
+              <select class="form-select" id="matUploadYear">
+                <option value="1">1st Year (Semester 1 &amp; 2)</option>
+                <option value="2">2nd Year (Semester 3 &amp; 4)</option>
+                <option value="3" selected>3rd Year (Semester 5 &amp; 6)</option>
+                <option value="4">4th Year (Semester 7 &amp; 8)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Target Semester</label>
+              <select class="form-select" id="matUploadSem">
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5" selected>Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Choose File (PDF / DOCX / ZIP)</label>
+              <input type="file" class="form-input">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-upload"></i> Publish Semester Material
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick Inventory Table with Delete/Update buttons -->
+      <div class="data-table-wrapper">
+        <div style="padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="font-size: 1rem; font-weight: 700;">Live Circulation &amp; Overdue Registry</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Manage Student Borrows &amp; Assess Fines</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Borrower Student</th>
+              <th>Book Title</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Overdue Days</th>
+              <th>Assessed Fine</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CS2024-042</strong> (Alex Johnson)</td>
+              <td>Database System Concepts (Copy #3)</td>
+              <td>2026-09-15</td>
+              <td>2026-09-30</td>
+              <td><span style="color: var(--danger); font-weight: 700;">4 Days</span></td>
+              <td><span class="fine-amount">₹20.00</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="alert('Fine of ₹20 levied and added to student account CS2024-042.')">Make Fine</button>
+                <button class="btn btn-secondary btn-sm" onclick="alert('Book marked as returned.')">Mark Return</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>EC2024-118</strong> (Priya Sharma)</td>
+              <td>Digital Signal Processing (Copy #1)</td>
+              <td>2026-09-20</td>
+              <td>2026-10-05</td>
+              <td><span style="color: var(--danger); font-weight: 700;">7 Days</span></td>
+              <td><span class="fine-amount">₹35.00</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="alert('Fine of ₹35 levied and student notified via email.')">Make Fine</button>
+                <button class="btn btn-secondary btn-sm" onclick="alert('Book marked as returned.')">Mark Return</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>ME2024-055</strong> (Rahul Verma)</td>
+              <td>Engineering Thermodynamics (Copy #2)</td>
+              <td>2026-10-02</td>
+              <td>2026-10-17</td>
+              <td><span>0 Days (Active)</span></td>
+              <td>₹0.00</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="alert('Renewed for 15 additional days.')">Extend</button>
+                <button class="btn btn-danger btn-sm" onclick="alert('Record archived.')"><i class="fa-solid fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. STUDENT PROFILE -->
+    <section class="view-section" id="section-profile">
+      <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-sm); max-width: 800px; margin: 0 auto;">
+        <div style="display: flex; gap: 1.5rem; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700;">
+            AJ
+          </div>
+          <div>
+            <h3 style="font-size: 1.35rem; font-weight: 700;">Alex Johnson</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Bachelor of Technology &bull; Computer Science &amp; Engineering</p>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.4rem;">
+              <span class="status-pill active">Semester 5 (Year 3)</span>
+              <span class="status-pill returned">Library Card: Active</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Enrollment / Roll ID</label>
+            <div style="font-size: 0.95rem; font-weight: 600;">CS2024-042</div>
+          </div>
+          <div>
+            <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">College Email</label>
+            <div style="font-size: 0.95rem; font-weight: 600;">alex.johnson@campus.edu</div>
+          </div>
+          <div>
+            <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Maximum Borrow Limit</label>
+            <div style="font-size: 0.95rem; font-weight: 600;">4 Books (3 currently in use)</div>
+          </div>
+          <div>
+            <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Outstanding Fine</label>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--danger);">₹20.00 Pending Payment</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+          <button class="btn btn-primary" onclick="switchTab('borrow-history')">
+            <i class="fa-solid fa-clock-rotate-left"></i> View Borrow History
+          </button>
+          <button class="btn btn-secondary" onclick="openAuthModal()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Switch Account / Login
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CONTACT & HELPDESK -->
+    <section class="view-section" id="section-contact">
+      <div class="contact-layout">
+        <div class="contact-info-panel">
+          <h4>Need Assistance?</h4>
+          <p>The library administration and helpdesk are available to resolve student catalog queries, book reservation requests, and account fine adjustments.</p>
+
+          <div class="info-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <strong>Physical Location</strong>
+              <div>Main Campus Library Building, 2nd Floor Reference Section</div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+              <strong>Library Operational Hours</strong>
+              <div>Mon &ndash; Fri: 8:00 AM &ndash; 9:00 PM<br>Sat &ndash; Sun: 9:00 AM &ndash; 5:00 PM</div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <strong>Helpdesk Email</strong>
+              <div>library-support@campus.edu</div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i class="fa-solid fa-phone"></i>
+            <div>
+              <strong>Circulation Desk Phone</strong>
+              <div>+91 (0) 44-2250-9800 (Ext: 402)</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.4rem;">Send an Inquiry or Book Request</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Fill out this form and a librarian will assist you within one working day.</p>
+
+          <form onsubmit="handleContactSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Your Full Name *</label>
+                <input type="text" class="form-input" value="Alex Johnson" required>
+              </div>
+              <div class="form-group">
+                <label>Roll Number / Staff ID *</label>
+                <input type="text" class="form-input" value="CS2024-042" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Inquiry Subject</label>
+              <select class="form-select">
+                <option>Book Acquisition / Suggest New Title</option>
+                <option>Fine Dispute / Payment Clarification</option>
+                <option>Digital Study Material Access Issue</option>
+                <option>Renewal Extension Request</option>
+                <option>General Library Feedback</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Message / Details *</label>
+              <textarea class="form-input" rows="4" placeholder="Please describe the book title or assistance you require..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              <i class="fa-solid fa-paper-plane"></i> Submit Inquiry
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: Book Details Modal -->
+  <div class="modal-backdrop" id="bookDetailsModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalBookTitle">Book Title</h3>
+        <button class="modal-close" onclick="closeBookModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+          <div style="background: #1e3a8a; color: white; width: 64px; height: 90px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <div>
+            <h4 id="modalBookAuthor" style="font-size: 1rem; font-weight: 700; color: #1e293b;">Author</h4>
+            <div id="modalBookEdition" style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem;">Edition</div>
+            <div style="font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.2rem;">
+              <span><strong>ISBN:</strong> <span id="modalBookIsbn">0000000000</span></span>
+              <span><strong>Location:</strong> <span id="modalBookShelf" style="color: #2563eb; font-weight: 600;">Rack</span></span>
+              <span><strong>Publisher:</strong> <span id="modalBookPublisher">Publisher Name</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.85rem; color: #475569; background: #f8fafc; padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.25rem;">
+          <div style="font-weight: 600; margin-bottom: 0.25rem; color: #0f172a;">Description &amp; Syllabus Coverage:</div>
+          <p id="modalBookDesc">Book description goes here.</p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-primary" style="flex: 1;" onclick="reserveBook(document.getElementById('modalBookTitle').innerText)">
+            <i class="fa-solid fa-bookmark"></i> Place Hold / Reserve
+          </button>
+          <button class="btn btn-secondary" onclick="closeBookModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: User / Admin Login & Register -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="authModalTitle">User &amp; Admin Authentication</h3>
+        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: #f1f5f9; padding: 4px; border-radius: 8px;">
+          <button class="view-btn active" id="authTabLogin" style="flex: 1; justify-content: center;" onclick="toggleAuthType('login')">Student Login</button>
+          <button class="view-btn" id="authTabRegister" style="flex: 1; justify-content: center;" onclick="toggleAuthType('register')">New Student Register</button>
+          <button class="view-btn" id="authTabAdmin" style="flex: 1; justify-content: center;" onclick="toggleAuthType('admin')">Librarian Login</button>
+        </div>
+
+        <!-- Student Login Form -->
+        <form id="formStudentLogin" onsubmit="handleLoginSubmit(event, 'student')">
+          <div class="form-group">
+            <label>Student Roll Number</label>
+            <input type="text" class="form-input" value="CS2024-042" required>
+          </div>
+          <div class="form-group">
+            <label>Library PIN / Password</label>
+            <input type="password" class="form-input" value="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In to Student Portal
+          </button>
+        </form>
+
+        <!-- Student Register Form -->
+        <form id="formStudentRegister" style="display: none;" onsubmit="handleRegisterSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" class="form-input" placeholder="e.g. John Doe" required>
+            </div>
+            <div class="form-group">
+              <label>Roll Number</label>
+              <input type="text" class="form-input" placeholder="e.g. CS2025-010" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Year</label>
+              <select class="form-select">
+                <option>Year 1</option>
+                <option>Year 2</option>
+                <option>Year 3</option>
+                <option>Year 4</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Semester</label>
+              <select class="form-select">
+                <option>Sem 1</option>
+                <option>Sem 2</option>
+                <option>Sem 3</option>
+                <option>Sem 4</option>
+                <option>Sem 5</option>
+                <option>Sem 6</option>
+                <option>Sem 7</option>
+                <option>Sem 8</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Create Password</label>
+            <input type="password" class="form-input" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <i class="fa-solid fa-user-plus"></i> Create Library Account
+          </button>
+        </form>
+
+        <!-- Librarian Admin Login Form -->
+        <form id="formAdminLogin" style="display: none;" onsubmit="handleLoginSubmit(event, 'admin')">
+          <div class="form-group">
+            <label>Librarian Staff ID</label>
+            <input type="text" class="form-input" value="LIB-STAFF-01" required>
+          </div>
+          <div class="form-group">
+            <label>Master Passkey</label>
+            <input type="password" class="form-input" value="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; background: #0f172a;">
+            <i class="fa-solid fa-lock"></i> Authorize as Librarian Admin
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h5>Central Campus Library System</h5>
+        <p style="font-size: 0.82rem; line-height: 1.6;">Automated circulation, catalog search, semester resource repository, and inventory control portal for university students and library faculty.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#" onclick="switchTab('catalog'); return false;">Book Catalog</a></li>
+          <li><a href="#" onclick="switchTab('materials'); return false;">Course Notes &amp; Handouts</a></li>
+          <li><a href="#" onclick="switchTab('borrow-history'); return false;">Borrow History &amp; Fines</a></li>
+          <li><a href="#" onclick="switchTab('contact'); return false;">Helpdesk &amp; Inquiries</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Librarian Services</h5>
+        <ul>
+          <li><a href="#" onclick="switchTab('admin-panel'); return false;">Issue &amp; Return Desk</a></li>
+          <li><a href="#" onclick="switchTab('admin-panel'); return false;">Add / Update Inventory</a></li>
+          <li><a href="#" onclick="switchTab('admin-panel'); return false;">Fine Assessment</a></li>
+          <li><a href="#" onclick="switchTab('admin-panel'); return false;">Upload Materials</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Library Hours</h5>
+        <p style="font-size: 0.8rem;">Monday &ndash; Friday: 08:00 &ndash; 21:00</p>
+        <p style="font-size: 0.8rem;">Saturday &ndash; Sunday: 09:00 &ndash; 17:00</p>
+        <p style="font-size: 0.8rem; margin-top: 0.4rem; color: #38bdf8;"><i class="fa-solid fa-wifi"></i> Digital Repository 24/7</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Central Campus Library. All Rights Reserved.</div>
+      <div>Designed for Student &amp; Librarian Management Operations</div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // Tab switching logic
+    function switchTab(tabId) {
+      // Hide all sections
+      const sections = document.querySelectorAll('.view-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+
+      // Deactivate all tab links
+      const tabLinks = document.querySelectorAll('.tab-link');
+      tabLinks.forEach(link => link.classList.remove('active'));
+
+      // Show selected section
+      const activeSection = document.getElementById('section-' + tabId);
+      if (activeSection) {
+        activeSection.classList.add('active');
+      }
+
+      // Activate corresponding tab link
+      const activeTab = document.getElementById('tab-' + tabId);
+      if (activeTab) {
+        activeTab.classList.add('active');
+      }
+
+      window.scrollTo({ top: 180, behavior: 'smooth' });
+    }
+
+    // Role switcher (Student vs Admin view)
+    function setPortalMode(mode) {
+      const studentBtn = document.getElementById('btnStudentView');
+      const adminBtn = document.getElementById('btnAdminView');
+      const userDisplay = document.getElementById('userNameDisplay');
+      const roleDisplay = document.getElementById('userRoleDisplay');
+      const avatarLetter = document.getElementById('avatarLetter');
+
+      if (mode === 'admin') {
+        studentBtn.classList.remove('active');
+        adminBtn.classList.add('active');
+        userDisplay.innerText = "Dr. Eleanor Vance";
+        roleDisplay.innerText = "Chief Librarian (Admin)";
+        avatarLetter.innerText = "EV";
+        avatarLetter.style.background = "#3b82f6";
+        avatarLetter.style.color = "#ffffff";
+        switchTab('admin-panel');
+      } else {
+        adminBtn.classList.remove('active');
+        studentBtn.classList.add('active');
+        userDisplay.innerText = "Alex Johnson";
+        roleDisplay.innerText = "Roll No: CS2024-042";
+        avatarLetter.innerText = "AJ";
+        avatarLetter.style.background = "#f59e0b";
+        avatarLetter.style.color = "#78350f";
+        switchTab('catalog');
+      }
+    }
+
+    // Catalog filtering
+    function filterBooksLive() {
+      const query = document.getElementById('globalSearchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('#catalogGrid .book-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      document.getElementById('bookCount').innerText = visibleCount;
+    }
+
+    function applyFilters() {
+      const dept = document.getElementById('deptFilter').value;
+      const avail = document.getElementById('availFilter').value;
+      const cards = document.querySelectorAll('#catalogGrid .book-card');
+      let count = 0;
+
+      cards.forEach(card => {
+        const cardDept = card.getAttribute('data-dept');
+        const cardAvail = card.getAttribute('data-avail');
+
+        const matchDept = (dept === 'all' || dept === cardDept);
+        const matchAvail = (avail === 'all' || avail === cardAvail);
+
+        if (matchDept && matchAvail) {
+          card.style.display = 'flex';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      document.getElementById('bookCount').innerText = count;
+    }
+
+    function resetFilters() {
+      document.getElementById('deptFilter').value = 'all';
+      document.getElementById('availFilter').value = 'all';
+      document.getElementById('yearFilter').value = 'all';
+      document.getElementById('globalSearchInput').value = '';
+      applyFilters();
+    }
+
+    function quickSort(criterion) {
+      const grid = document.getElementById('catalogGrid');
+      const cards = Array.from(grid.querySelectorAll('.book-card'));
+
+      cards.sort((a, b) => {
+        if (criterion === 'title') {
+          return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
+        } else {
+          return a.querySelector('.book-author').innerText.localeCompare(b.querySelector('.book-author').innerText);
+        }
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    // Semester Material Filter
+    function filterMaterials() {
+      const year = document.getElementById('filterMatYear').value;
+      const sem = document.getElementById('filterMatSem').value;
+      const cards = document.querySelectorAll('#materialsGrid .material-card');
+
+      cards.forEach(card => {
+        const cardYear = card.getAttribute('data-year');
+        const cardSem = card.getAttribute('data-sem');
+
+        const matchYear = (year === 'all' || year === cardYear);
+        const matchSem = (sem === 'all' || sem === cardSem);
+
+        card.style.display = (matchYear && matchSem) ? 'flex' : 'none';
+      });
+    }
+
+    // Download action
+    function downloadMaterial(name) {
+      alert(`Downloading official study material: "${name}" [PDF format]. Download starting now.`);
+    }
+
+    // Reservation action
+    function reserveBook(title) {
+      alert(`Success! "${title}" has been reserved under your student roll ID (CS2024-042). Please collect from circulation counter within 24 hours.`);
+      closeBookModal();
+    }
+
+    function renewBook(accessionNo) {
+      alert(`Renewal requested for ${accessionNo}. The return period has been extended by 15 days.`);
+    }
+
+    function payFineModal() {
+      alert(`Redirecting to College Payment Gateway... Paying ₹20.00 for Overdue Book LIB-2026-891. [Card / UPI / NetBanking]`);
+    }
+
+    // Book Details Modal
+    function openBookModal(title, author, edition, isbn, shelf, publisher, desc) {
+      document.getElementById('modalBookTitle').innerText = title;
+      document.getElementById('modalBookAuthor').innerText = author;
+      document.getElementById('modalBookEdition').innerText = edition;
+      document.getElementById('modalBookIsbn').innerText = isbn;
+      document.getElementById('modalBookShelf').innerText = shelf;
+      document.getElementById('modalBookPublisher').innerText = publisher;
+      document.getElementById('modalBookDesc').innerText = desc;
+      document.getElementById('bookDetailsModal').classList.add('open');
+    }
+
+    function closeBookModal() {
+      document.getElementById('bookDetailsModal').classList.remove('open');
+    }
+
+    // Auth Modal
+    function openAuthModal() {
+      document.getElementById('authModal').classList.add('open');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('open');
+    }
+
+    function toggleAuthType(type) {
+      const btnLogin = document.getElementById('authTabLogin');
+      const btnReg = document.getElementById('authTabRegister');
+      const btnAdmin = document.getElementById('authTabAdmin');
+
+      const formLogin = document.getElementById('formStudentLogin');
+      const formReg = document.getElementById('formStudentRegister');
+      const formAdmin = document.getElementById('formAdminLogin');
+
+      btnLogin.classList.remove('active');
+      btnReg.classList.remove('active');
+      btnAdmin.classList.remove('active');
+
+      formLogin.style.display = 'none';
+      formReg.style.display = 'none';
+      formAdmin.style.display = 'none';
+
+      if (type === 'login') {
+        btnLogin.classList.add('active');
+        formLogin.style.display = 'block';
+      } else if (type === 'register') {
+        btnReg.classList.add('active');
+        formReg.style.display = 'block';
+      } else if (type === 'admin') {
+        btnAdmin.classList.add('active');
+        formAdmin.style.display = 'block';
+      }
+    }
+
+    function handleLoginSubmit(event, role) {
+      event.preventDefault();
+      closeAuthModal();
+      setPortalMode(role);
+      alert(`Logged in successfully as ${role === 'admin' ? 'Librarian Administrator' : 'Student'}!`);
+    }
+
+    function handleRegisterSubmit(event) {
+      event.preventDefault();
+      closeAuthModal();
+      alert('Registration successful! Your digital library card is now activated.');
+    }
+
+    // Admin handlers
+    function handleAdminAddBook(e) {
+      e.preventDefault();
+      const title = document.getElementById('adminBookTitle').value;
+      alert(`Book "${title}" has been successfully added to the central library catalog repository.`);
+      e.target.reset();
+    }
+
+    function handleAdminIssueBook(e) {
+      e.preventDefault();
+      const student = document.getElementById('issueStudentId').value;
+      const barcode = document.getElementById('issueBookBarcode').value;
+      alert(`Success! Book ${barcode} has been issued to student ${student}. Due date: 2026-10-27.`);
+      e.target.reset();
+    }
+
+    function handleReturnAndCalculateFine() {
+      const barcode = document.getElementById('issueBookBarcode').value || 'LIB-2026-891';
+      alert(`Returned checked: Book ${barcode} returned with 4 days overdue. Fine calculated: ₹20.00 (₹5/day). Receipt generated.`);
+    }
+
+    function handleUploadMaterial(e) {
+      e.preventDefault();
+      const title = document.getElementById('matUploadTitle').value;
+      const year = document.getElementById('matUploadYear').value;
+      const sem = document.getElementById('matUploadSem').value;
+      alert(`Material "${title}" successfully published for Year ${year}, Semester ${sem}. Students can now download it.`);
+      e.target.reset();
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      alert('Your inquiry has been submitted to the circulation desk. Ticket ID: #LIB-TK-4912.');
+      e.target.reset();
+    }
+
+    // Close modals on outside click
+    window.onclick = function(event) {
+      const modal1 = document.getElementById('bookDetailsModal');
+      const modal2 = document.getElementById('authModal');
+      if (event.target === modal1) closeBookModal();
+      if (event.target === modal2) closeAuthModal();
+    };
+  </script>
+</body>
+</html>

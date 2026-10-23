@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroGlobal - Online Flight Reservation &amp; Airline Distribution Portal</title>
+  <style>
+    :root {
+      --primary: #0369a1;
+      --primary-dark: #0f172a;
+      --accent: #d97706;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #0f172a; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #38bdf8; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    .hero-search { background: linear-gradient(135deg, #0284c7, #0f172a); color: white; padding: 22px; border-radius: var(--radius); margin-bottom: 20px; }
+    .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) 130px; gap: 10px; align-items: end; margin-top: 12px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: inherit; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { opacity: 0.92; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .flight-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; display: grid; grid-template-columns: 1.8fr 1.2fr 1fr 130px; gap: 14px; align-items: center; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; }
+    .badge-cnf { background: #dcfce7; color: var(--success); }
+    .badge-bus { background: #e0f2fe; color: #0284c7; }
+    .seat-grid { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .seat-unit { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; font-weight: 600; background: #f8fafc; }
+    .seat-unit.selected { background: var(--primary); color: white; }
+    .seat-unit.booked { background: #cbd5e1; color: #64748b; cursor: not-allowed; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .admin-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .flight-card { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } .search-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <h1>&#9992; AeroGlobal Airline Reservation</h1>
+    <nav>
+      <a href="#search-section">Search Flights</a>
+      <a href="#book-section">Book &amp; Pay</a>
+      <a href="#status-section">My Ticket &amp; Print</a>
+      <a href="#feedback-section">Feedback</a>
+      <a href="#auth-section">Login / Reset</a>
+      <a href="#admin-section">Admin Portal</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. Search Flight Page -->
+    <section class="hero-search" id="search-section">
+      <h2 style="font-size: 1.25rem;">Search Global Flights &amp; Check Real-Time Seat Inventory</h2>
+      <p style="font-size: 12px; opacity: 0.85;">Consolidated airline schedules, real-time fare pricing, and cabin class availability across international carriers.</p>
+      <form class="search-grid" onsubmit="event.preventDefault(); alert('Querying Global Distribution Systems (GDS) for live flights...');">
+        <div>
+          <label>Departure City / Airport</label>
+          <input type="text" value="New York (JFK)" required>
+        </div>
+        <div>
+          <label>Destination Airport</label>
+          <input type="text" value="London Heathrow (LHR)" required>
+        </div>
+        <div>
+          <label>Departure Date</label>
+          <input type="date" value="2026-11-12" required>
+        </div>
+        <div>
+          <label>Travel Class &amp; Passengers</label>
+          <select id="classSelector">
+            <option>Economy Class (1 Passenger)</option>
+            <option selected>Premium Economy</option>
+            <option>Business Class</option>
+            <option>First Class</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="btn-accent">Search Flights</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Available Flights List -->
+    <h3 class="section-title">
+      <span>Available Flights &amp; Seat Inventory (JFK &rarr; LHR)</span>
+      <span style="font-size: 12px; font-weight: normal; color: var(--muted);">Date: 12-Nov-2026 &bull; Non-stop</span>
+    </h3>
+
+    <!-- Flight 1: British Airways -->
+    <div class="flight-card">
+      <div>
+        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 2px;">
+          <h4 style="font-size: 1rem;">British Airways &bull; BA-178</h4>
+          <span class="badge badge-bus">Boeing 777-300ER</span>
+        </div>
+        <p style="font-size: 12px; color: var(--muted);">Departs: <strong>08:30 AM (JFK)</strong> &rarr; Arrives: <strong>08:15 PM (LHR)</strong> (6h 45m)</p>
+        <span style="font-size: 11px; color: var(--muted);">Terminal 7 &bull; Meal included &bull; 2x 23kg Checked Baggage</span>
+      </div>
+      <div>
+        <div style="font-size: 12px; color: var(--muted);">Real-Time Vacancy</div>
+        <div style="font-weight: 700; color: var(--success); font-size: 1rem;">14 Seats Available</div>
+        <span class="badge badge-cnf">Instant Confirmation</span>
+      </div>
+      <div>
+        <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent);">$540.00</div>
+        <div style="font-size: 11px; color: var(--muted);">Economy / taxes included</div>
+      </div>
+      <div>
+        <button onclick="selectFlight('BA-178 (British Airways)', 'JFK &rarr; LHR', '08:30 AM', 540)">Select Flight</button>
+      </div>
+    </div>
+
+    <!-- Flight 2: Virgin Atlantic -->
+    <div class="flight-card">
+      <div>
+        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 2px;">
+          <h4 style="font-size: 1rem;">Virgin Atlantic &bull; VS-004</h4>
+          <span class="badge badge-bus">Airbus A350-1000</span>
+        </div>
+        <p style="font-size: 12px; color: var(--muted);">Departs: <strong>11:00 AM (JFK)</strong> &rarr; Arrives: <strong>10:50 PM (LHR)</strong> (6h 50m)</p>
+        <span style="font-size: 11px; color: var(--muted);">Terminal 4 &bull; In-flight Wi-Fi &bull; Premium entertainment</span>
+      </div>
+      <div>
+        <div style="font-size: 12px; color: var(--muted);">Real-Time Vacancy</div>
+        <div style="font-weight: 700; color: var(--success); font-size: 1rem;">8 Seats Available</div>
+        <span class="badge badge-cnf">Instant Confirmation</span>
+      </div>
+      <div>
+        <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent);">$585.00</div>
+        <div style="font-size: 11px; color: var(--muted);">Economy / taxes included</div>
+      </div>
+      <div>
+        <button onclick="selectFlight('VS-004 (Virgin Atlantic)', 'JFK &rarr; LHR', '11:00 AM', 585)">Select Flight</button>
+      </div>
+    </div>
+
+    <!-- 2. Book Ticket & Seat Selection + 3. Ticket Payment Page -->
+    <h3 class="section-title" id="book-section">Book Ticket, Seat Allocation &amp; Payment Gateway</h3>
+    <div class="grid-2">
+      <!-- Passenger Details & Seat Selection -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Passenger Details &amp; Seat Choice</h4>
+        <form onsubmit="handleTicketBooking(event)">
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Selected Airline &amp; Flight</label>
+              <input type="text" id="flightInputDisplay" value="BA-178 (British Airways) - JFK &rarr; LHR" readonly>
+            </div>
+            <div>
+              <label>Cabin Class</label>
+              <input type="text" value="Economy Class" readonly>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Full Name (as on Passport)</label>
+              <input type="text" value="Emma Watson" required>
+            </div>
+            <div>
+              <label>Passport Number</label>
+              <input type="text" value="P94810284" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Email ID (for E-Ticket)</label>
+              <input type="email" value="emma.watson@example.com" required>
+            </div>
+            <div>
+              <label>Phone Number</label>
+              <input type="tel" value="+1 (555) 789-0123" required>
+            </div>
+          </div>
+
+          <!-- Seat Selection Matrix -->
+          <label>Select Seat (A &bull; B &bull; C || D &bull; E &bull; F):</label>
+          <div class="seat-grid">
+            <div class="seat-unit selected" onclick="this.classList.toggle('selected');">12A</div>
+            <div class="seat-unit booked">12B</div>
+            <div class="seat-unit" onclick="this.classList.toggle('selected');">12C</div>
+            <div class="seat-unit" onclick="this.classList.toggle('selected');">12D</div>
+            <div class="seat-unit booked">12E</div>
+            <div class="seat-unit" onclick="this.classList.toggle('selected');">12F</div>
+            <div class="seat-unit" onclick="this.classList.toggle('selected');">14A</div>
+            <div class="seat-unit" onclick="this.classList.toggle('selected');">14B</div>
+          </div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 10px;">
+            Selected Seat: <strong>12A (Window)</strong> &bull; Row 12 Economy
+          </div>
+
+          <!-- Payment Options -->
+          <h4 style="margin: 12px 0 6px;">Secure Payment Gateway</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Payment Gateway Option</label>
+              <select>
+                <option>Credit Card (Visa / Mastercard / Amex)</option>
+                <option>PayPal Express Checkout</option>
+                <option>Apple Pay / Google Pay</option>
+              </select>
+            </div>
+            <div>
+              <label>Total Fare Amount</label>
+              <input type="text" id="fareTotalDisplay" value="$540.00 USD" readonly style="font-weight: 700; color: var(--accent);">
+            </div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Authorize Payment &amp; Issue E-Ticket</button>
+        </form>
+      </div>
+
+      <!-- 4. My Ticket, View Booking Status & Print Ticket Page -->
+      <div class="panel" id="status-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h4>Booking Status &amp; Printable E-Ticket</h4>
+          <button class="btn-sm btn-secondary" onclick="alert('Sending E-Ticket to printer & generating PDF itinerary...');">&#128438; Print Ticket</button>
+        </div>
+
+        <div style="border: 2px dashed var(--border); padding: 14px; border-radius: 6px; background: #fff;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 8px;">
+            <div>
+              <strong style="color: var(--primary);">&#9992; BRITISH AIRWAYS E-TICKET</strong>
+              <div style="font-size: 11px; color: var(--muted);">Electronic Ticket Passenger Itinerary</div>
+            </div>
+            <div style="text-align: right;">
+              <strong style="font-size: 1.1rem; color: var(--accent);">PNR / Booking Ref: 7K9L2M</strong>
+              <div style="font-size: 11px; color: var(--success); font-weight: 700;">Status: CONFIRMED &bull; ISSUED</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; margin-bottom: 8px;">
+            <div><strong>Passenger Name:</strong> Emma Watson</div>
+            <div><strong>Passport No:</strong> P94810284</div>
+            <div><strong>Flight:</strong> BA-178 (Boeing 777-300ER)</div>
+            <div><strong>Date:</strong> 12-Nov-2026</div>
+            <div><strong>Route:</strong> New York (JFK) &rarr; London (LHR)</div>
+            <div><strong>Boarding Time:</strong> 07:45 AM (Gate B22)</div>
+            <div><strong>Seat Allocation:</strong> 12A (Window)</div>
+            <div><strong>Total Paid:</strong> $540.00 (Auth Code: #TXN-8849)</div>
+          </div>
+          <div style="font-size: 11px; background: #f1f5f9; padding: 6px 8px; border-radius: 4px; color: var(--muted);">
+            Present this e-ticket along with government passport at airline bag-drop and TSA security checkpoints.
+          </div>
+        </div>
+
+        <!-- 5. Cancel Ticket Page Component -->
+        <div style="margin-top: 14px; background: #fef2f2; border: 1px solid #fecaca; padding: 10px; border-radius: 6px;">
+          <div style="font-weight: 700; color: var(--danger); font-size: 12px; margin-bottom: 4px;">Cancel Ticket &amp; Request Refund:</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin-bottom: 8px;">
+            Tickets for PNR <strong>7K9L2M</strong> can be cancelled up to 24 hours prior to scheduled departure as per airline fare rules.
+          </p>
+          <button class="btn-sm btn-danger" onclick="if(confirm('Cancel Booking Ref #7K9L2M? Applicable airline refund of $460 will be processed.')) alert('Ticket cancelled successfully! Refund initiated to original payment source.');">
+            Cancel Booking &amp; Process Refund
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Customer Feedback & Review Module -->
+    <h3 class="section-title" id="feedback-section">Customer Feedback &amp; Service Review</h3>
+    <div class="panel">
+      <h4 style="margin-bottom: 6px;">Submit Flight &amp; In-Flight Experience Feedback</h4>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">Rate airline punctuality, seat comfort, cabin crew assistance, and booking ease.</p>
+      <form onsubmit="event.preventDefault(); alert('Thank you! Your airline feedback and review have been recorded.'); this.reset();">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div>
+            <label>Booking Reference / PNR</label>
+            <input type="text" value="7K9L2M" required>
+          </div>
+          <div>
+            <label>Airline Flown</label>
+            <input type="text" value="British Airways (BA-178)" required>
+          </div>
+          <div>
+            <label>Service Rating</label>
+            <select>
+              <option>5 Stars - Outstanding &amp; On-Time</option>
+              <option>4 Stars - Good Flight Experience</option>
+              <option>3 Stars - Satisfactory</option>
+              <option>2 Stars - Delayed / Needs Improvement</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <label>Comments &amp; Experience Details</label>
+          <textarea rows="2" placeholder="The flight was on schedule, check-in was seamless, and in-flight catering was delicious..." required></textarea>
+        </div>
+        <button type="submit" class="btn-sm" style="width: auto;">Submit Feedback</button>
+      </form>
+    </div>
+
+    <!-- 7. Administrator User Login & 8. Forgot Password Page -->
+    <h3 class="section-title" id="auth-section">User &amp; Administrator Authentication</h3>
+    <div class="grid-2">
+      <!-- Admin Login -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Administrator &amp; Travel Agent Login</h4>
+        <form onsubmit="event.preventDefault(); alert('Signed in successfully with Administrator privileges!');">
+          <div style="margin-bottom: 8px;">
+            <label>Admin Username / Agent ID</label>
+            <input type="text" value="admin_aeroglobal" required>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Password</label>
+            <input type="password" value="••••••••" required>
+          </div>
+          <button type="submit" style="width: 100%;">Sign In to Admin Console</button>
+        </form>
+      </div>
+
+      <!-- Forgot Password -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Forgot Password Recovery</h4>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">Enter your registered account email to receive a password reset link.</p>
+        <form onsubmit="event.preventDefault(); alert('Password reset verification link sent to your email.');">
+          <div style="margin-bottom: 10px;">
+            <label>Registered Account Email</label>
+            <input type="email" placeholder="e.g. emma.watson@example.com" required>
+          </div>
+          <button type="submit" class="btn-secondary" style="width: 100%;">Send Password Reset Instructions</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 9. Admin Report & Schedule/Inventory Manager -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.15rem; margin-bottom: 4px;">Advanced Administrator Control &amp; Reports Panel</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">Manage global airline distribution data, real-time seat inventory, fare matrices, and export financial audit reports.</p>
+
+      <div class="grid-2">
+        <!-- Flight Schedule & Seat Inventory Manager -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Manage Flight Schedules &amp; Seat Inventory</h4>
+          <form onsubmit="event.preventDefault(); alert('Flight inventory and cabin rates synchronized across Global Distribution Systems (GDS).');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Flight Code &amp; Carrier</label>
+                <input type="text" value="BA-178 (British Airways)" required>
+              </div>
+              <div>
+                <label>Aircraft Model</label>
+                <input type="text" value="Boeing 777-300ER" required>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div>
+                <label>Economy Seats</label>
+                <input type="number" value="210">
+              </div>
+              <div>
+                <label>Business Seats</label>
+                <input type="number" value="48">
+              </div>
+              <div>
+                <label>First Class</label>
+                <input type="number" value="14">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Base Fare ($ USD)</label>
+                <input type="number" value="540">
+              </div>
+              <div>
+                <label>Flight Status</label>
+                <select>
+                  <option selected>On-Time / Active</option>
+                  <option>Delayed</option>
+                  <option>Gate Open</option>
+                  <option>Cancelled</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn-sm" style="width: 100%;">Update Flight Inventory</button>
+          </form>
+        </div>
+
+        <!-- Admin Report Module -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Admin Reports &amp; Financial Analytics</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div>
+              <label>Select Report Dataset</label>
+              <select id="adminReportSelect">
+                <option>Consolidated Airline Revenue &amp; Ticket Sales Report</option>
+                <option>Global Route Load Factor &amp; Seat Occupancy</option>
+                <option>Cancellation &amp; Refund Audit Ledger</option>
+                <option>Customer Feedback &amp; Net Promoter Score (NPS)</option>
+              </select>
+            </div>
+            <div>
+              <label>Report Timeframe</label>
+              <select>
+                <option>Current Fiscal Month (Nov 2026)</option>
+                <option>Previous Quarter</option>
+                <option>Annual GDS Distribution Summary</option>
+              </select>
+            </div>
+            <button class="btn-accent btn-sm" style="margin-top: 6px;" onclick="alert('Generating ' + document.getElementById('adminReportSelect').value + ' [PDF / Excel Export]...');">
+              Generate &amp; Download Admin Report
+            </button>
+          </div>
+          <div style="font-size: 11.5px; color: var(--muted); margin-top: 10px; background: #f8fafc; padding: 6px 8px; border-radius: 4px;">
+            &bull; Real-time sync with Amadeus, Sabre, and Travelport GDS protocols.<br>
+            &bull; Live transactions recorded with full audit trail.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 AeroGlobal Reservation System. All Rights Reserved. &bull; GDS Consolidator &amp; Airline Distribution Platform</p>
+  </footer>
+
+  <script>
+    function selectFlight(flightName, route, time, fare) {
+      document.getElementById('flightInputDisplay').value = `${flightName} - ${route}`;
+      document.getElementById('fareTotalDisplay').value = `$${fare}.00 USD`;
+      alert(`Selected: ${flightName}\nDeparture: ${time}\nFare: $${fare}.00 USD\nProceeding to Passenger & Payment Details.`);
+      location.href = '#book-section';
+    }
+
+    function handleTicketBooking(e) {
+      e.preventDefault();
+      alert('Payment Authorized Successfully via Secure Gateway!\n\nBooking Reference (PNR): 7K9L2M\nStatus: CONFIRMED\nE-Ticket issued and dispatched to passenger email.\nBooking details transmitted to airline GDS inventory.');
+      location.href = '#status-section';
+    }
+  </script>
+</body>
+</html>

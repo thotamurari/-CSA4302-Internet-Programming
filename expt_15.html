@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyToll - Online Toll Payment &amp; Automated Pass System</title>
+  <style>
+    :root { --primary: #0284c7; --primary-dark: #0369a1; --accent: #10b981; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; --warning: #d97706; --danger: #ef4444; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #0f172a; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: #38bdf8; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #38bdf8; }
+    .container { max-width: 1180px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: var(--muted); }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; display: inline-block; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 24px 0 12px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+    th { background: #f8fafc; font-weight: 600; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 600; border-radius: 4px; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-blue { background: #e0f2fe; color: #0369a1; }
+    .badge-orange { background: #ffedd5; color: #c2410c; }
+    .qr-card { background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; border-radius: var(--radius); padding: 16px; display: flex; gap: 16px; align-items: center; }
+    .qr-box { width: 100px; height: 100px; background: #fff; padding: 6px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 50px; color: #000; }
+    .toll-booth { background: #042f2e; color: #ccfbf1; border-radius: var(--radius); padding: 16px; border: 1px solid #14b8a6; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 20px; margin-top: 40px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#128663; EasyToll Express</h1>
+    <nav>
+      <a href="#wallet">eWallet &amp; Vehicles</a>
+      <a href="#passes">Buy eTicket &amp; Passes</a>
+      <a href="#qr-pass">Digital QR Pass</a>
+      <a href="#booth">Toll Gate Operator</a>
+      <a href="#admin">Admin Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- User eWallet & Vehicle Management -->
+    <div class="panel" id="wallet">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="margin: 0;">User Account &bull; eWallet &amp; Vehicle Registry</h3>
+        <span class="badge badge-green">&#128100; Driver: Brian Miller (#USR-8821)</span>
+      </div>
+
+      <div class="grid-3">
+        <!-- eWallet Card -->
+        <div style="background: #e0f2fe; border: 1px solid #bae6fd; border-radius: var(--radius); padding: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: #0369a1; text-transform: uppercase;">Available eWallet Balance</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: #0284c7; margin: 4px 0;">$84.50</div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 10px;">&#10004; Auto-debit active on fast toll lanes</div>
+          <div style="display: flex; gap: 6px;">
+            <input type="number" placeholder="Add Amount ($)" value="50" style="font-size: 12px; padding: 6px;">
+            <button class="btn-sm" style="width: 100px;" onclick="alert('Added $50.00 to eWallet! New balance: $134.50')">&#43; Add Money</button>
+          </div>
+        </div>
+
+        <!-- Registered Vehicles -->
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase;">Registered Vehicles</div>
+          <div style="margin: 8px 0; font-size: 13px;">
+            <div><strong>&#128663; CA 7XYZ99</strong> &bull; Tesla Model 3 (Sedan)</div>
+            <div style="margin-top: 4px;"><strong>&#128665; TX 3ABC12</strong> &bull; Ford Explorer (SUV)</div>
+          </div>
+          <button class="btn-sm btn-secondary" style="margin-top: 6px;" onclick="alert('Vehicle registration modal opened.')">&#43; Add New Vehicle</button>
+        </div>
+
+        <!-- Quick Pass Status -->
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase;">Active Monthly Pass</div>
+          <div style="font-size: 1rem; font-weight: 700; color: #15803d; margin: 6px 0;">Highland Expressway Pass</div>
+          <div style="font-size: 12px; color: var(--muted);">Expires in 18 Days (Nov 01, 2026)</div>
+          <button class="btn-sm btn-accent" style="margin-top: 10px;" onclick="alert('Pass renewed for 30 additional days!')">&#8635; Renewal Toll Pass</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buy Toll eTicket & Apply New Toll Pass -->
+    <div class="grid-2" id="passes">
+      <!-- Buy Single/Return eTicket -->
+      <div class="panel">
+        <h4 style="margin-bottom: 12px;">&#127915; Buy Advance Toll eTicket (Skip Queues)</h4>
+        <div style="display: grid; gap: 8px;">
+          <div>
+            <label>Select Highway / Toll Plaza</label>
+            <select>
+              <option>Plaza #12 - Bay Bridge Skyway ($7.00)</option>
+              <option selected>Plaza #04 - Interstate 101 North ($4.50)</option>
+              <option>Plaza #08 - Express Coastal Tunnel ($6.00)</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Trip Type</label>
+              <select><option>Single Journey</option><option>Round Trip (10% Off)</option></select>
+            </div>
+            <div>
+              <label>Vehicle Class</label>
+              <select><option>Class 2: Car / Sedan / SUV</option><option>Class 3: Commercial Van</option><option>Class 4: Heavy Truck</option></select>
+            </div>
+          </div>
+          <div>
+            <label>Travel Date &amp; Time Slot</label>
+            <input type="datetime-local" value="2026-10-15T09:00">
+          </div>
+          <button onclick="alert('eTicket #TKT-4920 purchased! Auto-deducted $4.50 from eWallet.')">Buy Toll eTicket Now</button>
+        </div>
+      </div>
+
+      <!-- Apply New Toll Pass -->
+      <div class="panel">
+        <h4 style="margin-bottom: 12px;">&#128179; Apply New Toll Commuter Pass</h4>
+        <div style="display: grid; gap: 8px;">
+          <div>
+            <label>Toll Plaza Route</label>
+            <select>
+              <option>Metro Highway Daily Commuter Pass ($45/mo)</option>
+              <option>Interstate Commercial Multi-Plaza Pass ($120/mo)</option>
+              <option>Annual All-Plaza Express Card ($450/yr)</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Vehicle License Plate</label>
+              <input type="text" value="CA 7XYZ99">
+            </div>
+            <div>
+              <label>Pass Duration</label>
+              <select><option>1 Month</option><option>3 Months</option><option>1 Year</option></select>
+            </div>
+          </div>
+          <div>
+            <label>Owner National ID / Driver License</label>
+            <input type="text" placeholder="DL-8829104-X">
+          </div>
+          <button class="btn-accent" onclick="alert('Toll pass application submitted! Forwarded to Admin for approval.')">Apply for Toll Pass</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Digital QR Pass Card View -->
+    <div class="section-title" id="qr-pass">
+      <span>Digital QR Pass &amp; Windshield Fast-Scan Barcode</span>
+      <span class="badge badge-green">Ready for Gate Scanning</span>
+    </div>
+
+    <div class="qr-card">
+      <div class="qr-box">&#9638;&#65039;</div>
+      <div style="flex: 1;">
+        <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; font-weight: bold;">Official EasyToll Digital FastPass</div>
+        <div style="font-size: 1.25rem; font-weight: 700; margin: 2px 0;">Pass ID: #TLP-99218-E</div>
+        <div style="font-size: 12px; color: #cbd5e1;">Plate: <strong>CA 7XYZ99</strong> &bull; Vehicle: Tesla Model 3 &bull; Route: Interstate 101 All-Gates</div>
+        <div style="font-size: 11px; color: #4ade80; margin-top: 4px;">Valid through: Nov 01, 2026 &bull; Automatic RFID &amp; Optical QR Verified</div>
+      </div>
+      <div>
+        <button class="btn-sm btn-secondary" onclick="alert('Downloading Pass PDF with high-contrast QR Code...')">&#128424; Print / Save Pass</button>
+      </div>
+    </div>
+
+    <!-- Toll Gate User / Operator Interface -->
+    <div class="section-title" id="booth">
+      <span>Toll Gate User / Booth Attendant Console</span>
+      <span class="badge" style="background: #14b8a6; color: #042f2e;">Operator Login: Gate #04-North</span>
+    </div>
+
+    <div class="toll-booth">
+      <div class="grid-3" style="align-items: center;">
+        <div>
+          <div style="font-size: 12px; color: #99f6e4;">CURRENT PLAZA &amp; LANE</div>
+          <div style="font-size: 1.1rem; font-weight: 700; margin-top: 2px;">Plaza 04 &bull; Lane 03 (Express Scan)</div>
+          <div style="margin-top: 8px;">
+            <select style="background: #115e59; color: #fff; border: 1px solid #14b8a6; font-size: 12px; padding: 4px;">
+              <option>Lane Status: OPEN (Auto-Barrier Active)</option>
+              <option>Lane Status: MAINTENANCE</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="text-align: center; border-left: 1px dashed #14b8a6; border-right: 1px dashed #14b8a6; padding: 0 10px;">
+          <div style="font-size: 12px; margin-bottom: 6px;">Optical Scanner Camera</div>
+          <button style="background: #14b8a6; color: #042f2e; font-weight: bold;" onclick="alert('QR Scanned! Verifying pass #TLP-99218-E with centralized Toll Database... PASS VALID! Gate Opened.')">&#128247; Scan QR Code</button>
+        </div>
+
+        <div>
+          <div style="font-size: 12px; color: #99f6e4;">LAST SCANNED VEHICLE</div>
+          <div style="font-size: 13px; font-weight: bold; color: #fff;">Pass ID: #TLP-99218-E</div>
+          <div style="font-size: 12px; color: #4ade80;">&#10004; Verified: Plate CA 7XYZ99</div>
+          <div style="font-size: 11px; color: #99f6e4;">Toll Deducted: $4.50 &bull; Barrier: OPEN</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Management Panel -->
+    <div class="section-title" id="admin">
+      <span>Administrator Control Panel</span>
+      <span class="badge" style="background: #e2e8f0; color: #1e293b;">Central Highway Authority</span>
+    </div>
+
+    <div class="grid-4" style="margin-bottom: 16px;">
+      <div class="panel" style="text-align: center; margin: 0; padding: 12px;">
+        <div style="font-size: 1.3rem; font-weight: 700; color: #0284c7;">1,840</div>
+        <div style="font-size: 11px; color: var(--muted);">Active Toll Passes</div>
+      </div>
+      <div class="panel" style="text-align: center; margin: 0; padding: 12px;">
+        <div style="font-size: 1.3rem; font-weight: 700; color: #15803d;">$42,850</div>
+        <div style="font-size: 11px; color: var(--muted);">Today's Toll Collections</div>
+      </div>
+      <div class="panel" style="text-align: center; margin: 0; padding: 12px;">
+        <div style="font-size: 1.3rem; font-weight: 700; color: #7c3aed;">16</div>
+        <div style="font-size: 11px; color: var(--muted);">Toll Plazas Online</div>
+      </div>
+      <div class="panel" style="text-align: center; margin: 0; padding: 12px;">
+        <div style="font-size: 1.3rem; font-weight: 700; color: #ea580c;">4</div>
+        <div style="font-size: 11px; color: var(--muted);">Pending Pass Approvals</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Toll Pass Approvals & QR Generation -->
+      <div class="panel">
+        <h4 style="margin-bottom: 10px;">Pending Toll Pass Applications</h4>
+        <table>
+          <thead>
+            <tr><th>Applicant</th><th>Plate</th><th>Route</th><th>Admin Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kevin Adams</td>
+              <td>NY 9AB88</td>
+              <td>Tunnel Express</td>
+              <td>
+                <button class="btn-sm" onclick="alert('Pass Approved & QR Code generated for Kevin Adams!')">&#10004; Approve &amp; QR</button>
+                <button class="btn-sm btn-danger" onclick="alert('Application rejected')">&#10006;</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Elena Rostova</td>
+              <td>FL 55K12</td>
+              <td>Interstate 101</td>
+              <td>
+                <button class="btn-sm" onclick="alert('Pass Approved & QR Code generated for Elena!')">&#10004; Approve &amp; QR</button>
+                <button class="btn-sm btn-danger" onclick="alert('Application rejected')">&#10006;</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Create Toll Details & Rate Matrix -->
+      <div class="panel">
+        <h4 style="margin-bottom: 10px;">Create / Update Toll Plaza Details</h4>
+        <div style="display: grid; gap: 8px;">
+          <input type="text" placeholder="Toll Plaza Name e.g. Metro Expressway Gate 9">
+          <div class="grid-2">
+            <input type="text" placeholder="Location Highway Mile Marker">
+            <input type="number" placeholder="Car Rate ($) e.g. 5.00">
+          </div>
+          <div class="grid-2">
+            <input type="number" placeholder="Truck Rate ($) e.g. 14.00">
+            <input type="text" placeholder="Gate Attendant Login ID">
+          </div>
+          <button onclick="alert('New Toll Plaza details saved and rates broadcasted to gates!')">Save Plaza Details</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 EasyToll Express Platform. Smart tolling, contactless QR passes, and zero queue highway transit.</p>
+  </footer>
+
+</body>
+</html>

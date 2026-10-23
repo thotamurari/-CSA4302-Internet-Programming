@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailYatra - Indian Railways Online Train Reservation Portal</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #0f172a;
+      --accent: #b45309;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --success: #15803d;
+      --warning: #d97706;
+      --danger: #b91c1c;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #0f172a; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #38bdf8; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    .hero-search { background: linear-gradient(135deg, #1e3a8a, #0f172a); color: white; padding: 22px; border-radius: var(--radius); margin-bottom: 20px; }
+    .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) 130px; gap: 10px; align-items: end; margin-top: 12px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: inherit; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { opacity: 0.92; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .train-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+    .train-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .train-schedule { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 14px; border-radius: 6px; margin-bottom: 10px; }
+    .class-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 8px; }
+    .class-box { border: 1px solid var(--border); border-radius: 6px; padding: 8px; text-align: center; cursor: pointer; background: #fff; }
+    .class-box:hover, .class-box.active { border-color: var(--primary); background: #eff6ff; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; }
+    .badge-cnf { background: #dcfce7; color: var(--success); }
+    .badge-rac { background: #fef3c7; color: var(--warning); }
+    .badge-wl { background: #fee2e2; color: var(--danger); }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .info-box { background: #f8fafc; border-left: 3px solid var(--primary); padding: 10px 12px; margin-bottom: 12px; font-size: 12px; }
+    .admin-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .search-grid { grid-template-columns: 1fr; } .train-schedule { flex-direction: column; gap: 8px; } }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>&#128646; RailYatra Express Reservation Portal</h1>
+    <nav>
+      <a href="#search-section">Search Trains</a>
+      <a href="#pnr-section">PNR Status</a>
+      <a href="#booking-section">Passenger Booking</a>
+      <a href="#dashboard-section">My Reservations</a>
+      <a href="#auth-section">Login / Register</a>
+      <a href="#admin-section">Admin Portal</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. Search Trains by Route, Date, Class & Time -->
+    <section class="hero-search" id="search-section">
+      <h2 style="font-size: 1.25rem;">Search Trains, Routes &amp; Real-Time Seat Availability</h2>
+      <p style="font-size: 12px; opacity: 0.85;">Check live seat status across all train classes (1A, 2A, 3A, SL, CC) and intermediate via-stations.</p>
+      <form class="search-grid" onsubmit="event.preventDefault(); alert('Fetching available train list, via-junctions, and seat availability...');">
+        <div>
+          <label>Origin Station (From)</label>
+          <input type="text" value="New Delhi (NDLS)" required>
+        </div>
+        <div>
+          <label>Destination Station (To)</label>
+          <input type="text" value="Mumbai Central (MMCT)" required>
+        </div>
+        <div>
+          <label>Journey Date</label>
+          <input type="date" value="2026-11-05" required>
+        </div>
+        <div>
+          <label>Quota &amp; Class</label>
+          <select>
+            <option>General - All Classes</option>
+            <option>AC 1st Class (1A)</option>
+            <option>AC 2 Tier (2A)</option>
+            <option selected>AC 3 Tier (3A)</option>
+            <option>Sleeper (SL)</option>
+            <option>Tatkal Quota</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="btn-accent">Search Trains</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 2. Available Train-List, Seat Availability & Via-Details -->
+    <h3 class="section-title">
+      <span>Available Trains &amp; Intermediate Via-Details (NDLS &rarr; MMCT)</span>
+      <span style="font-size: 12px; font-weight: normal; color: var(--muted);">Date: 05-Nov-2026</span>
+    </h3>
+
+    <!-- Train 1: Rajdhani Express -->
+    <div class="train-card">
+      <div class="train-head">
+        <div>
+          <h4 style="font-size: 1.05rem; color: var(--primary);">&#128645; 12952 / Mumbai Tejas Rajdhani Express</h4>
+          <span style="font-size: 12px; color: var(--muted);">Runs Daily &bull; Zone: Western Railway (WR) &bull; Superfast AC</span>
+        </div>
+        <span class="badge badge-cnf">Confirmed Available</span>
+      </div>
+
+      <div class="train-schedule">
+        <div>
+          <div style="font-size: 1.1rem; font-weight: 700;">16:55</div>
+          <div style="font-weight: 600;">New Delhi (NDLS)</div>
+          <div style="font-size: 11px; color: var(--muted);">Day 1 &bull; Platform 2</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 11.5px; color: var(--muted);">15 hrs 40 mins</div>
+          <div style="color: var(--primary); font-weight: 700;">&mdash;&mdash;&rarr;</div>
+          <div style="font-size: 11px; color: var(--muted);">Via: Kota Jn &rarr; Vadodara Jn &rarr; Surat</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 1.1rem; font-weight: 700;">08:35</div>
+          <div style="font-weight: 600;">Mumbai Central (MMCT)</div>
+          <div style="font-size: 11px; color: var(--muted);">Day 2 &bull; Platform 1</div>
+        </div>
+      </div>
+
+      <div style="font-size: 11.5px; font-weight: 600; margin-bottom: 4px;">Select Class &amp; Fare to Reserve:</div>
+      <div class="class-grid">
+        <div class="class-box" onclick="selectTrainClass('12952 Rajdhani', '1A', 4150, 'AVAILABLE-12')">
+          <div style="font-weight: 700;">1A (AC First)</div>
+          <div style="color: var(--success); font-weight: 600;">AVBL 12</div>
+          <div style="color: var(--accent); font-weight: 700;">&#8377;4,150</div>
+        </div>
+        <div class="class-box active" onclick="selectTrainClass('12952 Rajdhani', '2A', 2890, 'AVAILABLE-34')">
+          <div style="font-weight: 700;">2A (AC 2 Tier)</div>
+          <div style="color: var(--success); font-weight: 600;">AVBL 34</div>
+          <div style="color: var(--accent); font-weight: 700;">&#8377;2,890</div>
+        </div>
+        <div class="class-box" onclick="selectTrainClass('12952 Rajdhani', '3A', 2110, 'AVAILABLE-68')">
+          <div style="font-weight: 700;">3A (AC 3 Tier)</div>
+          <div style="color: var(--success); font-weight: 600;">AVBL 68</div>
+          <div style="color: var(--accent); font-weight: 700;">&#8377;2,110</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Train 2: August Kranti -->
+    <div class="train-card">
+      <div class="train-head">
+        <div>
+          <h4 style="font-size: 1.05rem; color: var(--primary);">&#128645; 12954 / August Kranti Tejas Express</h4>
+          <span style="font-size: 12px; color: var(--muted);">Runs Daily &bull; Zone: Northern Railway (NR)</span>
+        </div>
+        <span class="badge badge-rac">RAC Available</span>
+      </div>
+
+      <div class="train-schedule">
+        <div>
+          <div style="font-size: 1.1rem; font-weight: 700;">17:15</div>
+          <div style="font-weight: 600;">Hazrat Nizamuddin (NZM)</div>
+          <div style="font-size: 11px; color: var(--muted);">Day 1</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 11.5px; color: var(--muted);">16 hrs 50 mins</div>
+          <div style="color: var(--primary); font-weight: 700;">&mdash;&mdash;&rarr;</div>
+          <div style="font-size: 11px; color: var(--muted);">Via: Mathura &rarr; Kota &rarr; Ratlam &rarr; Bharuch</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 1.1rem; font-weight: 700;">10:05</div>
+          <div style="font-weight: 600;">Mumbai Central (MMCT)</div>
+          <div style="font-size: 11px; color: var(--muted);">Day 2</div>
+        </div>
+      </div>
+
+      <div class="class-grid">
+        <div class="class-box" onclick="selectTrainClass('12954 August Kranti', '3A', 1980, 'RAC-14')">
+          <div style="font-weight: 700;">3A</div>
+          <div style="color: var(--warning); font-weight: 600;">RAC 14</div>
+          <div style="color: var(--accent); font-weight: 700;">&#8377;1,980</div>
+        </div>
+        <div class="class-box" onclick="selectTrainClass('12954 August Kranti', 'SL', 610, 'WL-42')">
+          <div style="font-weight: 700;">SL (Sleeper)</div>
+          <div style="color: var(--danger); font-weight: 600;">WL 42</div>
+          <div style="color: var(--accent); font-weight: 700;">&#8377;610</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PNR Status Check Module (Confirmed / RAC / Waiting List) -->
+    <h3 class="section-title" id="pnr-section">Check Live PNR Status</h3>
+    <div class="panel">
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; align-items: end;">
+        <div>
+          <label>Enter 10-Digit PNR Number</label>
+          <input type="text" id="pnrInput" value="284-9182743" placeholder="e.g. 284-9182743" required>
+        </div>
+        <div>
+          <button class="btn-accent" onclick="checkPnrStatus()">Get PNR Status</button>
+        </div>
+      </div>
+
+      <!-- Result Card -->
+      <div id="pnrResultBox" style="margin-top: 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div>
+            <strong>PNR: 284-9182743</strong> &bull; Train: 12952 Rajdhani Exp (NDLS &rarr; MMCT) &bull; Date: 05-Nov-2026
+          </div>
+          <span class="badge badge-cnf">Booking Status: CNF (Confirmed)</span>
+        </div>
+        <table style="font-size: 12px;">
+          <thead>
+            <tr>
+              <th>Passenger #</th>
+              <th>Name &amp; Age</th>
+              <th>Booking Status</th>
+              <th>Current Status</th>
+              <th>Coach / Berth No.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Passenger 1</td>
+              <td>Rohit Sharma, 34 yrs (M)</td>
+              <td>CNF</td>
+              <td><span class="badge badge-cnf">CNF</span></td>
+              <td>Coach B4, Berth 23 (Lower)</td>
+            </tr>
+            <tr>
+              <td>Passenger 2</td>
+              <td>Ananya Sharma, 30 yrs (F)</td>
+              <td>CNF</td>
+              <td><span class="badge badge-cnf">CNF</span></td>
+              <td>Coach B4, Berth 24 (Middle)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. Ticket Booking Form, Passenger Details & Online/Offline Payment -->
+    <h3 class="section-title" id="booking-section">Passenger Booking Details &amp; Payment Gateway</h3>
+    <div class="grid-2">
+      <!-- Passenger Details Form -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Passenger &amp; Journey Information</h4>
+        <form onsubmit="handleBookTicket(event)">
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Selected Train</label>
+              <input type="text" id="bookTrainName" value="12952 / Mumbai Tejas Rajdhani Exp" readonly>
+            </div>
+            <div>
+              <label>Class</label>
+              <input type="text" id="bookClassName" value="2A (AC 2 Tier)" readonly>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Origin Station</label>
+              <input type="text" value="New Delhi (NDLS)" required>
+            </div>
+            <div>
+              <label>Destination Station</label>
+              <input type="text" value="Mumbai Central (MMCT)" required>
+            </div>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Passenger 1: Full Name, Age, Gender, Berth Preference</label>
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 6px;">
+              <input type="text" placeholder="Name" value="Rohit Sharma" required>
+              <input type="number" placeholder="Age" value="34" required>
+              <select><option>Male</option><option>Female</option></select>
+              <select><option>Lower Berth</option><option>Middle</option><option>Upper</option><option>Side Lower</option></select>
+            </div>
+          </div>
+          <div style="margin-bottom: 10px;">
+            <label>Passenger 2 (Optional)</label>
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 6px;">
+              <input type="text" placeholder="Name" value="Ananya Sharma">
+              <input type="number" placeholder="Age" value="30">
+              <select><option>Female</option><option>Male</option></select>
+              <select><option>Middle Berth</option><option>Lower</option><option>Upper</option></select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+            <div>
+              <label>Payment Mode</label>
+              <select id="paymentModeSelect">
+                <option value="online">Online Mode (IRCTC Gateway / UPI / Cards)</option>
+                <option value="offline">Offline Mode (Railway Station Counter / PRS)</option>
+              </select>
+            </div>
+            <div>
+              <label>Total Fare</label>
+              <input type="text" id="bookFareDisplay" value="&#8377;5,780.00 (2 Passengers)" readonly style="font-weight: 700; color: var(--accent);">
+            </div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">
+            Process Payment &amp; Generate PNR Ticket
+          </button>
+        </form>
+      </div>
+
+      <!-- Generated E-Ticket & Print View -->
+      <div class="panel" id="ticketPrintArea">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h4>Generated E-Ticket Confirmation</h4>
+          <button class="btn-sm btn-secondary" onclick="alert('Sending E-Ticket to printer & generating PDF download...');">&#128438; Print Ticket</button>
+        </div>
+        <div style="border: 2px dashed var(--border); padding: 12px; border-radius: 6px; background: #fff;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 8px;">
+            <div>
+              <strong style="color: var(--primary);">INDIAN RAILWAYS E-TICKET</strong>
+              <div style="font-size: 11px; color: var(--muted);">IRCTC Corporate Transaction #TXN-90214</div>
+            </div>
+            <div style="text-align: right;">
+              <strong style="font-size: 1.1rem; color: var(--accent);">PNR: 284-9182743</strong>
+              <div style="font-size: 11px; color: var(--success); font-weight: 600;">Status: CONFIRMED</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; margin-bottom: 8px;">
+            <div><strong>Train:</strong> 12952 / Tejas Rajdhani Exp</div>
+            <div><strong>Date of Journey:</strong> 05-Nov-2026</div>
+            <div><strong>From:</strong> New Delhi (NDLS)</div>
+            <div><strong>To:</strong> Mumbai Central (MMCT)</div>
+            <div><strong>Class:</strong> 2A (AC 2 Tier) &bull; Quota: General</div>
+            <div><strong>Fare Paid:</strong> &#8377;5,780.00 (Online Payment Logged)</div>
+          </div>
+          <div style="font-size: 11.5px; background: #f1f5f9; padding: 6px 8px; border-radius: 4px;">
+            <strong>Passengers:</strong> Rohit Sharma (B4-23 LB), Ananya Sharma (B4-24 MB)
+          </div>
+        </div>
+        <div class="info-box" style="margin-top: 10px;">
+          Payment details and transaction log auto-transmitted to Railway System Admin registry. Confirmation email sent to passenger.
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. User Dashboard & Ticket Cancellation with Refund Percentage Rules -->
+    <h3 class="section-title" id="dashboard-section">My Reservations, Cancellation &amp; Refund Rules</h3>
+    <div class="panel">
+      <h4 style="margin-bottom: 6px;">Reservation History &amp; Ticket Cancellation Module</h4>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 10px;">
+        Cancel tickets by PNR. As per Railway Refund Rules, refund percentage is calculated based on time before departure.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>PNR No.</th>
+            <th>Train &amp; Route</th>
+            <th>Journey Date</th>
+            <th>Ticket Fare</th>
+            <th>Current Status</th>
+            <th>Refund Rule Tier</th>
+            <th>Cancel Ticket Request</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>284-9182743</strong></td>
+            <td>12952 Rajdhani (NDLS &rarr; MMCT)</td>
+            <td>05-Nov-2026</td>
+            <td>&#8377;5,780.00</td>
+            <td><span class="badge badge-cnf">Confirmed</span></td>
+            <td>&gt;48 hrs before: <strong>75% Refundable</strong> (&#8377;4,335)</td>
+            <td>
+              <button class="btn-sm btn-danger" onclick="handleCancelTicket('284-9182743', 5780, 75)">Cancel Ticket</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>612-4019283</strong></td>
+            <td>12002 Shatabdi (NDLS &rarr; BPL)</td>
+            <td>18-Oct-2026</td>
+            <td>&#8377;1,420.00</td>
+            <td><span class="badge badge-rac">RAC 03</span></td>
+            <td>12-48 hrs before: <strong>50% Refundable</strong> (&#8377;710)</td>
+            <td>
+              <button class="btn-sm btn-danger" onclick="handleCancelTicket('612-4019283', 1420, 50)">Cancel Ticket</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Refund Rules Policy Box -->
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin-top: 12px; font-size: 12px;">
+        <strong>Official Railway Refund Rules &amp; Percentage Scale:</strong>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; margin-top: 6px; color: var(--muted);">
+          <div>&bull; <strong>&gt; 48 hrs before departure:</strong> Flat cancellation charge deducted, 75% refundable.</div>
+          <div>&bull; <strong>12 to 48 hrs before departure:</strong> 50% of ticket fare refundable.</div>
+          <div>&bull; <strong>&lt; 4 hrs or after chart preparation:</strong> Non-refundable (0%).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Authentication: Login & Registration -->
+    <h3 class="section-title" id="auth-section">Railway User Authentication</h3>
+    <div class="grid-2">
+      <!-- Login -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Passenger Login</h4>
+        <form onsubmit="event.preventDefault(); alert('Logged in successfully to Railway Reservation Portal!');">
+          <div style="margin-bottom: 8px;">
+            <label>Username / IRCTC User ID</label>
+            <input type="text" value="rohit_sharma26" required>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Password</label>
+            <input type="password" value="••••••••" required>
+          </div>
+          <button type="submit" style="width: 100%;">Login to Reserve Ticket</button>
+        </form>
+      </div>
+
+      <!-- Registration -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">New Passenger Registration</h4>
+        <form onsubmit="event.preventDefault(); alert('Account created successfully! Credentials verified.');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Full Name</label>
+              <input type="text" placeholder="e.g. Priya Nair" required>
+            </div>
+            <div>
+              <label>Aadhaar / Govt ID No.</label>
+              <input type="text" placeholder="XXXX-XXXX-XXXX" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Mobile Number</label>
+              <input type="tel" placeholder="+91 98765 43210" required>
+            </div>
+            <div>
+              <label>Email Address</label>
+              <input type="email" placeholder="priya@example.com" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-secondary" style="width: 100%;">Register Railway Account</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 7. Administrator Control Panel -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.15rem; margin-bottom: 4px;">System Administrator Control &amp; Maintenance Panel</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">
+        Maintain all train schedules, fare structures (by zone, class, and date wise), PNR database, refund authorizer, and registered user accounts.
+      </p>
+
+      <div class="grid-2">
+        <!-- Train & Fare Details Master -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">A. Train Details &amp; Fare Matrix Maintenance</h4>
+          <form onsubmit="event.preventDefault(); alert('Train schedule, class fares, and zone details updated in central server.');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Train Number &amp; Name</label>
+                <input type="text" value="12952 / Tejas Rajdhani" required>
+              </div>
+              <div>
+                <label>Railway Zone</label>
+                <select>
+                  <option selected>Western Railway (WR)</option>
+                  <option>Northern Railway (NR)</option>
+                  <option>Southern Railway (SR)</option>
+                  <option>Eastern Railway (ER)</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div>
+                <label>Class 1A Fare</label>
+                <input type="number" value="4150">
+              </div>
+              <div>
+                <label>Class 2A Fare</label>
+                <input type="number" value="2890">
+              </div>
+              <div>
+                <label>Class 3A Fare</label>
+                <input type="number" value="2110">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Operating Dates</label>
+                <input type="text" value="Daily Operations (Mon - Sun)">
+              </div>
+              <div>
+                <label>Total Coach Quota Seats</label>
+                <input type="number" value="840">
+              </div>
+            </div>
+            <button type="submit" class="btn-sm" style="width: 100%;">Save Train &amp; Fare Updates</button>
+          </form>
+        </div>
+
+        <!-- PNR Registry & Admin Refund Approval -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">B. PNR Ledger, Payments &amp; Refund Approval</h4>
+          <table style="font-size: 11.5px; margin-bottom: 10px;">
+            <thead>
+              <tr>
+                <th>PNR</th>
+                <th>Passenger</th>
+                <th>Fare Logged</th>
+                <th>Payment Mode</th>
+                <th>Admin Refund Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>284-9182743</strong></td>
+                <td>Rohit Sharma</td>
+                <td>&#8377;5,780</td>
+                <td><span class="badge badge-cnf">Online NetBanking</span></td>
+                <td><button class="btn-sm btn-secondary" onclick="alert('Payment verified & stored in admin ledger.');">Audit</button></td>
+              </tr>
+              <tr>
+                <td><strong>612-4019283</strong></td>
+                <td>Karan Mehra</td>
+                <td>&#8377;1,420</td>
+                <td><span class="badge">Offline Counter</span></td>
+                <td><button class="btn-sm btn-danger" onclick="alert('Admin approved cancellation refund of ₹710 (50%). Credited back to passenger.');">Approve Refund</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="info-box" style="margin-bottom: 0;">
+            Admin directly monitors transaction inflows and approves refunds upon passenger cancellation requests as per railway percentage guidelines.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 RailYatra - Indian Railways Reservation System &bull; National Train Information &amp; E-Ticketing System</p>
+  </footer>
+
+  <script>
+    function selectTrainClass(train, cls, fare, status) {
+      document.getElementById('bookTrainName').value = train;
+      document.getElementById('bookClassName').value = cls;
+      document.getElementById('bookFareDisplay').value = "₹" + (fare * 2) + ".00 (2 Passengers)";
+      alert(`Selected: ${train} - Class ${cls} (${status}). Fare: ₹${fare} per seat.`);
+      location.href = '#booking-section';
+    }
+
+    function checkPnrStatus() {
+      const pnr = document.getElementById('pnrInput').value;
+      if (!pnr) {
+        alert('Please enter a valid 10-digit PNR number.');
+        return;
+      }
+      alert(`PNR Status for ${pnr}:\nTrain: 12952 Rajdhani Exp\nStatus: CONFIRMED (CNF)\nCoach: B4, Berths 23 & 24\nPayment: Verified`);
+    }
+
+    function handleBookTicket(e) {
+      e.preventDefault();
+      const mode = document.getElementById('paymentModeSelect').value;
+      const pnrGenerated = "491-" + Math.floor(1000000 + Math.random() * 9000000);
+      alert(`Payment Successful via ${mode.toUpperCase()} mode!\n\nYour Ticket is generated.\nGenerated PNR: ${pnrGenerated}\nStatus: CONFIRMED (CNF)\nPayment details recorded and dispatched to System Admin.`);
+      location.href = '#ticketPrintArea';
+    }
+
+    function handleCancelTicket(pnr, fare, percent) {
+      const refundAmt = (fare * percent) / 100;
+      if (confirm(`Cancel ticket for PNR ${pnr}?\n\nFare: ₹${fare}\nRefund Percentage: ${percent}%\nCalculated Refund Amount: ₹${refundAmt}\n\nSubmit cancellation request to Admin?`)) {
+        alert(`Cancellation Request Submitted for PNR ${pnr}!\nAdmin has approved the refund. Refund amount of ₹${refundAmt} credited to passenger account.`);
+      }
+    }
+  </script>
+</body>
+</html>

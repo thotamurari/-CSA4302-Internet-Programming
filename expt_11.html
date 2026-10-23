@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Finder - Online Real Estate &amp; Property Booking Platform</title>
+  <style>
+    :root { --primary: #0284c7; --primary-dark: #0369a1; --accent: #f59e0b; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; --success: #16a34a; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #0f172a; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: #38bdf8; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #38bdf8; }
+    .container { max-width: 1180px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: var(--muted); }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); color: #1e293b; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; width: auto; display: inline-block; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 24px 0 12px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .prop-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+    .prop-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; position: relative; }
+    .prop-badge { position: absolute; top: 10px; left: 10px; background: rgba(15,23,42,0.85); color: #38bdf8; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+    .fav-btn { position: absolute; top: 10px; right: 10px; background: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; border: none; }
+    .prop-body { padding: 14px; }
+    .prop-price { font-size: 1.25rem; font-weight: 700; color: #0284c7; margin-bottom: 4px; }
+    .prop-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .prop-meta { display: flex; gap: 12px; color: var(--muted); font-size: 12px; margin: 8px 0; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 6px 0; }
+    .map-box { height: 260px; background: #e0f2fe; border: 2px dashed #38bdf8; border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .map-pin { position: absolute; background: #0284c7; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 600; border-radius: 4px; background: #e0f2fe; color: #0369a1; }
+    .tag-saved { background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 14px; font-size: 11px; display: inline-flex; align-items: center; gap: 6px; margin: 4px; }
+    .agent-card { display: flex; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); }
+    .agent-avatar { width: 50px; height: 50px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .ad-banner { background: linear-gradient(90deg, #1e293b, #334155); color: #fff; padding: 12px 18px; border-radius: var(--radius); display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 20px; margin-top: 40px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#127969; Home Finder</h1>
+    <nav>
+      <a href="#search">Properties</a>
+      <a href="#map">Map Search</a>
+      <a href="#saved">Saved Searches</a>
+      <a href="#calculator">Mortgage &amp; Valuation</a>
+      <a href="#agents">Agents</a>
+      <a href="#auth">Buyer Login</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Search & Filter Bar with Saved Search Criteria feature -->
+    <div class="panel" id="search">
+      <h3 style="margin-bottom: 10px;">Find Residential &amp; Commercial Properties</h3>
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 120px; gap: 10px; align-items: end;">
+        <div>
+          <label>City, Locality or Landmark</label>
+          <input type="text" value="Silicon Valley, CA" placeholder="Enter neighborhood or postal code">
+        </div>
+        <div>
+          <label>Property Type</label>
+          <select>
+            <option>All Types</option>
+            <option selected>Residential Apartment</option>
+            <option>Luxury Villa</option>
+            <option>Plot / Land</option>
+            <option>Commercial Office</option>
+          </select>
+        </div>
+        <div>
+          <label>Budget Range</label>
+          <select>
+            <option>Any Price</option>
+            <option selected>$300k - $650k</option>
+            <option>$650k - $1.2M</option>
+            <option>$1.2M+</option>
+          </select>
+        </div>
+        <div>
+          <label>Bedrooms (BHK)</label>
+          <select>
+            <option>1+ BHK</option>
+            <option selected>2 &amp; 3 BHK</option>
+            <option>4+ BHK</option>
+          </select>
+        </div>
+        <div>
+          <label>Amenities</label>
+          <select>
+            <option>Swimming Pool</option>
+            <option>Car Parking</option>
+            <option>24/7 Security &amp; Gym</option>
+          </select>
+        </div>
+        <div>
+          <button style="height: 38px;">Search</button>
+        </div>
+      </div>
+      <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;" id="saved">
+        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+          <span style="font-size: 11px; font-weight: 700; color: var(--muted);">&#128278; Saved Search Criteria:</span>
+          <span class="tag-saved">Silicon Valley | 2-3 BHK | $300k-$650k &#10006;</span>
+          <span class="tag-saved">Austin Downtown | Land/Plot | &lt;$400k &#10006;</span>
+        </div>
+        <button class="btn-sm btn-secondary" onclick="alert('Current search criteria saved to your buyer account!')">&#43; Save Current Search</button>
+      </div>
+    </div>
+
+    <!-- Featured Listings & Virtual Tour Options -->
+    <div class="section-title">
+      <span>Featured Property Listings</span>
+      <span style="font-size: 12px; font-weight: normal; color: var(--muted);">Showing 12 of 184 available units</span>
+    </div>
+
+    <div class="grid-3">
+      <!-- Card 1 -->
+      <div class="prop-card">
+        <div class="prop-img">
+          &#127968;
+          <span class="prop-badge">For Sale &bull; Apartment</span>
+          <button class="fav-btn" title="Add to Favorites">&#9829;</button>
+        </div>
+        <div class="prop-body">
+          <div class="prop-price">$485,000 <span style="font-size: 11px; font-weight: normal; color: var(--muted);">($390/sqft)</span></div>
+          <div class="prop-title">Highland Valley Residences</div>
+          <div style="font-size: 12px; color: var(--muted);">&#128205; 442 Pine Crest Ave, Silicon Valley</div>
+          <div class="prop-meta">
+            <span>&#128716; 3 Beds</span>
+            <span>&#128705; 2 Baths</span>
+            <span>&#128208; 1,450 Sq Ft</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-sm" style="flex:1;" onclick="alert('Viewing scheduled for Saturday, 10:30 AM')">&#128197; Schedule Tour</button>
+            <button class="btn-sm btn-secondary" style="flex:1;" onclick="alert('Opening 3D Virtual Tour')">&#128269; Virtual Tour</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="prop-card">
+        <div class="prop-img" style="background: linear-gradient(135deg, #059669, #10b981);">
+          &#127969;
+          <span class="prop-badge">For Sale &bull; Villa</span>
+          <button class="fav-btn" title="Add to Favorites">&#9829;</button>
+        </div>
+        <div class="prop-body">
+          <div class="prop-price">$890,000 <span style="font-size: 11px; font-weight: normal; color: var(--muted);">($420/sqft)</span></div>
+          <div class="prop-title">Emerald Woods Luxury Villa</div>
+          <div style="font-size: 12px; color: var(--muted);">&#128205; 18 Oakridge Blvd, Hillside Sector</div>
+          <div class="prop-meta">
+            <span>&#128716; 4 Beds</span>
+            <span>&#128705; 4 Baths</span>
+            <span>&#128208; 2,800 Sq Ft</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-sm" style="flex:1;" onclick="alert('Viewing scheduled for Sunday, 2:00 PM')">&#128197; Schedule Tour</button>
+            <button class="btn-sm btn-secondary" style="flex:1;" onclick="alert('Opening 3D Virtual Tour')">&#128269; Virtual Tour</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="prop-card">
+        <div class="prop-img" style="background: linear-gradient(135deg, #d97706, #b45309);">
+          &#127970;
+          <span class="prop-badge">Commercial &bull; Office</span>
+          <button class="fav-btn" title="Add to Favorites">&#9829;</button>
+        </div>
+        <div class="prop-body">
+          <div class="prop-price">$620,000 <span style="font-size: 11px; font-weight: normal; color: var(--muted);">($310/sqft)</span></div>
+          <div class="prop-title">Apex Corporate Tower Unit 4B</div>
+          <div style="font-size: 12px; color: var(--muted);">&#128205; Tech Corridor Rd, Silicon Valley</div>
+          <div class="prop-meta">
+            <span>&#128188; 18 Desks</span>
+            <span>&#128659; 2 Garages</span>
+            <span>&#128208; 2,000 Sq Ft</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-sm" style="flex:1;" onclick="alert('Viewing scheduled for Monday, 11:00 AM')">&#128197; Schedule Tour</button>
+            <button class="btn-sm btn-secondary" style="flex:1;" onclick="alert('Opening 3D Virtual Tour')">&#128269; Virtual Tour</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Maps Location View -->
+    <div class="section-title" id="map">
+      <span>Interactive Google Map &amp; Neighborhood Search</span>
+      <span class="badge">Google Maps Interactive View</span>
+    </div>
+    <div class="map-box">
+      <div style="position: absolute; top: 12px; left: 16px; background: white; padding: 6px 12px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); font-size: 12px; font-weight: 600;">
+        &#127757; Silicon Valley Area &bull; Radius: 10 Miles
+      </div>
+      <div class="map-pin" style="top: 35%; left: 28%;">&#127968; $485k (Highland)</div>
+      <div class="map-pin" style="top: 55%; left: 62%; background: #059669;">&#127969; $890k (Emerald)</div>
+      <div class="map-pin" style="top: 25%; left: 75%; background: #d97706;">&#127970; $620k (Apex)</div>
+      <div style="text-align: center; color: #0369a1; margin-top: 40px;">
+        <p style="font-size: 18px; font-weight: 700;">&#127758; Interactive Property Locator Map</p>
+        <p style="font-size: 12px; color: #475569;">Pins show property locations, metro stations, nearby schools, and hospitals.</p>
+      </div>
+    </div>
+
+    <!-- Mortgage Calculator & Property Valuation -->
+    <div class="section-title" id="calculator">
+      <span>Mortgage / EMI Calculator &amp; Property Valuation</span>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 12px;">Monthly Mortgage (EMI) Calculator</h4>
+        <div class="grid-2" style="margin-bottom: 10px;">
+          <div>
+            <label>Property Value ($)</label>
+            <input type="number" value="485000">
+          </div>
+          <div>
+            <label>Down Payment ($)</label>
+            <input type="number" value="97000">
+          </div>
+          <div>
+            <label>Interest Rate (%)</label>
+            <input type="text" value="6.5%">
+          </div>
+          <div>
+            <label>Loan Tenure</label>
+            <select>
+              <option>15 Years</option>
+              <option selected>30 Years</option>
+            </select>
+          </div>
+        </div>
+        <div style="background: #f1f5f9; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 11px; color: var(--muted);">Estimated Monthly EMI</div>
+            <div style="font-size: 1.3rem; font-weight: 700; color: #0284c7;">$2,452 / mo</div>
+          </div>
+          <button class="btn-sm" style="width: auto;" onclick="alert('Detailed amortization table calculated!')">Recalculate</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4 style="margin-bottom: 12px;">Free Property Valuation Estimator</h4>
+        <div style="display: grid; gap: 8px;">
+          <input type="text" placeholder="Enter Property Address / Parcel Number">
+          <div class="grid-2">
+            <select><option>Condition: Excellent</option><option>Good</option></select>
+            <input type="number" placeholder="Built Year e.g. 2018">
+          </div>
+          <button class="btn-accent" onclick="alert('Estimated Fair Market Value: $510,000 - $535,000')">Estimate Value</button>
+          <div style="font-size: 11px; color: var(--muted); text-align: center;">Based on recent comparative sales in your neighborhood.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent & Company Directory -->
+    <div class="section-title" id="agents">
+      <span>Verified Real Estate Agents &amp; Agencies</span>
+    </div>
+    <div class="grid-3">
+      <div class="agent-card">
+        <div class="agent-avatar">&#128100;</div>
+        <div>
+          <div style="font-weight: 700;">Sarah Jenkins</div>
+          <div style="font-size: 11px; color: var(--muted);">Premier Realty Group &bull; ★ 4.9 (42 Reviews)</div>
+          <div style="font-size: 11px; color: var(--primary);">18 Active Listings</div>
+          <button class="btn-sm btn-secondary" style="margin-top: 4px;" onclick="alert('Message sent to Sarah Jenkins')">&#128222; Contact Agent</button>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-avatar" style="background: #a78bfa;">&#128104;</div>
+        <div>
+          <div style="font-weight: 700;">David Ross, Realtor</div>
+          <div style="font-size: 11px; color: var(--muted);">Silicon Properties Inc &bull; ★ 4.8 (31 Reviews)</div>
+          <div style="font-size: 11px; color: var(--primary);">12 Active Listings</div>
+          <button class="btn-sm btn-secondary" style="margin-top: 4px;" onclick="alert('Message sent to David Ross')">&#128222; Contact Agent</button>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-avatar" style="background: #34d399;">&#127970;</div>
+        <div>
+          <div style="font-weight: 700;">Metro Commercial Corp</div>
+          <div style="font-size: 11px; color: var(--muted);">Commercial Brokerage &bull; ★ 5.0 (19 Reviews)</div>
+          <div style="font-size: 11px; color: var(--primary);">25 Active Listings</div>
+          <button class="btn-sm btn-secondary" style="margin-top: 4px;" onclick="alert('Contacting Metro Commercial Corp')">&#128222; Contact Broker</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Banner -->
+    <div class="ad-banner">
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Sponsored Partner Advertisement</div>
+        <div style="font-weight: 700; font-size: 14px;">Looking for Instant Home Loans? Quick Approval in 24 Hours!</div>
+      </div>
+      <button class="btn-sm btn-accent" onclick="alert('Redirecting to partner bank portal...')">Apply Now &rarr;</button>
+    </div>
+
+    <!-- Buyer Authentication & Registration Section -->
+    <div class="panel" id="auth">
+      <h4 style="margin-bottom: 10px;">Buyer Account Access</h4>
+      <div class="grid-2">
+        <div>
+          <label>Registered Buyer Email / Username</label>
+          <input type="text" placeholder="buyer@example.com">
+          <label style="margin-top: 8px;">Password</label>
+          <input type="password" placeholder="••••••••">
+          <button style="margin-top: 10px;" onclick="alert('Logged in successfully! Saved search preferences loaded.')">Sign In to Save Searches</button>
+        </div>
+        <div style="border-left: 1px solid var(--border); padding-left: 16px;">
+          <h5>New to Home Finder?</h5>
+          <p style="font-size: 12px; color: var(--muted); margin: 6px 0 12px;">Create an account to save your search criteria, get instant notifications on price drops, and book private property tours.</p>
+          <button class="btn-secondary" onclick="alert('Buyer registration form opened.')">Register New Buyer Account</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Home Finder Real Estate Platform. All property details, maps, and valuation estimates for registered users.</p>
+  </footer>
+
+</body>
+</html>

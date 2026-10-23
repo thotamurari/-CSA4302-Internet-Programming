@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReNewMarket - Second-Hand Goods &amp; Pre-Loved Marketplace</title>
+  <style>
+    :root { --primary: #059669; --primary-dark: #047857; --accent: #f59e0b; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; --danger: #ef4444; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #064e3b; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: #6ee7b7; }
+    nav a { color: #a7f3d0; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #fff; }
+    .container { max-width: 1180px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: var(--muted); }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); color: #0f172a; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; display: inline-block; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 24px 0 12px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .item-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+    .item-img { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); color: #334155; position: relative; }
+    .item-badge { position: absolute; top: 10px; left: 10px; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+    .badge-mint { background: #dcfce7; color: #15803d; }
+    .badge-good { background: #fef3c7; color: #b45309; }
+    .item-body { padding: 14px; }
+    .item-price { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #f8fafc; font-weight: 600; }
+    .admin-nav { display: flex; gap: 8px; margin-bottom: 12px; }
+    .admin-btn { padding: 6px 12px; background: #e2e8f0; border-radius: 6px; font-size: 12px; cursor: pointer; border: none; font-weight: 600; }
+    .admin-btn.active { background: #064e3b; color: white; }
+    footer { background: #064e3b; color: #a7f3d0; text-align: center; padding: 20px; margin-top: 40px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#9851;&#65039; ReNewMarket</h1>
+    <nav>
+      <a href="#browse">Browse Items</a>
+      <a href="#sell">Sell an Item</a>
+      <a href="#dashboard">My Dashboard</a>
+      <a href="#admin">Admin Management</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Search & Filter Bar -->
+    <div class="panel" id="browse">
+      <h3 style="margin-bottom: 10px;">Find Verified Second-Hand Goods</h3>
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 120px; gap: 10px; align-items: end;">
+        <div>
+          <label>Search Pre-Loved Goods</label>
+          <input type="text" placeholder="e.g. MacBook Pro, Dining Table, Leather Jacket...">
+        </div>
+        <div>
+          <label>Category</label>
+          <select>
+            <option>All Categories</option>
+            <option selected>Electronics</option>
+            <option>Furniture</option>
+            <option>Clothing &amp; Fashion</option>
+            <option>Collectibles &amp; Antiques</option>
+            <option>Books &amp; Sports</option>
+          </select>
+        </div>
+        <div>
+          <label>Condition</label>
+          <select>
+            <option>Any Condition</option>
+            <option>Mint / Like New</option>
+            <option selected>Good Condition</option>
+            <option>Fair / Functional</option>
+          </select>
+        </div>
+        <div>
+          <label>Location / Radius</label>
+          <select>
+            <option>Within 10 miles (Pickup)</option>
+            <option selected>Nationwide (Shipping)</option>
+          </select>
+        </div>
+        <div>
+          <button style="height: 38px;">Filter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listings Grid with Negotiation & Purchase options -->
+    <div class="section-title">
+      <span>Featured Second-Hand Listings</span>
+      <span style="font-size: 12px; color: var(--muted);">Direct Buyer-to-Seller Escrow Protection</span>
+    </div>
+
+    <div class="grid-3">
+      <!-- Item 1 -->
+      <div class="item-card">
+        <div class="item-img">&#128187;
+          <span class="item-badge badge-mint">Condition: Mint (9/10)</span>
+        </div>
+        <div class="item-body">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="item-price">$680 <span style="font-size: 11px; color: var(--muted); text-decoration: line-through;">$1,199</span></div>
+            <span style="font-size: 11px; background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px;">Price Negotiable</span>
+          </div>
+          <h4 style="margin: 4px 0;">Apple MacBook Air M1 (16GB, 512GB)</h4>
+          <div style="font-size: 12px; color: var(--muted);">&#128100; Seller: Alex Turner &bull; ★ 4.9 (18 sales)</div>
+          <div style="font-size: 11px; color: #059669; margin: 6px 0;">&#128666; Free Local Pickup &bull; Shipping $15</div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-sm btn-accent" style="flex: 1;" onclick="alert('Opening Offer Dialog: Propose your price to Alex')">&#129309; Make Offer</button>
+            <button class="btn-sm" style="flex: 1;" onclick="alert('Proceeding to escrow secure checkout at $680')">&#128722; Buy Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="item-card">
+        <div class="item-img" style="background: linear-gradient(135deg, #fef3c7, #fed7aa);">&#129681;
+          <span class="item-badge badge-good">Condition: Good</span>
+        </div>
+        <div class="item-body">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="item-price">$195 <span style="font-size: 11px; color: var(--muted); text-decoration: line-through;">$450</span></div>
+            <span style="font-size: 11px; background: #fef2f2; color: #b91c1c; padding: 2px 6px; border-radius: 4px;">Fixed Price</span>
+          </div>
+          <h4 style="margin: 4px 0;">Mid-Century Teak Wood Coffee Table</h4>
+          <div style="font-size: 12px; color: var(--muted);">&#128100; Seller: Clara Vance &bull; ★ 5.0 (9 sales)</div>
+          <div style="font-size: 11px; color: #059669; margin: 6px 0;">&#128666; Pickup Only (Downtown Sector)</div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-sm btn-secondary" style="flex: 1;" onclick="alert('Chat opened with Clara Vance')">&#128172; Message Seller</button>
+            <button class="btn-sm" style="flex: 1;" onclick="alert('Reserved table! Arrange pickup with seller.')">&#128722; Buy Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="item-card">
+        <div class="item-img" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8);">&#128087;
+          <span class="item-badge badge-mint">Condition: Like New</span>
+        </div>
+        <div class="item-body">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="item-price">$75 <span style="font-size: 11px; color: var(--muted); text-decoration: line-through;">$220</span></div>
+            <span style="font-size: 11px; background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px;">Price Negotiable</span>
+          </div>
+          <h4 style="margin: 4px 0;">Genuine Vintage Leather Bomber Jacket</h4>
+          <div style="font-size: 12px; color: var(--muted);">&#128100; Seller: Marco Bell &bull; ★ 4.7 (24 sales)</div>
+          <div style="font-size: 11px; color: #059669; margin: 6px 0;">&#128666; Domestic Shipping $8</div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-sm btn-accent" style="flex: 1;" onclick="alert('Opening Offer Dialog: Propose your price to Marco')">&#129309; Make Offer</button>
+            <button class="btn-sm" style="flex: 1;" onclick="alert('Proceeding to escrow secure checkout at $75')">&#128722; Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller Listing Creation Tool -->
+    <div class="section-title" id="sell">
+      <span>Sell Your Pre-Loved Goods (Create Listing)</span>
+    </div>
+
+    <div class="panel">
+      <div class="grid-2">
+        <div style="display: grid; gap: 8px;">
+          <div>
+            <label>Item Title</label>
+            <input type="text" placeholder="e.g. Sony WH-1000XM4 Wireless Headphones">
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Category</label>
+              <select>
+                <option>Electronics</option>
+                <option>Furniture &amp; Home</option>
+                <option>Fashion &amp; Apparel</option>
+                <option>Antiques &amp; Collectibles</option>
+              </select>
+            </div>
+            <div>
+              <label>Condition</label>
+              <select>
+                <option>Mint / Like New</option>
+                <option>Good (Minor wear)</option>
+                <option>Fair (Functional)</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Asking Price ($)</label>
+              <input type="number" placeholder="150">
+            </div>
+            <div>
+              <label>Price Negotiable?</label>
+              <select><option>Yes, Open to Offers</option><option>Fixed Price Only</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; gap: 8px;">
+          <div>
+            <label>Item Description &amp; Usage History</label>
+            <textarea rows="3" placeholder="Describe flaws, included accessories, purchase year, and reason for selling..."></textarea>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Fulfillment Mode</label>
+              <select><option>Local Pickup &amp; Shipping</option><option>Local Pickup Only</option><option>Shipping Only</option></select>
+            </div>
+            <div>
+              <label>Upload Item Photos</label>
+              <input type="file" style="padding: 5px;">
+            </div>
+          </div>
+          <button style="margin-top: 4px;" onclick="alert('Listing submitted for review and published live on ReNewMarket!')">&#10024; Publish Listing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Dashboard: Transactions & Negotiations -->
+    <div class="panel" id="dashboard">
+      <h4 style="margin-bottom: 10px;">User Dashboard &bull; Negotiations &amp; Logistics Tracking</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Order / Listing</th>
+            <th>Type</th>
+            <th>Agreed Price</th>
+            <th>Negotiation / Offer</th>
+            <th>Logistics Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sony Bravia 55" OLED TV</strong></td>
+            <td>Buyer</td>
+            <td>$420.00</td>
+            <td><span style="color: #15803d;">Offer Accepted ($420 down from $480)</span></td>
+            <td><span style="background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-size: 11px;">Shipped via Courier</span></td>
+            <td><button class="btn-sm" onclick="alert('Marked as Received & funds released from escrow to seller!')">Confirm Received</button></td>
+          </tr>
+          <tr>
+            <td><strong>Vintage Nikon DSLR Camera</strong></td>
+            <td>Seller</td>
+            <td>$180.00</td>
+            <td><span style="color: #d97706;">Counter-offer received: $165</span></td>
+            <td><span style="background: #fef3c7; color: #b45309; padding: 2px 6px; border-radius: 4px; font-size: 11px;">Awaiting Agreement</span></td>
+            <td>
+              <button class="btn-sm" onclick="alert('Accepted $165!')">Accept</button>
+              <button class="btn-sm btn-danger" onclick="alert('Declined offer')">Decline</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Admin Management Section (Users, Categories, Commodities, Orders) -->
+    <div class="section-title" id="admin">
+      <span>Administrator Control Panel (Four Core Modules)</span>
+      <span style="font-size: 12px; color: #16a34a;">&#11044; System Online &bull; Network Connected</span>
+    </div>
+
+    <div class="panel" style="background: #f8fafc; border-color: #cbd5e1;">
+      <div class="admin-nav">
+        <button class="admin-btn active">1. User Management</button>
+        <button class="admin-btn">2. Category Management</button>
+        <button class="admin-btn">3. Commodity Management</button>
+        <button class="admin-btn">4. Order Management</button>
+      </div>
+
+      <!-- Admin Tab 1: User Management -->
+      <div style="margin-bottom: 16px;">
+        <h5 style="margin-bottom: 6px;">Admin &bull; User Accounts &amp; Credentials</h5>
+        <table>
+          <thead>
+            <tr><th>User ID</th><th>Username / Email</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#USR-101</td>
+              <td>alex_turner@mail.com</td>
+              <td>Seller &bull; Verified</td>
+              <td><span style="color: #15803d;">Active</span></td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Editing user permissions and resetting password')">Edit User</button>
+                <button class="btn-sm btn-danger" onclick="alert('User #USR-101 deleted!')">Delete User</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#USR-204</td>
+              <td>spammer_bot@fake.net</td>
+              <td>Suspicious Buyer</td>
+              <td><span style="color: #ef4444;">Flagged</span></td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Editing user record')">Edit User</button>
+                <button class="btn-sm btn-danger" onclick="alert('Spammer user banned and deleted!')">Delete User</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Admin Tab 2 & 3: Category & Commodity Management -->
+      <div class="grid-2" style="margin-bottom: 16px;">
+        <div style="background: #fff; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius);">
+          <h5 style="margin-bottom: 8px;">Category Management</h5>
+          <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+            <input type="text" placeholder="New Category Name">
+            <button class="btn-sm" style="width: 120px;" onclick="alert('New Category Added')">&#43; Add Category</button>
+          </div>
+          <div style="font-size: 12px; color: var(--muted);">Active Categories: Electronics (Delete) &bull; Furniture (Delete) &bull; Clothing (Delete)</div>
+        </div>
+
+        <div style="background: #fff; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius);">
+          <h5 style="margin-bottom: 8px;">Commodity Moderation</h5>
+          <div style="font-size: 12px; margin-bottom: 6px;">Manage reported listings, modify descriptions, or remove counterfeit goods:</div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-sm btn-secondary" onclick="alert('Editing commodity details...')">Edit Commodity</button>
+            <button class="btn-sm btn-danger" onclick="alert('Commodity removed for safety violation!')">Delete Commodity</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Tab 4: Order Logistics Management -->
+      <div style="background: #fff; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius);">
+        <h5 style="margin-bottom: 8px;">Order &amp; Logistics Status Management</h5>
+        <table>
+          <thead>
+            <tr><th>Order ID</th><th>Commodity</th><th>Logistics Status</th><th>Update Status</th><th>Delete Order</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#ORD-772</td>
+              <td>Sony OLED TV</td>
+              <td><strong>Shipped</strong></td>
+              <td>
+                <select style="width: auto; font-size: 12px; padding: 3px 6px;">
+                  <option>Shipped</option>
+                  <option selected>Received</option>
+                  <option>Pending</option>
+                </select>
+                <button class="btn-sm" onclick="alert('Logistics status updated to Received!')">Save</button>
+              </td>
+              <td><button class="btn-sm btn-danger" onclick="alert('Order #ORD-772 deleted!')">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ReNewMarket Platform. Promoting circular economy &amp; secure second-hand trade.</p>
+  </footer>
+
+</body>
+</html>

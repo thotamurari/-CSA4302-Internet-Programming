@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlamourBook - Online Beauty Parlour Appointment Booking System</title>
+  <style>
+    :root { --primary: #a21caf; --accent: #e11d48; --bg: #fdf4ff; --card: #fff; --text: #1e1b4b; --muted: #64748b; --border: #e2d4ea; --success: #15803d; --danger: #b91c1c; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #581c87; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; }
+    nav a { color: #e9d5ff; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #f9a8d4; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.1rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; background: #fce7f3; color: #a21caf; }
+    .badge-success { background: #dcfce7; color: var(--success); }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #faf5ff; font-weight: 600; }
+    .time-slot { display: inline-block; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; margin: 3px; font-size: 12px; cursor: pointer; font-weight: 600; background: #faf5ff; }
+    .time-slot.selected { background: var(--primary); color: white; border-color: var(--primary); }
+    .time-slot.locked { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; text-decoration: line-through; }
+    .admin-box { background: #fefce8; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #581c87; color: #e9d5ff; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#128133; GlamourBook Salon</h1>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#booking">Book Appointment</a>
+      <a href="#my-appts">My Appointments</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#admin-section">Salon Manager</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Services & Stylist Profiles -->
+    <h3 class="section-title" id="services">Available Services &amp; Stylist Profiles</h3>
+    <div class="grid-3">
+      <div class="panel">
+        <span class="badge">Hair Styling</span>
+        <h4 style="margin: 6px 0 4px;">Haircut, Blowout &amp; Styling</h4>
+        <p style="font-size: 12px; color: var(--muted);">Expert precision cut, wash, blow-dry and styling. Includes free consultation.</p>
+        <div style="font-weight: 700; color: var(--primary); margin: 6px 0;">$45 &ndash; $85</div>
+        <div style="font-size: 11.5px; color: var(--muted);">Stylist: <strong>Sarah Mitchell</strong> (Senior, 8 yrs exp)</div>
+        <button class="btn-sm" style="margin-top: 8px;" onclick="document.getElementById('serviceSelect').value='Haircut & Styling ($45-$85)'; location.href='#booking';">Book Now</button>
+      </div>
+      <div class="panel">
+        <span class="badge">Facial &amp; Skincare</span>
+        <h4 style="margin: 6px 0 4px;">Deep Cleansing Hydra Facial</h4>
+        <p style="font-size: 12px; color: var(--muted);">Multi-step hydra dermabrasion facial with collagen mask and LED light therapy.</p>
+        <div style="font-weight: 700; color: var(--primary); margin: 6px 0;">$120</div>
+        <div style="font-size: 11.5px; color: var(--muted);">Stylist: <strong>Priya Kapoor</strong> (Aesthetician, 5 yrs exp)</div>
+        <button class="btn-sm" style="margin-top: 8px;" onclick="document.getElementById('serviceSelect').value='Hydra Facial ($120)'; location.href='#booking';">Book Now</button>
+      </div>
+      <div class="panel">
+        <span class="badge">Nail Art</span>
+        <h4 style="margin: 6px 0 4px;">Gel Manicure &amp; Pedicure Combo</h4>
+        <p style="font-size: 12px; color: var(--muted);">Gel polish application with cuticle care, nail shaping, and foot spa massage.</p>
+        <div style="font-weight: 700; color: var(--primary); margin: 6px 0;">$55</div>
+        <div style="font-size: 11.5px; color: var(--muted);">Stylist: <strong>Emma Torres</strong> (Nail Tech, 4 yrs exp)</div>
+        <button class="btn-sm" style="margin-top: 8px;" onclick="document.getElementById('serviceSelect').value='Gel Mani-Pedi ($55)'; location.href='#booking';">Book Now</button>
+      </div>
+    </div>
+
+    <!-- Appointment Booking with Calendar & Time Slots -->
+    <h3 class="section-title" id="booking">Book an Appointment</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Reservation Calendar &amp; Time Selection</h4>
+        <form onsubmit="event.preventDefault(); alert('Appointment confirmed! Confirmation email & SMS reminder sent.');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Select Service</label>
+              <select id="serviceSelect">
+                <option>Haircut &amp; Styling ($45-$85)</option>
+                <option>Hydra Facial ($120)</option>
+                <option>Gel Mani-Pedi ($55)</option>
+                <option>Bridal Makeup Package ($250)</option>
+                <option>Hair Color &amp; Highlights ($90)</option>
+              </select>
+            </div>
+            <div>
+              <label>Choose Stylist</label>
+              <select>
+                <option>Sarah Mitchell (Hair)</option>
+                <option>Priya Kapoor (Facial)</option>
+                <option>Emma Torres (Nails)</option>
+                <option>Any Available Stylist</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Preferred Date (Calendar)</label>
+            <input type="date" value="2026-10-18" required>
+          </div>
+          <div style="margin-bottom: 10px;">
+            <label>Available Time Slots (Lockout applies for unavailable hours):</label>
+            <div style="margin-top: 4px;">
+              <span class="time-slot locked">09:00 AM</span>
+              <span class="time-slot" onclick="selectSlot(this)">09:30 AM</span>
+              <span class="time-slot selected" onclick="selectSlot(this)">10:00 AM</span>
+              <span class="time-slot" onclick="selectSlot(this)">10:30 AM</span>
+              <span class="time-slot locked">11:00 AM</span>
+              <span class="time-slot locked">11:30 AM</span>
+              <span class="time-slot" onclick="selectSlot(this)">12:00 PM</span>
+              <span class="time-slot" onclick="selectSlot(this)">02:00 PM</span>
+              <span class="time-slot" onclick="selectSlot(this)">02:30 PM</span>
+              <span class="time-slot locked">03:00 PM</span>
+              <span class="time-slot" onclick="selectSlot(this)">04:00 PM</span>
+            </div>
+            <div style="font-size: 11px; color: var(--muted); margin-top: 6px;">
+              <strong style="color: var(--primary);">&#9632;</strong> Selected &nbsp;
+              <strong style="color: #94a3b8;">&#9632;</strong> Locked / Unavailable &nbsp;
+              <strong style="color: #e9d5ff;">&#9632;</strong> Open
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Payment</label>
+              <select>
+                <option>Pay Full Amount Online (Stripe)</option>
+                <option>Pay Deposit (50% via PayPal)</option>
+                <option>Pay at Salon Counter</option>
+              </select>
+            </div>
+            <div>
+              <label>SMS/Email Reminders</label>
+              <select>
+                <option>Email + SMS (24 hrs before)</option>
+                <option>Email Only</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Confirm Appointment</button>
+        </form>
+        <div style="font-size: 11px; color: var(--muted); margin-top: 8px; background: #fef2f2; padding: 6px 8px; border-radius: 4px;">
+          Unpaid reservations are automatically cancelled after 30 minutes.
+        </div>
+      </div>
+
+      <!-- My Appointments: Upcoming & History -->
+      <div class="panel" id="my-appts">
+        <h4 style="margin-bottom: 8px;">My Appointments (Personal Account)</h4>
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--primary);">Upcoming Reservations</div>
+        <table>
+          <thead><tr><th>Date &amp; Time</th><th>Service</th><th>Stylist</th><th>Payment</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Oct 18, 10:00 AM</strong></td>
+              <td>Haircut &amp; Styling</td>
+              <td>Sarah Mitchell</td>
+              <td><span class="badge badge-success">Paid $65</span></td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Select a new date and time to reschedule.')">Reschedule</button>
+                <button class="btn-sm btn-danger" onclick="if(confirm('Cancel appointment Oct 18?')) alert('Appointment cancelled. Refund initiated.')">Cancel</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 4px; color: var(--muted);">Reservations History</div>
+        <table>
+          <thead><tr><th>Date</th><th>Service</th><th>Stylist</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Sep 25, 2:00 PM</td><td>Hydra Facial</td><td>Priya Kapoor</td><td><span class="badge badge-success">Completed</span></td></tr>
+            <tr><td>Aug 10, 11:00 AM</td><td>Gel Mani-Pedi</td><td>Emma Torres</td><td><span class="badge badge-success">Completed</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 10px;">
+          <label>Personal Data</label>
+          <div style="font-size: 12px; color: var(--muted);">Name: <strong>Jessica Adams</strong> &bull; Phone: +1 (555) 321-8765 &bull; Email: jessica.a@mail.com</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Feedback -->
+    <h3 class="section-title" id="feedback">Customer Feedback</h3>
+    <div class="panel">
+      <form onsubmit="event.preventDefault(); alert('Thank you! Your feedback has been recorded and shared with the stylist.'); this.reset();">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div><label>Service Received</label><input type="text" value="Haircut & Styling" required></div>
+          <div><label>Stylist Name</label><input type="text" value="Sarah Mitchell" required></div>
+          <div><label>Rating</label><select><option>5 &#11088; Excellent</option><option>4 &#11088; Good</option><option>3 &#11088; Average</option></select></div>
+        </div>
+        <div style="margin-bottom: 8px;"><label>Your Feedback</label><textarea rows="2" placeholder="Share your salon experience and suggestions..." required></textarea></div>
+        <button type="submit" class="btn-sm" style="width: auto;">Submit Feedback</button>
+      </form>
+    </div>
+
+    <!-- Salon Manager / Admin Panel -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.1rem; margin-bottom: 4px;">Salon Manager &amp; Staff Portal</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">Manage services, stylist schedules, upcoming reservations calendar, edit/add bookings, and contact customers via SMS or call.</p>
+      <div class="grid-2">
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Manage Reservations Calendar</h4>
+          <table style="font-size: 12px;">
+            <thead><tr><th>Date / Time</th><th>Customer</th><th>Service</th><th>Stylist</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Oct 18, 10:00 AM</td>
+                <td>Jessica Adams</td>
+                <td>Haircut</td>
+                <td>Sarah M.</td>
+                <td>
+                  <button class="btn-sm btn-secondary" onclick="alert('Reservation edited. Customer notified.')">Edit</button>
+                  <button class="btn-sm btn-secondary" onclick="alert('Calling customer +1 555-321-8765...')">Call</button>
+                  <button class="btn-sm" onclick="alert('SMS reminder sent to customer.')">SMS</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Oct 18, 2:00 PM</td>
+                <td>Maria Lopez</td>
+                <td>Facial</td>
+                <td>Priya K.</td>
+                <td>
+                  <button class="btn-sm btn-secondary" onclick="alert('Reservation edited.')">Edit</button>
+                  <button class="btn-sm" onclick="alert('SMS sent.')">SMS</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn-sm" style="margin-top: 8px;" onclick="alert('Adding a new manual reservation...')">+ Add Reservation</button>
+        </div>
+
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Manage Service Offerings &amp; Stylist Schedules</h4>
+          <form onsubmit="event.preventDefault(); alert('Service & stylist schedule updated!');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div><label>Service Name</label><input type="text" value="Haircut & Blow-dry" required></div>
+              <div><label>Price ($)</label><input type="number" value="65" required></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div><label>Assigned Stylist</label><select><option>Sarah Mitchell</option><option>Priya Kapoor</option><option>Emma Torres</option></select></div>
+              <div><label>Available Days</label><select><option>Mon - Sat (9 AM - 6 PM)</option><option>Tue - Fri (10 AM - 5 PM)</option></select></div>
+            </div>
+            <button type="submit" class="btn-sm" style="width: 100%;">Save Schedule</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>&copy; 2026 GlamourBook. Online Beauty Parlour Appointment Booking &amp; Salon Management.</footer>
+
+  <script>
+    function selectSlot(el) {
+      if (el.classList.contains('locked')) return;
+      document.querySelectorAll('.time-slot.selected').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+  </script>
+</body>
+</html>

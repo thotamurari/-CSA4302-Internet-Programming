@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SweetCrust - Online Cake Ordering &amp; Bakery Delivery Portal</title>
+  <style>
+    :root { --primary: #be185d; --accent: #d97706; --bg: #fdf2f8; --card: #fff; --text: #1e1b4b; --muted: #64748b; --border: #e2e0ea; --success: #15803d; --danger: #b91c1c; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #4c1d95; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; }
+    nav a { color: #c4b5fd; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #fbbf24; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.1rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .cake-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .cake-img { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .cake-img.choco { background: linear-gradient(135deg, #78350f, #92400e); color: #fef3c7; }
+    .cake-img.vanilla { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
+    .cake-img.red { background: linear-gradient(135deg, #be123c, #e11d48); color: #fff; }
+    .cake-img.fruit { background: linear-gradient(135deg, #059669, #10b981); color: #fff; }
+    .cake-body { padding: 12px; }
+    .cake-body h4 { font-size: 0.95rem; margin-bottom: 4px; }
+    .price { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; background: #fce7f3; color: #be185d; }
+    .badge-success { background: #dcfce7; color: var(--success); }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #f5f3ff; font-weight: 600; }
+    .admin-box { background: #fefce8; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #4c1d95; color: #c4b5fd; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#127856; SweetCrust Cake Shop</h1>
+    <nav>
+      <a href="#catalog">Cake Catalog</a>
+      <a href="#cart-section">Cart &amp; Order</a>
+      <a href="#my-orders">My Orders</a>
+      <a href="#auth-section">Login / Register</a>
+      <a href="#admin-section">Admin Panel</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Search & Filter Bar -->
+    <div class="panel" id="catalog">
+      <h4 style="margin-bottom: 8px;">Browse &amp; Filter Cakes</h4>
+      <form style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 120px; gap: 10px; align-items: end;" onsubmit="event.preventDefault(); alert('Filtering cake catalog...');">
+        <div>
+          <label>Search Cake Name</label>
+          <input type="text" placeholder="e.g. Chocolate Truffle, Red Velvet...">
+        </div>
+        <div>
+          <label>Category</label>
+          <select>
+            <option>All Categories</option>
+            <option>Birthday Cakes</option>
+            <option>Wedding Cakes</option>
+            <option>Anniversary Specials</option>
+            <option>Cupcakes &amp; Pastries</option>
+          </select>
+        </div>
+        <div>
+          <label>Sub Category / Flavor</label>
+          <select>
+            <option>All Flavors</option>
+            <option selected>Chocolate</option>
+            <option>Vanilla</option>
+            <option>Red Velvet</option>
+            <option>Butterscotch</option>
+            <option>Fruit &amp; Cream</option>
+          </select>
+        </div>
+        <div>
+          <label>Price Range</label>
+          <select>
+            <option>Any Price</option>
+            <option>Under $20</option>
+            <option selected>$20 - $50</option>
+            <option>$50 - $100</option>
+            <option>$100+</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="btn-accent">Filter</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Cake Product Grid -->
+    <h3 class="section-title">Featured Cakes &amp; Bestsellers</h3>
+    <div class="grid-3">
+      <div class="cake-card">
+        <div class="cake-img choco">&#127851;</div>
+        <div class="cake-body">
+          <span class="badge">Birthday &bull; Chocolate</span>
+          <h4>Belgian Dark Chocolate Truffle</h4>
+          <p style="font-size: 12px; color: var(--muted); margin: 4px 0;">Rich cocoa ganache layered with dark Belgian chocolate mousse and hazelnut crunch.</p>
+          <div class="price">$34.99 <span style="font-size: 11px; color: var(--muted); font-weight: normal;">/ 1 kg</span></div>
+          <button class="btn-sm" style="margin-top: 8px;" onclick="addToCart('Belgian Dark Chocolate Truffle', 34.99)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="cake-card">
+        <div class="cake-img red">&#127856;</div>
+        <div class="cake-body">
+          <span class="badge">Anniversary &bull; Red Velvet</span>
+          <h4>Classic Red Velvet Cream Cheese</h4>
+          <p style="font-size: 12px; color: var(--muted); margin: 4px 0;">Moist red velvet sponge layered with tangy cream cheese frosting and white chocolate drizzle.</p>
+          <div class="price">$42.50 <span style="font-size: 11px; color: var(--muted); font-weight: normal;">/ 1.5 kg</span></div>
+          <button class="btn-sm" style="margin-top: 8px;" onclick="addToCart('Classic Red Velvet Cream Cheese', 42.50)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="cake-card">
+        <div class="cake-img vanilla">&#127874;</div>
+        <div class="cake-body">
+          <span class="badge">Birthday &bull; Vanilla</span>
+          <h4>French Vanilla Bean Delight</h4>
+          <p style="font-size: 12px; color: var(--muted); margin: 4px 0;">Light vanilla sponge infused with Madagascar bean extract and buttercream frosting.</p>
+          <div class="price">$28.00 <span style="font-size: 11px; color: var(--muted); font-weight: normal;">/ 1 kg</span></div>
+          <button class="btn-sm" style="margin-top: 8px;" onclick="addToCart('French Vanilla Bean Delight', 28.00)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="cake-card">
+        <div class="cake-img fruit">&#127815;</div>
+        <div class="cake-body">
+          <span class="badge">Wedding &bull; Fruit</span>
+          <h4>Tropical Mixed Fruit Gateau</h4>
+          <p style="font-size: 12px; color: var(--muted); margin: 4px 0;">Seasonal tropical fruits with whipped cream layers, glazed mango coulis topping.</p>
+          <div class="price">$55.00 <span style="font-size: 11px; color: var(--muted); font-weight: normal;">/ 2 kg</span></div>
+          <button class="btn-sm" style="margin-top: 8px;" onclick="addToCart('Tropical Mixed Fruit Gateau', 55.00)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart & Checkout -->
+    <h3 class="section-title" id="cart-section">Shopping Cart &amp; Checkout</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Your Cart (2 Items)</h4>
+        <table>
+          <thead><tr><th>Cake Item</th><th>Size</th><th>Qty</th><th>Price</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Belgian Dark Chocolate Truffle</strong></td>
+              <td>1 kg</td>
+              <td>1</td>
+              <td>$34.99</td>
+              <td><button class="btn-sm btn-danger" onclick="alert('Item removed from cart.')">Remove</button></td>
+            </tr>
+            <tr>
+              <td><strong>Classic Red Velvet Cream Cheese</strong></td>
+              <td>1.5 kg</td>
+              <td>1</td>
+              <td>$42.50</td>
+              <td><button class="btn-sm btn-danger" onclick="alert('Item removed from cart.')">Remove</button></td>
+            </tr>
+          </tbody>
+          <tfoot><tr><td colspan="3" style="text-align: right; font-weight: 700;">Subtotal:</td><td colspan="2" style="font-weight: 700; color: var(--primary);">$77.49</td></tr></tfoot>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Place Order &amp; Delivery Details</h4>
+        <form onsubmit="event.preventDefault(); alert('Order placed! Confirmation email dispatched. Order ID: #SC-2026-4829');">
+          <div style="margin-bottom: 8px;">
+            <label>Custom Cake Message (optional)</label>
+            <input type="text" placeholder='e.g. "Happy Birthday Emma! &#127873;"'>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Shipping / Delivery Address</label>
+            <textarea rows="2" placeholder="Full street address, city, zip code..." required>42 Maple Street, Brooklyn, NY 11201</textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Preferred Delivery Date</label>
+              <input type="date" value="2026-10-20" required>
+            </div>
+            <div>
+              <label>Payment Method</label>
+              <select>
+                <option>Credit / Debit Card</option>
+                <option>PayPal</option>
+                <option>Cash on Delivery</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Place Order ($77.49)</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- My Orders & Shipping Status -->
+    <h3 class="section-title" id="my-orders">My Orders &amp; Shipping Status</h3>
+    <div class="panel">
+      <table>
+        <thead>
+          <tr><th>Order ID</th><th>Items Ordered</th><th>Delivery Address</th><th>Total</th><th>Order Status</th><th>Shipping Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#SC-2026-4829</strong></td>
+            <td>Belgian Chocolate Truffle (1 kg), Red Velvet (1.5 kg)</td>
+            <td>42 Maple St, Brooklyn</td>
+            <td>$77.49</td>
+            <td><span class="badge badge-success">Confirmed</span></td>
+            <td><span class="badge">Preparing &bull; Est. Oct 20</span></td>
+          </tr>
+          <tr>
+            <td><strong>#SC-2026-3011</strong></td>
+            <td>French Vanilla Bean (1 kg)</td>
+            <td>18 Oak Avenue, Manhattan</td>
+            <td>$28.00</td>
+            <td><span class="badge badge-success">Delivered</span></td>
+            <td><span style="color: var(--success); font-weight: 600;">Delivered Oct 08</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Auth: Register & Login -->
+    <h3 class="section-title" id="auth-section">User Registration &amp; Login</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Register New Account</h4>
+        <form onsubmit="event.preventDefault(); alert('Account created! Welcome to SweetCrust.');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Full Name</label><input type="text" placeholder="Jane Doe" required></div>
+            <div><label>Phone</label><input type="tel" placeholder="+1 555-000-0000" required></div>
+          </div>
+          <div style="margin-bottom: 8px;"><label>Email</label><input type="email" placeholder="jane@example.com" required></div>
+          <div style="margin-bottom: 8px;"><label>Password</label><input type="password" placeholder="Min 6 characters" required></div>
+          <button type="submit" style="width: 100%;">Create Account</button>
+        </form>
+      </div>
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">User Login</h4>
+        <form onsubmit="event.preventDefault(); alert('Logged in successfully!');">
+          <div style="margin-bottom: 8px;"><label>Email</label><input type="email" value="jane@example.com" required></div>
+          <div style="margin-bottom: 8px;"><label>Password</label><input type="password" value="••••••••" required></div>
+          <button type="submit" style="width: 100%;">Sign In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.1rem; margin-bottom: 4px;">Admin &ndash; Cake Inventory &amp; Order Management</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">Manage products, post cake details, upload images, update orders, and track shipping.</p>
+      <div class="grid-2">
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Post / Update Cake Product</h4>
+          <form onsubmit="event.preventDefault(); alert('Cake product saved to inventory!');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div><label>Cake Name</label><input type="text" value="Belgian Dark Chocolate Truffle" required></div>
+              <div><label>Category</label><select><option>Birthday</option><option>Wedding</option><option>Anniversary</option><option>Cupcakes</option></select></div>
+            </div>
+            <div style="margin-bottom: 8px;"><label>Product Description</label><textarea rows="2">Rich cocoa ganache layered with dark Belgian chocolate mousse and hazelnut crunch.</textarea></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div><label>Price ($)</label><input type="number" value="34.99"></div>
+              <div><label>Stock Qty</label><input type="number" value="25"></div>
+              <div><label>Upload Image</label><input type="file"></div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="submit" class="btn-sm" style="flex: 1;">Save Product</button>
+              <button type="button" class="btn-sm btn-danger" onclick="alert('Product removed from inventory.')">Delete</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Manage Orders &amp; Update Shipping</h4>
+          <table style="font-size: 12px;">
+            <thead><tr><th>Order</th><th>Customer</th><th>Shipping Location</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>#SC-2026-4829</td>
+                <td>Jane Doe</td>
+                <td>Brooklyn, NY</td>
+                <td><select style="padding: 3px; font-size: 11px;"><option>Preparing</option><option>Shipped</option><option>Out for Delivery</option><option>Delivered</option></select></td>
+                <td><button class="btn-sm" onclick="alert('Order status updated!')">Update</button></td>
+              </tr>
+              <tr>
+                <td>#SC-2026-3011</td>
+                <td>Alex Kim</td>
+                <td>Manhattan, NY</td>
+                <td><span style="color: var(--success); font-weight: 600;">Delivered</span></td>
+                <td><span style="font-size: 11px; color: var(--muted);">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn-sm btn-secondary" style="margin-top: 10px;" onclick="alert('Admin logged out.')">Logout Admin</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>&copy; 2026 SweetCrust Cake Shop. Online Cake Ordering &amp; Bakery Delivery Platform.</footer>
+
+  <script>
+    function addToCart(name, price) {
+      alert(`Added to cart: "${name}" ($${price}). View cart to proceed with checkout.`);
+      location.href = '#cart-section';
+    }
+  </script>
+</body>
+</html>

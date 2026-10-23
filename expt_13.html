@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlossomGifts - Online Flowers &amp; Personalized Gifts Portal</title>
+  <style>
+    :root { --primary: #e11d48; --primary-dark: #be123c; --accent: #8b5cf6; --bg: #fff1f2; --card: #ffffff; --text: #1e293b; --muted: #64748b; --border: #fecdd3; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #881337; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: #fecdd3; }
+    nav a { color: #ffe4e6; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #fbcfe8; }
+    .container { max-width: 1180px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; color: var(--muted); }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: #e11d48; color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; display: inline-block; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 24px 0 12px; border-bottom: 2px solid #fda4af; padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .cat-pill { display: inline-block; padding: 6px 14px; background: #fff; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; font-weight: 600; margin: 3px; cursor: pointer; color: #9f1239; }
+    .cat-pill:hover, .cat-pill.active { background: #e11d48; color: #fff; border-color: #e11d48; }
+    .gift-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+    .gift-img { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(135deg, #fbcfe8, #fda4af); color: #be123c; }
+    .gift-body { padding: 14px; }
+    .gift-price { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin: 4px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid #f1f5f9; padding: 8px 10px; text-align: left; }
+    th { background: #fff1f2; font-weight: 600; color: #881337; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 600; border-radius: 4px; }
+    .badge-pink { background: #ffe4e6; color: #be123c; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .step-track { display: flex; justify-content: space-between; position: relative; margin: 16px 0; }
+    .step-track::before { content: ""; position: absolute; top: 12px; left: 10%; right: 10%; height: 2px; background: #f43f5e; z-index: 1; }
+    .step-node { position: relative; z-index: 2; background: #fff; padding: 0 8px; text-align: center; }
+    .step-circle { width: 24px; height: 24px; border-radius: 50%; background: #e11d48; color: #fff; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; font-size: 11px; font-weight: bold; }
+    footer { background: #881337; color: #fecdd3; text-align: center; padding: 20px; margin-top: 40px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#127801; BlossomGifts</h1>
+    <nav>
+      <a href="#categories">Categories</a>
+      <a href="#catalog">Shop Gifts</a>
+      <a href="#cart">Shopping Cart (2)</a>
+      <a href="#tracking">Track Order</a>
+      <a href="#admin-inventory">Admin Inventory</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Categories & Subcategories Browse Bar -->
+    <div class="panel" id="categories">
+      <h3 style="margin-bottom: 8px;">Explore Flowers &amp; Thoughtful Gifts by Occasion</h3>
+      <div style="margin-bottom: 8px;">
+        <span style="font-size: 11px; font-weight: bold; color: var(--muted); margin-right: 6px;">POPULAR OCCASIONS:</span>
+        <span class="cat-pill active">&#127874; Birthday</span>
+        <span class="cat-pill">&#128141; Anniversary</span>
+        <span class="cat-pill">&#128140; Valentine's Day</span>
+        <span class="cat-pill">&#129301; Get Well Soon</span>
+        <span class="cat-pill">&#129309; Thank You</span>
+        <span class="cat-pill">&#127799; Sympathy &amp; Funeral</span>
+      </div>
+      <div style="margin-bottom: 8px;">
+        <span style="font-size: 11px; font-weight: bold; color: var(--muted); margin-right: 6px;">BY RECIPIENT:</span>
+        <span class="cat-pill">&#128105; For Her</span>
+        <span class="cat-pill">&#128104; For Him</span>
+        <span class="cat-pill">&#128106; For Parents</span>
+        <span class="cat-pill">&#127873; For Kids &amp; Friends</span>
+      </div>
+      <div>
+        <span style="font-size: 11px; font-weight: bold; color: var(--muted); margin-right: 6px;">SUBCATEGORIES:</span>
+        <span class="cat-pill">&#127801; Fresh Roses &amp; Lilies</span>
+        <span class="cat-pill">&#127851; Chocolate Hampers</span>
+        <span class="cat-pill">&#127856; Cakes &amp; Combos</span>
+        <span class="cat-pill">&#9749; Custom Photo Mugs</span>
+        <span class="cat-pill">&#129528; Teddy &amp; Flower Sets</span>
+      </div>
+    </div>
+
+    <!-- Product Catalog -->
+    <div class="section-title" id="catalog">
+      <span>Curated Floral Bouquets &amp; Personalized Gifts</span>
+      <span class="badge badge-pink">Same-Day Delivery Available</span>
+    </div>
+
+    <div class="grid-3">
+      <!-- Item 1 -->
+      <div class="gift-card">
+        <div class="gift-img">&#127801;</div>
+        <div class="gift-body">
+          <span class="badge badge-pink">Best Seller</span>
+          <h4 style="margin: 4px 0;">Velvet Romance - 24 Red Roses</h4>
+          <p style="font-size: 12px; color: var(--muted);">Hand-picked Dutch roses tied with satin ribbon and fresh gypsophila fillers.</p>
+          <div class="gift-price">$49.99 <span style="font-size: 11px; color: #16a34a;">In Stock</span></div>
+          <div style="margin: 8px 0;">
+            <label>Select Delivery Date</label>
+            <input type="date" value="2026-10-15">
+          </div>
+          <button onclick="alert('Added 24 Red Roses to your shopping cart!')">&#128722; Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="gift-card">
+        <div class="gift-img" style="background: linear-gradient(135deg, #fed7aa, #fde68a);">&#127873;</div>
+        <div class="gift-body">
+          <span class="badge badge-green">Gourmet Combo</span>
+          <h4 style="margin: 4px 0;">Luxury Truffle &amp; Orchids Basket</h4>
+          <p style="font-size: 12px; color: var(--muted);">Purple orchids arrangement paired with Belgian artisan chocolate assortment.</p>
+          <div class="gift-price">$68.50 <span style="font-size: 11px; color: #16a34a;">In Stock</span></div>
+          <div style="margin: 8px 0;">
+            <label>Select Delivery Date</label>
+            <input type="date" value="2026-10-15">
+          </div>
+          <button onclick="alert('Added Truffle & Orchids Basket to your shopping cart!')">&#128722; Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="gift-card">
+        <div class="gift-img" style="background: linear-gradient(135deg, #c7d2fe, #ddd6fe);">&#128444;&#65039;</div>
+        <div class="gift-body">
+          <span class="badge badge-pink">Personalized Keepsake</span>
+          <h4 style="margin: 4px 0;">Custom Engraved Wooden Photo Plaque</h4>
+          <p style="font-size: 12px; color: var(--muted);">Laser-engraved natural oak frame with custom message and photo upload.</p>
+          <div class="gift-price">$34.00 <span style="font-size: 11px; color: #16a34a;">Custom Crafted</span></div>
+          <div style="margin: 8px 0;">
+            <label>Upload Photo &amp; Message</label>
+            <input type="text" placeholder="Engraving text (e.g. Happy 5th Anniversary)">
+          </div>
+          <button onclick="alert('Added Custom Photo Plaque to your shopping cart!')">&#128722; Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customizable Order System & Shopping Cart -->
+    <div class="section-title" id="cart">
+      <span>Shopping Cart &amp; Customized Delivery Checkout</span>
+    </div>
+
+    <div class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Product Particulars</th>
+            <th>Custom Message on Card</th>
+            <th>Delivery Slot</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>24 Red Roses Bouquet</strong><br><span style="font-size: 11px; color: var(--muted);">SKU: #FLW-881</span></td>
+            <td><input type="text" value="Wishing you the happiest birthday, Emma! Love always." style="font-size: 12px;"></td>
+            <td><select style="font-size: 12px;"><option>Oct 15 (9 AM - 1 PM)</option><option>Oct 15 (Evening 5-8 PM)</option></select></td>
+            <td><input type="number" value="1" style="width: 55px; font-size: 12px;"></td>
+            <td>$49.99</td>
+            <td><button class="btn-sm btn-danger" onclick="alert('Item removed from cart')">Remove</button></td>
+          </tr>
+          <tr>
+            <td><strong>Custom Photo Plaque</strong><br><span style="font-size: 11px; color: var(--muted);">SKU: #GFT-309</span></td>
+            <td><input type="text" value="Happy 5th Anniversary to us!" style="font-size: 12px;"></td>
+            <td><select style="font-size: 12px;"><option>Oct 16 Standard</option></select></td>
+            <td><input type="number" value="1" style="width: 55px; font-size: 12px;"></td>
+            <td>$34.00</td>
+            <td><button class="btn-sm btn-danger" onclick="alert('Item removed from cart')">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: start;">
+        <div>
+          <label>Recipient Full Address &amp; Contact</label>
+          <textarea rows="3" placeholder="Recipient Name, Street Address, City, Postal Code, Mobile Number"></textarea>
+          <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <input type="text" placeholder="Promo code e.g. LOYAL15">
+            <button class="btn-secondary btn-sm" onclick="alert('Coupon applied! 15% discount deducted.')">Apply Code</button>
+          </div>
+        </div>
+        <div style="background: #fff1f2; padding: 14px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Subtotal:</span><strong>$83.99</strong></div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Loyalty Promo (15%):</span><span style="color: #16a34a;">-$12.60</span></div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Scheduled Express Delivery:</span><span>FREE</span></div>
+          <hr style="border: 0; border-top: 1px dashed var(--border); margin: 8px 0;">
+          <div style="display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: bold; color: #881337;">
+            <span>Total Payable:</span>
+            <span>$71.39</span>
+          </div>
+          <button style="margin-top: 12px; height: 42px;" onclick="alert('Order #BLS-9418 confirmed! SMS & Email confirmation sent.')">&#128274; Proceed to Secure Checkout</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Tracking & Inquire Section -->
+    <div class="grid-2" id="tracking">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">&#128666; Real-Time Order Tracking</h4>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <input type="text" value="#BLS-9418" placeholder="Enter Order Number">
+          <button class="btn-sm" style="width: 100px;">Track</button>
+        </div>
+        <div class="step-track">
+          <div class="step-node"><div class="step-circle">&#10004;</div><div style="font-size: 11px;">Placed</div></div>
+          <div class="step-node"><div class="step-circle">&#10004;</div><div style="font-size: 11px;">Crafted</div></div>
+          <div class="step-node"><div class="step-circle">&#128666;</div><div style="font-size: 11px; font-weight: bold; color: var(--primary);">On The Way</div></div>
+          <div class="step-node"><div class="step-circle" style="background: #cbd5e1;">&#9873;</div><div style="font-size: 11px; color: var(--muted);">Delivered</div></div>
+        </div>
+        <div style="font-size: 12px; color: var(--muted); text-align: center;">Delivery Partner: Express Florist Courier &bull; Expected Oct 15, 11:30 AM</div>
+      </div>
+
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">&#9993;&#65039; Inquire via Email</h4>
+        <div style="display: grid; gap: 8px;">
+          <input type="email" placeholder="Your Email Address">
+          <input type="text" placeholder="Subject / Order ID Inquiry">
+          <textarea rows="2" placeholder="Describe your question or custom request..."></textarea>
+          <button class="btn-accent" onclick="alert('Inquiry sent to support@blossomgifts.com! Our floral team will reply within 30 minutes.')">Send Email Inquiry</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Inventory & Order Summary Management Panel -->
+    <div class="section-title" id="admin-inventory">
+      <span>Administrator Inventory &amp; Customer Order Management</span>
+      <span class="badge" style="background: #fee2e2; color: #991b1b;">Admin Clearance Level</span>
+    </div>
+
+    <div class="grid-2">
+      <!-- Add/Modify Item Form -->
+      <div class="panel">
+        <h4 style="margin-bottom: 10px;">Add New Particular or Modify Item</h4>
+        <div style="display: grid; gap: 8px;">
+          <input type="text" placeholder="Item Name e.g. Midnight Sunflower Bunch">
+          <div class="grid-2">
+            <select><option>Category: Fresh Flowers</option><option>Chocolates</option><option>Gift Hampers</option></select>
+            <input type="number" placeholder="Price ($) e.g. 39.99">
+          </div>
+          <textarea rows="2" placeholder="Item description &amp; care details..."></textarea>
+          <div style="display: flex; gap: 8px;">
+            <button onclick="alert('New item added to live catalog!')">Add Item to Catalog</button>
+            <button class="btn-secondary" onclick="alert('Item prices updated!')">Update Price / Info</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkout Customer List for Admin -->
+      <div class="panel">
+        <h4 style="margin-bottom: 10px;">Recent Checkout Customers &amp; Delivery Orders</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Items Ordered</th>
+              <th>Total</th>
+              <th>Delivery Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#BLS-9418</td>
+              <td>Sarah Connor<br><span style="font-size: 11px; color: var(--muted);">sarah@corp.com</span></td>
+              <td>24 Red Roses + Plaque</td>
+              <td>$71.39</td>
+              <td>Oct 15</td>
+              <td><button class="btn-sm" onclick="alert('Order dispatch verified!')">View</button></td>
+            </tr>
+            <tr>
+              <td>#BLS-9412</td>
+              <td>James Wilson<br><span style="font-size: 11px; color: var(--muted);">j.wilson@net.org</span></td>
+              <td>Truffle &amp; Orchid Basket</td>
+              <td>$68.50</td>
+              <td>Oct 15</td>
+              <td><button class="btn-sm btn-danger" onclick="alert('Order canceled & refunded')">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 BlossomGifts Online Floral &amp; Gifting Store. All deliveries guaranteed fresh with SMS &amp; Email updates.</p>
+  </footer>
+
+</body>
+</html>

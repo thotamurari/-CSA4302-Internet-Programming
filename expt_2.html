@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grand Horizon Resort &amp; Hotel - Room Booking &amp; Management Portal</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --accent: #b45309;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.45; font-size: 14px; }
+    header { background: #0f172a; color: #fff; padding: 12px 24px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: #f8fafc; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 14px; font-weight: 500; font-size: 13px; }
+    nav a:hover, nav a.active { color: #38bdf8; }
+    .container { max-width: 1180px; margin: 20px auto; padding: 0 16px; }
+    .hero-search { background: linear-gradient(135deg, #1e3a8a, #0f172a); color: white; padding: 24px; border-radius: var(--radius); margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .search-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) 120px; gap: 10px; align-items: end; margin-top: 14px; }
+    label { font-size: 12px; font-weight: 600; color: inherit; display: block; margin-bottom: 4px; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    button:hover { opacity: 0.9; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin: 24px 0 12px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .room-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .room-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+    .room-header { background: #334155; color: white; padding: 14px; text-align: center; }
+    .room-body { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .price-tag { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+    .badge { display: inline-block; padding: 2px 6px; font-size: 11px; font-weight: 700; border-radius: 4px; background: #e0f2fe; color: #0369a1; }
+    .badge-success { background: #dcfce7; color: var(--success); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 8px; }
+    th, td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .info-box { background: #f8fafc; border-left: 3px solid var(--primary); padding: 10px 12px; margin-bottom: 12px; font-size: 12.5px; }
+    .admin-panel { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 24px; }
+    .tab-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab-bar button { width: auto; padding: 6px 14px; background: #e2e8f0; color: #334155; }
+    .tab-bar button.active { background: var(--primary); color: #fff; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 20px; margin-top: 40px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .search-form { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header>
+    <h1>Grand Horizon Hotel &amp; Suites</h1>
+    <nav>
+      <a href="#search-section">Search &amp; Rooms</a>
+      <a href="#user-section">My Account &amp; Bookings</a>
+      <a href="#info-sections">Hotel Guides &amp; Policy</a>
+      <a href="#admin-section">Admin Portal</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Search & Room Availability Section -->
+    <section class="hero-search" id="search-section">
+      <h2 style="font-size: 1.25rem;">Search Luxury Rooms &amp; Verify Availability</h2>
+      <p style="font-size: 12px; opacity: 0.85;">Check instant room vacancies, choose dates, and enjoy complimentary cancellations up to 3 days prior to check-in.</p>
+      <form class="search-form" onsubmit="event.preventDefault(); alert('Checking live room inventory for selected dates...');">
+        <div>
+          <label>Destination / Branch</label>
+          <input type="text" value="Grand Horizon Main Resort, Bay Area" required>
+        </div>
+        <div>
+          <label>Check-in Date</label>
+          <input type="date" value="2026-10-25" required>
+        </div>
+        <div>
+          <label>Check-out Date</label>
+          <input type="date" value="2026-10-28" required>
+        </div>
+        <div>
+          <label>Guests &amp; Rooms</label>
+          <select>
+            <option>1 Adult, 1 Room</option>
+            <option selected>2 Adults, 1 Room</option>
+            <option>Family (2 Adults, 2 Kids)</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit">Check Vacancy</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 4 Types of Rooms: Introduction, Amenities, Quantity & Price -->
+    <h3 class="section-title">
+      <span>Featured Room Types &amp; Rates</span>
+      <span style="font-size: 12px; font-weight: normal; color: var(--muted);">Direct reservation rate guaranteed</span>
+    </h3>
+
+    <div class="room-grid">
+      <!-- Room 1: Standard Room -->
+      <div class="room-card">
+        <div class="room-header">
+          <h3>Standard Room</h3>
+          <span style="font-size: 11px; opacity: 0.8;">Cozy comfort for solo &amp; business travelers</span>
+        </div>
+        <div class="room-body">
+          <div class="price-tag">$110 <span style="font-size: 12px; color: var(--muted); font-weight: normal;">/ night</span></div>
+          <div><span class="badge badge-success">Available: 8 Rooms</span> &bull; <span class="badge">Queen Bed</span></div>
+          <p style="font-size: 12px; color: var(--muted);">High-speed WiFi, Work Desk, Air Conditioning, 43" Smart TV, Private En-suite Shower.</p>
+          <button style="margin-top: auto;" onclick="document.getElementById('bookingRoomSelect').value='standard'; location.href='#booking-form-box';">Book Room</button>
+        </div>
+      </div>
+
+      <!-- Room 2: Deluxe Room -->
+      <div class="room-card">
+        <div class="room-header">
+          <h3>Deluxe Ocean View</h3>
+          <span style="font-size: 11px; opacity: 0.8;">Panoramic sea view with private balcony</span>
+        </div>
+        <div class="room-body">
+          <div class="price-tag">$175 <span style="font-size: 12px; color: var(--muted); font-weight: normal;">/ night</span></div>
+          <div><span class="badge badge-success">Available: 5 Rooms</span> &bull; <span class="badge">King Bed</span></div>
+          <p style="font-size: 12px; color: var(--muted);">Private Ocean Balcony, Mini Bar, Marble Bathroom, Robes, Espresso Coffee Machine.</p>
+          <button style="margin-top: auto;" onclick="document.getElementById('bookingRoomSelect').value='deluxe'; location.href='#booking-form-box';">Book Room</button>
+        </div>
+      </div>
+
+      <!-- Room 3: Executive Suite -->
+      <div class="room-card">
+        <div class="room-header">
+          <h3>Executive Suite</h3>
+          <span style="font-size: 11px; opacity: 0.8;">Spacious separate living area &amp; lounge</span>
+        </div>
+        <div class="room-body">
+          <div class="price-tag">$260 <span style="font-size: 12px; color: var(--muted); font-weight: normal;">/ night</span></div>
+          <div><span class="badge badge-success">Available: 3 Rooms</span> &bull; <span class="badge">King + Sofa Bed</span></div>
+          <p style="font-size: 12px; color: var(--muted);">Lounge Area, Jacuzzi Tub, Executive Lounge Access with Free Breakfast &amp; Evening Cocktails.</p>
+          <button style="margin-top: auto;" onclick="document.getElementById('bookingRoomSelect').value='suite'; location.href='#booking-form-box';">Book Room</button>
+        </div>
+      </div>
+
+      <!-- Room 4: Presidential Suite -->
+      <div class="room-card">
+        <div class="room-header">
+          <h3>Presidential Suite</h3>
+          <span style="font-size: 11px; opacity: 0.8;">Ultra-luxury penthouse with dedicated butler</span>
+        </div>
+        <div class="room-body">
+          <div class="price-tag">$520 <span style="font-size: 12px; color: var(--muted); font-weight: normal;">/ night</span></div>
+          <div><span class="badge">Available: 1 Room</span> &bull; <span class="badge">Master Suite</span></div>
+          <p style="font-size: 12px; color: var(--muted);">Private Rooftop Terrace, Dining Room for 8, Dedicated 24/7 Butler, Luxury Airport Limo Pick-up.</p>
+          <button style="margin-top: auto;" onclick="document.getElementById('bookingRoomSelect').value='presidential'; location.href='#booking-form-box';">Book Room</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Section: Profile, New Booking, History & Cancellation -->
+    <h3 class="section-title" id="user-section">User Dashboard &amp; Reservation Desk</h3>
+
+    <div class="grid-2">
+      <!-- User Profile & Edit -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">1. User Registration &amp; Profile Details</h4>
+        <div class="info-box">Registered guests can review or update personal details and manage preferences anytime.</div>
+        <form onsubmit="event.preventDefault(); alert('Profile information updated successfully!');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Full Name</label>
+              <input type="text" value="Sarah Jenkins" required>
+            </div>
+            <div>
+              <label>Contact Phone</label>
+              <input type="tel" value="+1 (555) 782-9012" required>
+            </div>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label>Email Address (Account Login)</label>
+            <input type="email" value="sarah.jenkins@example.com" required>
+          </div>
+          <div style="margin-bottom: 10px;">
+            <label>Dietary &amp; Bedding Preferences</label>
+            <input type="text" value="High floor, Feather-free pillows, Quiet room">
+          </div>
+          <button type="submit" class="btn-sm" style="width: auto;">Save Profile Changes</button>
+        </form>
+      </div>
+
+      <!-- Room Booking Form -->
+      <div class="panel" id="booking-form-box">
+        <h4 style="margin-bottom: 8px;">2. Reserve a Room for Specific Dates</h4>
+        <form onsubmit="event.preventDefault(); alert('Booking confirmed! Confirmation email dispatched to your inbox.');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Select Room Type</label>
+              <select id="bookingRoomSelect">
+                <option value="standard">Standard Room ($110)</option>
+                <option value="deluxe" selected>Deluxe Ocean View ($175)</option>
+                <option value="suite">Executive Suite ($260)</option>
+                <option value="presidential">Presidential Suite ($520)</option>
+              </select>
+            </div>
+            <div>
+              <label>Payment Method</label>
+              <select>
+                <option>Credit / Debit Card</option>
+                <option>PayPal Gateway</option>
+                <option>Pay at Check-in Desk</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label>Arrival / Check-in Date</label>
+              <input type="date" value="2026-11-10" required>
+            </div>
+            <div>
+              <label>Departure / Check-out Date</label>
+              <input type="date" value="2026-11-14" required>
+            </div>
+          </div>
+          <div class="info-box" style="font-size: 11.5px; border-left-color: var(--accent); margin-bottom: 10px;">
+            <strong>Policy:</strong> Modifications and cancellations are allowed free of charge at any time up to <strong>3 days prior to your arrival date</strong>.
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Confirm Reservation &amp; Secure Payment</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Booking History Table with Reschedule & Cancellation -->
+    <div class="panel" style="margin-top: 16px;">
+      <h4 style="margin-bottom: 4px;">3. My Booking History &amp; Reschedule/Cancellation Controls</h4>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 10px;">View past and upcoming visits. Changes &amp; cancellations are permitted up to 3 days prior to check-in.</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Booking Reference</th>
+            <th>Room Selection</th>
+            <th>Stay Dates</th>
+            <th>Status</th>
+            <th>Policy Status</th>
+            <th>Actions (Reschedule / Cancel)</th>
+            <th>Rating &amp; Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#GH-2026-8812</strong></td>
+            <td>Deluxe Ocean View</td>
+            <td>Nov 10 – Nov 14, 2026</td>
+            <td><span class="badge badge-success">Confirmed</span></td>
+            <td><span style="color: var(--success); font-weight: 600;">Eligible (Check-in in 29 days)</span></td>
+            <td>
+              <button class="btn-sm btn-secondary" onclick="alert('Select new dates (at least 3 days in advance):');">Reschedule</button>
+              <button class="btn-sm btn-danger" onclick="if(confirm('Cancel booking #GH-2026-8812? Free cancellation applied.')) alert('Booking cancelled. Refund issued.');">Cancel</button>
+            </td>
+            <td><span style="color: var(--muted);">Available post stay</span></td>
+          </tr>
+          <tr>
+            <td><strong>#GH-2026-7041</strong></td>
+            <td>Standard Room</td>
+            <td>Oct 13 – Oct 15, 2026</td>
+            <td><span class="badge badge-success">Confirmed</span></td>
+            <td><span style="color: var(--danger); font-weight: 600;">Locked (Less than 3 days to arrival)</span></td>
+            <td>
+              <span style="font-size: 11px; color: var(--muted);">Cancellation closed</span>
+            </td>
+            <td><span style="color: var(--muted);">Pending check-in</span></td>
+          </tr>
+          <tr>
+            <td><strong>#GH-2026-4190</strong></td>
+            <td>Executive Suite</td>
+            <td>Aug 01 – Aug 05, 2026</td>
+            <td><span class="badge">Completed</span></td>
+            <td><span>Archived</span></td>
+            <td><span>Stay Concluded</span></td>
+            <td>
+              <button class="btn-sm btn-secondary" onclick="prompt('Write review for Executive Suite (1 to 5 Stars):', '5 Stars - Phenomenal ocean view and staff service!'); alert('Thank you for rating your stay!');">Add Review &amp; Rating</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Administrator Section -->
+    <section class="admin-panel" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.15rem; margin-bottom: 6px;">Administrator Operations Panel</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">Authorized administrative controls to manage all 4 room inventories, prices, active bookings, and static CMS pages.</p>
+
+      <div class="grid-2">
+        <!-- Admin Tool 1: Room Price & Quantity Manager (All 4 types) -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 10px;">A. Room Rates &amp; Quantities Configuration</h4>
+          <table style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>Room Type</th>
+                <th>Nightly Price ($)</th>
+                <th>Total Capacity</th>
+                <th>Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Standard Room</td>
+                <td><input type="number" value="110" style="width: 70px; padding: 4px;"></td>
+                <td><input type="number" value="25" style="width: 55px; padding: 4px;"></td>
+                <td><button class="btn-sm" onclick="alert('Standard room price/capacity updated');">Save</button></td>
+              </tr>
+              <tr>
+                <td>Deluxe Ocean View</td>
+                <td><input type="number" value="175" style="width: 70px; padding: 4px;"></td>
+                <td><input type="number" value="18" style="width: 55px; padding: 4px;"></td>
+                <td><button class="btn-sm" onclick="alert('Deluxe room price/capacity updated');">Save</button></td>
+              </tr>
+              <tr>
+                <td>Executive Suite</td>
+                <td><input type="number" value="260" style="width: 70px; padding: 4px;"></td>
+                <td><input type="number" value="8" style="width: 55px; padding: 4px;"></td>
+                <td><button class="btn-sm" onclick="alert('Executive suite price/capacity updated');">Save</button></td>
+              </tr>
+              <tr>
+                <td>Presidential Suite</td>
+                <td><input type="number" value="520" style="width: 70px; padding: 4px;"></td>
+                <td><input type="number" value="2" style="width: 55px; padding: 4px;"></td>
+                <td><button class="btn-sm" onclick="alert('Presidential suite price/capacity updated');">Save</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Admin Tool 2: Master Booking Override & Cancellation -->
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 10px;">B. Admin Booking Management (Modify / Cancel Any Record)</h4>
+          <form onsubmit="event.preventDefault(); alert('Administrator modification saved successfully!');">
+            <div style="margin-bottom: 8px;">
+              <label>Select Booking ID to Modify</label>
+              <select>
+                <option>#GH-2026-8812 - Sarah Jenkins (Deluxe, Nov 10)</option>
+                <option>#GH-2026-7041 - Michael Vance (Standard, Oct 13)</option>
+              </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <label>Admin Adjusted Check-in</label>
+                <input type="date" value="2026-11-10">
+              </div>
+              <div>
+                <label>Admin Adjusted Check-out</label>
+                <input type="date" value="2026-11-15">
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="submit" class="btn-sm" style="flex: 1;">Save Changes to Booking</button>
+              <button type="button" class="btn-sm btn-danger" onclick="if(confirm('Cancel this customer booking as Admin?')) alert('Booking cancelled by Admin.');">Cancel Booking</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Admin Tool 3: Static Pages CMS Editor -->
+      <div class="panel" style="background: white; margin-top: 14px;">
+        <h4 style="margin-bottom: 8px;">C. Static Content CMS (Modify Pages Post-Login)</h4>
+        <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 12px;">
+          <div>
+            <label>Select Page to Edit</label>
+            <select id="adminCmsSelect" onchange="loadCmsContent()">
+              <option value="about">About Us Information</option>
+              <option value="contact">Contact Information</option>
+              <option value="qa">Customer Service Q&amp;A</option>
+              <option value="travel">Local Travel &amp; Shipping Guide</option>
+              <option value="privacy">Privacy Policy</option>
+              <option value="rooms">Room Descriptions</option>
+            </select>
+            <button class="btn-sm" style="margin-top: 10px; width: 100%;" onclick="alert('Static page updated and live on website.');">Publish Changes</button>
+          </div>
+          <div>
+            <label>Page Content Editor</label>
+            <textarea id="adminCmsText" rows="4">Grand Horizon Resort & Suites is a five-star oceanfront hotel founded in 1998, renowned for prime coastal locations, bespoke guest services, and award-winning culinary excellence.</textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Static Information & Policies Section -->
+    <h3 class="section-title" id="info-sections">Hotel Information, Q&amp;A &amp; Policies</h3>
+
+    <div class="grid-2">
+      <!-- 1. Customer Service Q&A -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Customer Service Q&amp;A</h4>
+        <div style="font-size: 12.5px; display: flex; flex-direction: column; gap: 8px;">
+          <div>
+            <strong>Q: What are the check-in and check-out times?</strong>
+            <p style="color: var(--muted);">A: Standard check-in begins at 3:00 PM. Check-out is at 11:00 AM. Early check-in is subject to availability.</p>
+          </div>
+          <div>
+            <strong>Q: How does the cancellation policy work?</strong>
+            <p style="color: var(--muted);">A: Guests can cancel or alter their booking free of charge up to 3 days before their designated arrival date.</p>
+          </div>
+          <div>
+            <strong>Q: Is breakfast included with reservations?</strong>
+            <p style="color: var(--muted);">A: Complimentary breakfast buffet is included for Executive and Presidential suites, and available as an add-on for others.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Local Travel & Shipping Guide -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Local Travel &amp; Shipping Guide</h4>
+        <div style="font-size: 12.5px; display: flex; flex-direction: column; gap: 8px;">
+          <div>
+            <strong>Local Attractions &amp; Transit:</strong>
+            <p style="color: var(--muted);">&bull; Bay Harbor Boardwalk (5 mins walk)<br>&bull; Coral Reef Scuba Marine Park (15 mins drive)<br>&bull; City Center Metro Station (Shuttle departing every 30 mins)</p>
+          </div>
+          <div>
+            <strong>Luggage &amp; Parcel Shipping Service:</strong>
+            <p style="color: var(--muted);">The concierge desk coordinates secure DHL/FedEx worldwide luggage forwarding, airport baggage delivery, and parcel receipt for registered guests.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. About Us & Contact Info -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">About Us &amp; Contact Details</h4>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">Grand Horizon Resort provides world-class seaside hospitality, premium amenities, and eco-conscious luxury accommodation.</p>
+        <div style="font-size: 12.5px; line-height: 1.6;">
+          <strong>Address:</strong> 104 Oceanfront Promenade, Bay Area, CA 90210<br>
+          <strong>Front Desk Hotline:</strong> +1 (800) 555-4674 (24/7)<br>
+          <strong>Concierge &amp; Inquiries:</strong> reservations@grandhorizon.com
+        </div>
+      </div>
+
+      <!-- 4. Privacy Policy -->
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Privacy Policy</h4>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">We treat guest data and booking records with strict security and confidentiality.</p>
+        <ul style="font-size: 12px; color: var(--muted); padding-left: 16px; line-height: 1.5;">
+          <li>Payment information is tokenized and processed via certified PCI-DSS compliant gateways.</li>
+          <li>Personal details are stored strictly for booking confirmations, profile management, and legal requirements.</li>
+          <li>We never sell or disclose guest contact details to unauthorized third-party marketers.</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Grand Horizon Hotel &amp; Suites. All Rights Reserved. &bull; Online Room Reservation &amp; Administration System</p>
+  </footer>
+
+  <script>
+    function loadCmsContent() {
+      const type = document.getElementById('adminCmsSelect').value;
+      const editor = document.getElementById('adminCmsText');
+      const data = {
+        about: "Grand Horizon Resort & Suites is a five-star oceanfront hotel founded in 1998, renowned for prime coastal locations, bespoke guest services, and award-winning culinary excellence.",
+        contact: "104 Oceanfront Promenade, Bay Area. 24/7 Phone: +1 (800) 555-4674. Email: reservations@grandhorizon.com",
+        qa: "Check-in at 3 PM, check-out at 11 AM. Free cancellation up to 3 days before arrival. Executive suites include complimentary breakfast.",
+        travel: "Complimentary shuttle to Bay Harbor Boardwalk & Metro. Concierge worldwide luggage forwarding and shipping available.",
+        privacy: "PCI-DSS encrypted payment transactions. Guest records protected under international data protection laws.",
+        rooms: "Standard ($110), Deluxe Ocean View ($175), Executive Suite ($260), Presidential Penthouse ($520). Real-time inventory synchronization."
+      };
+      editor.value = data[type] || "";
+    }
+  </script>
+</body>
+</html>

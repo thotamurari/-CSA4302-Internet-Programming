@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StyleHub - Online Fashion Retail &amp; E-Commerce Platform</title>
+  <style>
+    :root { --primary: #7c3aed; --accent: #e11d48; --bg: #faf5ff; --card: #fff; --text: #1e1b4b; --muted: #64748b; --border: #e2d8f0; --success: #15803d; --danger: #b91c1c; --radius: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    header { background: #1e1b4b; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.2rem; font-weight: 700; color: #c4b5fd; }
+    nav a { color: #c4b5fd; text-decoration: none; margin-left: 14px; font-size: 13px; font-weight: 500; }
+    nav a:hover { color: #f9a8d4; }
+    .container { max-width: 1140px; margin: 20px auto; padding: 0 16px; }
+    label { font-size: 11.5px; font-weight: 600; display: block; margin-bottom: 3px; }
+    input, select, textarea, button { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; }
+    button { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+    .btn-accent { background: var(--accent); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; width: auto; }
+    .section-title { font-size: 1.1rem; font-weight: 700; margin: 22px 0 10px; border-bottom: 2px solid var(--border); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .product-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .product-img { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+    .product-img.casual { background: linear-gradient(135deg, #4c1d95, #7c3aed); color: #ede9fe; }
+    .product-img.formal { background: linear-gradient(135deg, #1e293b, #475569); color: #e2e8f0; }
+    .product-img.seasonal { background: linear-gradient(135deg, #be123c, #f43f5e); color: #ffe4e6; }
+    .product-img.footwear { background: linear-gradient(135deg, #78350f, #b45309); color: #fef3c7; }
+    .product-body { padding: 12px; }
+    .product-body h4 { font-size: 0.95rem; margin-bottom: 2px; }
+    .price { font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+    .old-price { text-decoration: line-through; color: var(--muted); font-size: 12px; margin-left: 4px; }
+    .badge { display: inline-block; padding: 2px 7px; font-size: 11px; font-weight: 700; border-radius: 4px; background: #f3e8ff; color: #7c3aed; }
+    .badge-success { background: #dcfce7; color: var(--success); }
+    .badge-sale { background: #ffe4e6; color: #be123c; }
+    .stars { color: #f59e0b; font-size: 12px; }
+    .size-pills { display: flex; gap: 4px; margin: 4px 0; }
+    .size-pill { padding: 2px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; background: #faf5ff; }
+    .size-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
+    th { background: #faf5ff; font-weight: 600; }
+    .admin-box { background: #fefce8; border: 1px solid #fde68a; border-radius: var(--radius); padding: 16px; margin-top: 22px; }
+    footer { background: #1e1b4b; color: #c4b5fd; text-align: center; padding: 18px; margin-top: 36px; font-size: 12px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .grid-4 { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#128087; StyleHub Fashion</h1>
+    <nav>
+      <a href="#catalog">Catalog</a>
+      <a href="#cart-section">Cart</a>
+      <a href="#wishlist">Wishlist</a>
+      <a href="#orders">Orders &amp; Returns</a>
+      <a href="#auth-section">Login / Register</a>
+      <a href="#admin-section">Admin</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Category Navigation + Search & Filter -->
+    <div class="panel" id="catalog">
+      <h4 style="margin-bottom: 8px;">Shop by Category</h4>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128085; Casual Wear</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128084; Formal Attire</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#127782; Seasonal Collections</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128095; Footwear</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128092; Accessories</span>
+        <span class="badge" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#128118; Kids</span>
+        <span class="badge badge-sale" style="cursor: pointer; padding: 5px 12px; font-size: 12px;">&#9889; Flash Sale</span>
+      </div>
+      <form style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 120px; gap: 10px; align-items: end;" onsubmit="event.preventDefault(); alert('Searching fashion catalog...');">
+        <div><label>Search Product / Brand</label><input type="text" placeholder="e.g. Nike Air Max, Levi's Denim..."></div>
+        <div><label>For</label><select><option>All</option><option selected>Women</option><option>Men</option><option>Kids</option></select></div>
+        <div><label>Sub Category</label><select><option>All</option><option>Dresses</option><option>Tops &amp; Blouses</option><option>Jackets</option><option>Jeans &amp; Pants</option><option>Sneakers</option></select></div>
+        <div><label>Price</label><select><option>Any</option><option>Under $50</option><option selected>$50 - $150</option><option>$150+</option></select></div>
+        <div><button type="submit" class="btn-accent">Search</button></div>
+      </form>
+    </div>
+
+    <!-- Product Grid with Descriptions, Reviews, Size Guides -->
+    <h3 class="section-title">
+      <span>Trending Fashion &amp; Personalized Picks</span>
+      <span class="badge badge-sale">Up to 40% Off</span>
+    </h3>
+    <div class="grid-4">
+      <div class="product-card">
+        <div class="product-img casual">&#128087;</div>
+        <div class="product-body">
+          <span class="badge">Casual &bull; Women</span>
+          <h4>Bohemian Floral Maxi Dress</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088;&#11088; (4.8 &bull; 324 reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">Flowing chiffon fabric, elastic waist, available in 5 colorways.</p>
+          <div class="size-pills"><span class="size-pill">XS</span><span class="size-pill active">S</span><span class="size-pill">M</span><span class="size-pill">L</span><span class="size-pill">XL</span></div>
+          <div><span class="price">$68.00</span><span class="old-price">$89.99</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 6px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('Bohemian Floral Maxi Dress', 68)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Saved to Wishlist!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img formal">&#128084;</div>
+        <div class="product-body">
+          <span class="badge">Formal &bull; Men</span>
+          <h4>Slim Fit Italian Wool Blazer</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088; (4.5 &bull; 198 reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">Premium Italian wool blend, notch lapel, dual button, fully lined.</p>
+          <div class="size-pills"><span class="size-pill">38</span><span class="size-pill active">40</span><span class="size-pill">42</span><span class="size-pill">44</span></div>
+          <div><span class="price">$189.00</span><span class="old-price">$249.00</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 6px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('Italian Wool Blazer', 189)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Saved to Wishlist!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img seasonal">&#127782;</div>
+        <div class="product-body">
+          <span class="badge badge-sale">Flash Sale &bull; Women</span>
+          <h4>Puffer Down Winter Jacket</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088;&#11088; (4.9 &bull; 510 reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">Water-resistant shell, 700-fill goose down, detachable fur-lined hood.</p>
+          <div class="size-pills"><span class="size-pill">S</span><span class="size-pill">M</span><span class="size-pill active">L</span><span class="size-pill">XL</span></div>
+          <div><span class="price">$129.00</span><span class="old-price">$219.00</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 6px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('Puffer Down Winter Jacket', 129)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Saved!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img footwear">&#128095;</div>
+        <div class="product-body">
+          <span class="badge">Footwear &bull; Unisex</span>
+          <h4>Nike Air Max 270 React</h4>
+          <div class="stars">&#11088;&#11088;&#11088;&#11088; (4.6 &bull; 870 reviews)</div>
+          <p style="font-size: 11.5px; color: var(--muted); margin: 4px 0;">Lightweight React foam midsole, Max Air 270 cushion unit, mesh upper.</p>
+          <div class="size-pills"><span class="size-pill">7</span><span class="size-pill">8</span><span class="size-pill active">9</span><span class="size-pill">10</span><span class="size-pill">11</span></div>
+          <div><span class="price">$149.00</span></div>
+          <div style="display: flex; gap: 4px; margin-top: 6px;">
+            <button class="btn-sm btn-accent" onclick="addToCart('Nike Air Max 270', 149)">Add to Cart</button>
+            <button class="btn-sm btn-secondary" onclick="alert('Saved!')">&#9829;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shopping Cart with Edit/Remove -->
+    <h3 class="section-title" id="cart-section">Shopping Cart &amp; Checkout</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Cart Items (2)</h4>
+        <table>
+          <thead><tr><th>Item</th><th>Size</th><th>Qty</th><th>Price</th><th>Edit / Remove</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Bohemian Floral Maxi Dress</strong></td>
+              <td>S</td>
+              <td><input type="number" value="1" min="1" style="width: 45px; padding: 3px;"></td>
+              <td>$68.00</td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Item updated')">Edit</button>
+                <button class="btn-sm btn-danger" onclick="alert('Removed from cart')">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Nike Air Max 270 React</strong></td>
+              <td>9</td>
+              <td><input type="number" value="1" min="1" style="width: 45px; padding: 3px;"></td>
+              <td>$149.00</td>
+              <td>
+                <button class="btn-sm btn-secondary" onclick="alert('Item updated')">Edit</button>
+                <button class="btn-sm btn-danger" onclick="alert('Removed')">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot><tr><td colspan="3" style="text-align: right; font-weight: 700;">Total:</td><td colspan="2" style="font-weight: 700; color: var(--accent);">$217.00</td></tr></tfoot>
+        </table>
+      </div>
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Secure Checkout</h4>
+        <form onsubmit="event.preventDefault(); alert('Order confirmed! ID: #SH-2026-6704. Order tracking and confirmation email sent.');">
+          <div style="margin-bottom: 8px;"><label>Delivery Address</label><textarea rows="2" required>88 Fashion Blvd, Suite 12, Los Angeles, CA 90015</textarea></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Payment</label><select><option>Credit / Debit Card</option><option>PayPal</option><option>Apple Pay</option></select></div>
+            <div><label>Discount Code</label><input type="text" placeholder="STYLE20"></div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Place Order ($217.00)</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Wishlist -->
+    <div class="panel" id="wishlist">
+      <h4 style="margin-bottom: 8px;">My Wishlist &bull; Personalized Style Recommendations</h4>
+      <table>
+        <thead><tr><th>Product</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Slim Fit Italian Wool Blazer</td><td>$189.00</td><td><span class="badge badge-success">In Stock</span></td><td><button class="btn-sm btn-accent" onclick="addToCart('Italian Wool Blazer', 189)">Move to Cart</button></td></tr>
+          <tr><td>Puffer Down Winter Jacket</td><td>$129.00</td><td><span class="badge badge-success">In Stock</span></td><td><button class="btn-sm btn-accent" onclick="addToCart('Puffer Jacket', 129)">Move to Cart</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Order History with Returns -->
+    <h3 class="section-title" id="orders">Order History, Tracking &amp; Returns</h3>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Order</th><th>Items</th><th>Date</th><th>Total</th><th>Status</th><th>Track / Return</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>#SH-2026-6704</strong></td>
+            <td>Maxi Dress (S), Air Max 270 (9)</td>
+            <td>Oct 14, 2026</td>
+            <td>$217.00</td>
+            <td><span class="badge">Processing</span></td>
+            <td><button class="btn-sm btn-secondary" onclick="alert('Tracking: Packed at warehouse. Est. delivery Oct 19.')">Track</button></td>
+          </tr>
+          <tr>
+            <td><strong>#SH-2026-3810</strong></td>
+            <td>Linen Summer Shirt (M)</td>
+            <td>Sep 05, 2026</td>
+            <td>$45.00</td>
+            <td><span class="badge badge-success">Delivered</span></td>
+            <td>
+              <button class="btn-sm btn-secondary" onclick="alert('Return/Exchange window: Open until Oct 05. Select return reason to initiate.')">Return / Exchange</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Auth -->
+    <h3 class="section-title" id="auth-section">Login &amp; Register</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">Login</h4>
+        <form onsubmit="event.preventDefault(); alert('Welcome back to StyleHub!');">
+          <div style="margin-bottom: 8px;"><label>Email</label><input type="email" value="sophia@example.com" required></div>
+          <div style="margin-bottom: 8px;"><label>Password</label><input type="password" value="••••••••" required></div>
+          <button type="submit" style="width: 100%;">Sign In</button>
+        </form>
+      </div>
+      <div class="panel">
+        <h4 style="margin-bottom: 8px;">New Account</h4>
+        <form onsubmit="event.preventDefault(); alert('Account created! Start shopping now.');">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Name</label><input type="text" placeholder="Sophia Chen" required></div>
+            <div><label>Phone</label><input type="tel" placeholder="+1 555-000-0000" required></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div><label>Email</label><input type="email" placeholder="sophia@example.com" required></div>
+            <div><label>Password</label><input type="password" required></div>
+          </div>
+          <button type="submit" class="btn-accent" style="width: 100%;">Create Account</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <section class="admin-box" id="admin-section">
+      <h3 style="color: #78350f; font-size: 1.1rem; margin-bottom: 4px;">Admin &ndash; Fashion Inventory, Pricing &amp; Customer Management</h3>
+      <p style="font-size: 12px; color: #92400e; margin-bottom: 14px;">Add/remove fashion items, modify prices &amp; descriptions, manage sub-categories, and view customer checkout activity.</p>
+      <div class="grid-2">
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Add / Modify Fashion Product</h4>
+          <form onsubmit="event.preventDefault(); alert('Fashion product catalog updated!');">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div><label>Product Name</label><input type="text" value="Bohemian Floral Maxi Dress" required></div>
+              <div><label>Category</label><select><option selected>Casual Wear</option><option>Formal Attire</option><option>Seasonal</option><option>Footwear</option><option>Accessories</option></select></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div><label>Sub Category</label><input type="text" value="Dresses &amp; Skirts"></div>
+              <div><label>For</label><select><option selected>Women</option><option>Men</option><option>Kids</option><option>Unisex</option></select></div>
+            </div>
+            <div style="margin-bottom: 8px;"><label>Description</label><textarea rows="2">Flowing chiffon fabric, elastic waist, available in 5 colorways.</textarea></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div><label>Price ($)</label><input type="number" value="68"></div>
+              <div><label>Stock</label><input type="number" value="85"></div>
+              <div><label>Sizes Available</label><input type="text" value="XS, S, M, L, XL"></div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="submit" class="btn-sm" style="flex: 1;">Save Product</button>
+              <button type="button" class="btn-sm btn-danger" onclick="alert('Product removed from catalog.')">Remove Item</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel" style="background: white;">
+          <h4 style="margin-bottom: 8px;">Customer Checkout Activity &amp; Order View</h4>
+          <table style="font-size: 11.5px;">
+            <thead><tr><th>Customer</th><th>Email</th><th>Order</th><th>Total</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Sophia Chen</td><td>sophia@example.com</td><td>#SH-2026-6704</td><td>$217</td><td><span class="badge">Processing</span></td></tr>
+              <tr><td>David Park</td><td>david.p@example.com</td><td>#SH-2026-3810</td><td>$45</td><td><span class="badge badge-success">Delivered</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>&copy; 2026 StyleHub Fashion. Premium Online Fashion Retail &amp; E-Commerce Platform.</footer>
+
+  <script>
+    function addToCart(name, price) {
+      alert(`Added "${name}" ($${price}) to your shopping cart!`);
+      location.href = '#cart-section';
+    }
+  </script>
+</body>
+</html>
